@@ -4,147 +4,145 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
 <title>Fila — Atendimento</title>
 <style>
   :root{
-    --bg:#faf7f2; --card:#fff; --ink:#1c1a17; --muted:#6b6459; --line:#e6dfd4;
-    --accent:#c8811f; --accent-ink:#8a5610; --soft:#f3ede3;
-    --ok:#2f7a4d; --warn:#b8860b; --danger:#b23b3b; --info:#3a63b8;
-    --u1:#b23b3b; --u2:#d9662a; --u3:#b8860b; --u4:#3a63b8; --u5:#7a7368; --u8:#2f7a4d; --u9:#a39c91;
-    --shadow:0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#16150f; --card:#211f18; --ink:#f2ede3; --muted:#a49b8c; --line:#352f24;
-      --accent:#e0a54a; --accent-ink:#f0c884; --soft:#2a271f;
-      --ok:#6fc08c; --warn:#e0b84a; --danger:#e88a8a; --info:#8fa9e8;
-      --u1:#e88a8a; --u2:#f0955e; --u3:#e0b84a; --u4:#8fa9e8; --u5:#a49b8c; --u8:#6fc08c; --u9:#6b655b;
-      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-    }
+    --bg:#f4f7fb; --card:#ffffff; --ink:#0f1f3d; --muted:#5b6b85; --line:#dfe6f0;
+    --accent:#1f5eff; --accent-ink:#1a4fd6; --soft:#eef3fb; --soft2:#e3ebf8;
+    --ok:#1a8f5a; --warn:#c77d00; --danger:#d23b3b;
+    --u1:#d23b3b; --u2:#ef7d1a; --u3:#1f5eff; --u4:#6b7fd7; --u5:#8a97ad; --u7:#b8c2d3; --u8:#1a8f5a; --u9:#b8c2d3;
+    --shadow:0 1px 2px rgba(15,31,61,.04), 0 6px 20px rgba(15,31,61,.06);
+    --r:14px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--ink);
-       font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-       -webkit-font-smoothing:antialiased}
+       font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-font-smoothing:antialiased}
   a{color:var(--accent-ink)}
-  button,input,select{font:inherit}
-  button{cursor:pointer;border-radius:9px;border:1px solid var(--line);background:var(--card);
-         color:var(--ink);padding:7px 13px;transition:.12s}
-  button:hover{border-color:var(--accent)}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:7px 13px;transition:.12s}
+  button:hover{border-color:var(--accent);color:var(--accent-ink)}
   button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button.primary:hover{background:var(--accent-ink);color:#fff}
   button.ghost{background:transparent}
-  button.small{padding:4px 9px;font-size:13px}
+  button.small{padding:4px 10px;font-size:13px}
+  button.danger{color:var(--danger)} button.danger:hover{border-color:var(--danger)}
+  button.ok{color:var(--ok)} button.ok:hover{border-color:var(--ok)}
   button:disabled{opacity:.45;cursor:not-allowed}
-  input,select{border:1px solid var(--line);background:var(--card);color:var(--ink);
-               border-radius:9px;padding:9px 11px;width:100%}
-  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  input,select,textarea{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;width:100%}
+  textarea{min-height:120px;resize:vertical;line-height:1.45}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
   .muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:12px}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
   .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .grow{flex:1}
   .hide{display:none!important}
 
-  /* ---- login ---- */
+  /* login */
   .login{min-height:100%;display:grid;place-items:center;padding:24px}
-  .login .box{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);
-              border-radius:16px;padding:26px;box-shadow:var(--shadow)}
-  .login h1{margin:0 0 4px;font-size:20px}
+  .login .box{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+  .login h1{margin:0 0 4px;font-size:21px;letter-spacing:-.01em}
   .login label{display:block;margin:14px 0 5px;font-size:13px;color:var(--muted)}
   .login .msg{margin-top:12px;font-size:13.5px;padding:10px 12px;border-radius:10px;background:var(--soft)}
   .login .msg.err{color:var(--danger)} .login .msg.ok{color:var(--ok)}
   .login .links{margin-top:14px;display:flex;justify-content:space-between;gap:10px;font-size:13px}
   .login .links a{cursor:pointer}
+  .logo{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;vertical-align:-7px;margin-right:6px}
 
-  /* ---- app shell ---- */
-  header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
-         padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  header h1{font-size:16px;margin:0;font-weight:650;letter-spacing:-.01em}
-  header h1 .star{color:var(--accent)}
-  .pill{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
-        color:var(--muted);white-space:nowrap;background:var(--card)}
-  .pill.live{color:var(--ok);border-color:currentColor}
-  .pill.stale{color:var(--warn);border-color:currentColor}
-  .pill.err{color:var(--danger);border-color:currentColor}
+  /* shell */
+  header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+  .hrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px}
+  .hrow h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center}
+  .pill{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap;background:#fff}
+  .pill.live{color:var(--ok);border-color:currentColor} .pill.stale{color:var(--warn);border-color:currentColor} .pill.err{color:var(--danger);border-color:currentColor}
   .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .filters select{width:auto;padding:5px 8px;font-size:13px}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-  .seg button{border:0;border-radius:0;padding:5px 10px;font-size:13px;background:var(--card)}
-  .seg button.on{background:var(--accent);color:#fff}
+  .filters select{width:auto;padding:5px 8px;font-size:13px;border-radius:9px}
+  .tabs{display:flex;gap:4px;padding:0 16px 10px;overflow-x:auto}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:13.5px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
+  .tab .n{background:var(--soft2);border-radius:999px;padding:0 7px;font-size:12px;font-weight:600}
+  .tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tab.on .n{background:rgba(255,255,255,.25);color:#fff}
 
-  .layout{display:grid;grid-template-columns:minmax(340px,440px) 1fr;gap:0;min-height:calc(100vh - 54px)}
-  .list{border-right:1px solid var(--line);padding:12px;overflow-y:auto;max-height:calc(100vh - 54px)}
-  .detail{padding:16px 20px 60px;overflow-y:auto;max-height:calc(100vh - 54px)}
+  .layout{display:grid;grid-template-columns:minmax(340px,440px) 1fr;min-height:calc(100vh - 96px)}
+  .list{border-right:1px solid var(--line);padding:12px;overflow-y:auto;max-height:calc(100vh - 96px)}
+  .detail{padding:16px 22px 80px;overflow-y:auto;max-height:calc(100vh - 96px)}
   .detail .empty{height:100%;display:grid;place-items:center;color:var(--muted);text-align:center;padding:40px}
-  .section-h{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:12px;letter-spacing:.09em;
-             text-transform:uppercase;color:var(--muted);font-weight:650}
-  .section-h .n{background:var(--soft);border-radius:999px;padding:1px 8px;color:var(--ink);letter-spacing:0}
+  .section-h{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .section-h .n{background:var(--soft2);border-radius:999px;padding:1px 8px;color:var(--ink);letter-spacing:0}
 
-  /* ---- cards ---- */
-  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;
-        padding:12px 14px 12px 18px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
+  /* cards */
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px 12px 18px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
   .card:hover{border-color:var(--accent)}
   .card.sel{outline:2px solid var(--accent);outline-offset:-1px}
   .card::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 4px 4px 0;background:var(--ub)}
-  .card .who{font-weight:650;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-  .card .who .at{color:var(--muted);font-weight:500}
+  .card .who{font-weight:650;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .card .espera{margin-left:auto;font-size:13px;font-weight:600;white-space:nowrap}
   .card .motivo{font-size:12.5px;font-weight:600;color:var(--ub);margin-top:2px}
-  .card .txt{margin:6px 0;font-size:14px;color:var(--ink);opacity:.9;
-             display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+  .card .txt{margin:6px 0;font-size:14px;color:var(--ink);opacity:.9;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
   .card.dim{opacity:.6}
   .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
   .chip{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
-  .chip.mdt{background:#f1e2c8;color:#6d4a15} .chip.cm{background:#d9e4f5;color:#243f78} .chip.it{background:#dcefe0;color:#245a35}
-  @media (prefers-color-scheme: dark){ .chip.mdt{background:#4a3719;color:#f0c884} .chip.cm{background:#22355a;color:#b9c9ee} .chip.it{background:#1f3d29;color:#a8dcb5} }
+  .chip.mdt{background:#e8eefc;color:#1a4fd6} .chip.cm{background:#e6f4ee;color:#166b45} .chip.it{background:#f3e9fb;color:#6b2fa0}
+  .chip.lang{background:#0f1f3d;color:#fff;font-weight:600;letter-spacing:.03em}
   .chip.midia{background:var(--danger);color:#fff;font-weight:600}
   .chip.fila{background:var(--ok);color:#fff}
   .chip.pausa{border:1px dashed var(--warn);background:transparent;color:var(--warn)}
   .chip.mail{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}
   .chip.compra{background:var(--ok);color:#fff}
   .janelas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-  .jan{font-size:12px;color:var(--muted)}
-  .jan b{color:var(--ink);font-weight:600}
-  .bar{height:4px;background:var(--soft);border-radius:2px;margin-top:3px;overflow:hidden}
+  .jan{font-size:12px;color:var(--muted)} .jan b{color:var(--ink);font-weight:600}
+  .bar{height:4px;background:var(--soft2);border-radius:2px;margin-top:3px;overflow:hidden}
   .bar i{display:block;height:100%;background:var(--ok);border-radius:2px}
   .bar i.warn{background:var(--warn)} .bar i.bad{background:var(--danger)}
   .jan.closed b{color:var(--danger)}
-
-  .trav{display:flex;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:10px;
-        background:var(--card);margin-bottom:6px;cursor:pointer;font-size:13.5px}
-  .trav:hover{border-color:var(--accent)}
+  .trav{display:flex;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:6px;cursor:pointer;font-size:13.5px}
+  .trav:hover{border-color:var(--accent)} .trav.sel{outline:2px solid var(--accent);outline-offset:-1px}
   .trav .d{margin-left:auto;font-weight:600;white-space:nowrap}
 
-  /* ---- detail ---- */
+  /* detail */
   .dhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-  .dhead h2{margin:0;font-size:20px}
+  .dhead h2{margin:0;font-size:21px;letter-spacing:-.01em}
   .back{display:none}
-  .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0;box-shadow:var(--shadow)}
-  .block h3{margin:0 0 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:650}
-  .kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px}
-  .kv .k{color:var(--muted)}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:12px 0;box-shadow:var(--shadow)}
+  .block h3{margin:0 0 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .block h3 .sub{letter-spacing:0;text-transform:none;font-weight:500}
+  .kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px} .kv .k{color:var(--muted)}
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   th{text-align:left;font-size:11.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;padding:4px 8px 6px;border-bottom:1px solid var(--line)}
-  td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-  tr:last-child td{border-bottom:0}
+  td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top} tr:last-child td{border-bottom:0}
   .st{font-size:11.5px;padding:2px 7px;border-radius:999px;background:var(--soft);white-space:nowrap}
   .st.pago{background:var(--ok);color:#fff} .st.neg{background:var(--danger);color:#fff}
   .tablewrap{overflow-x:auto}
-  .thread{display:flex;flex-direction:column;gap:6px}
+  .thread{display:flex;flex-direction:column;gap:6px;max-height:520px;overflow-y:auto;padding-right:4px}
   .msg{max-width:82%;padding:8px 12px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-break:break-word}
   .msg.in{align-self:flex-start;background:var(--soft);border-bottom-left-radius:4px}
-  .msg.out{align-self:flex-end;background:#e9d9bf;color:#2b1e0c;border-bottom-right-radius:4px}
-  @media (prefers-color-scheme: dark){ .msg.out{background:#4a3719;color:#f7ecd8} }
+  .msg.out{align-self:flex-end;background:#dce7ff;color:#0f1f3d;border-bottom-right-radius:4px}
   .msg .m{display:block;font-size:11px;opacity:.65;margin-top:4px}
-  .msg.midia{border:1px dashed var(--danger);background:transparent;color:var(--danger);font-weight:600}
-  .msg.fila{border:1px solid var(--ok)}
-  .msg.pend{border:1px dashed var(--ok);background:transparent}
+  .msg.midia{border:1px dashed var(--danger);background:#fff5f5;color:var(--danger);font-weight:600}
+  .msg.fila{border:1px solid var(--ok)} .msg.pend{border:1px dashed var(--ok);background:#f2fbf6}
   .day{align-self:center;font-size:11.5px;color:var(--muted);margin:8px 0 2px}
   details summary{cursor:pointer;color:var(--muted);font-size:13px}
   .notice{font-size:13px;padding:10px 12px;border-radius:10px;background:var(--soft);margin:8px 0}
-  .notice.warn{color:var(--warn);border:1px solid var(--warn)}
-  .notice.bad{color:var(--danger);border:1px solid var(--danger)}
+  .notice.warn{color:#7a4d00;background:#fff7e8;border:1px solid #f1d7a3}
+  .notice.bad{color:#8a1f1f;background:#fff1f1;border:1px solid #f3c2c2}
+  .notice.ok{color:#0f5c37;background:#eefaf3;border:1px solid #b9e3cb}
+  .acoes{display:flex;gap:8px;flex-wrap:wrap}
+  .lint{margin:8px 0 0;padding:0;list-style:none;font-size:13px}
+  .lint li{padding:4px 0 4px 22px;position:relative}
+  .lint li::before{content:"";position:absolute;left:4px;top:9px;width:10px;height:10px;border-radius:50%}
+  .lint li.erro{color:var(--danger)} .lint li.erro::before{background:var(--danger)}
+  .lint li.aviso{color:#7a4d00} .lint li.aviso::before{background:var(--warn)}
+  .lint li.ok{color:var(--ok)} .lint li.ok::before{background:var(--ok)}
+  .cnt{font-size:12px;color:var(--muted);display:flex;gap:12px;margin-top:6px}
+  .cnt b.bad{color:var(--danger)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .form-grid label,.lbl{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px}
+  .copy{cursor:pointer;border-bottom:1px dotted var(--muted)}
+  .copy:hover{color:var(--accent-ink)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f1f3d;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;box-shadow:var(--shadow);z-index:50;max-width:92vw}
+  .toast.err{background:var(--danger)}
 
   @media (max-width: 880px){
     .layout{display:block}
@@ -152,7 +150,9 @@
     .list.hide-m,.detail.hide-m{display:none}
     .back{display:inline-block}
     .msg{max-width:92%}
-    header{padding:8px 10px}
+    .form-grid{grid-template-columns:1fr}
+    .hrow{padding:8px 10px}
+    .tabs{padding:0 10px 8px}
   }
 </style>
 </head>
@@ -162,34 +162,37 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 /* =====================================================================
-   Fila de atendimento — Estágio 1 (só leitura)
-   Lê o Supabase com a chave PÚBLICA. Quem decide o que aparece é o
-   banco: só quem está em public.admins (e logado) enxerga alguma coisa.
-   Nada aqui escreve em tabela nenhuma.
+   Fila de atendimento — Estágio 2
+   Lê o Supabase com a chave PÚBLICA. O banco só devolve linhas para quem
+   está em public.admins. Toda escrita passa por função do banco que exige
+   admin e valida. A tela NÃO envia nada: escreve em fila_respostas e o
+   n8n (📤 Fila de respostas, a cada 5 min) envia.
    ===================================================================== */
 const CONFIG = {
   url: 'https://vupxofhfgqnqsbwzmndy.supabase.co',
   key: 'sb_publishable_fesL5Nm5u8PYR-YORexjXg_8DSxbCNC',
   refreshSeg: 60,
-  diasPadrao: 7,
+  diasPadrao: 30, // comentário público não expira: com 7 dias, 27 dias de "estafa" sumiam da tela
 };
 const sb = supabase.createClient(CONFIG.url, CONFIG.key);
 
 const MARCA = {
-  mapa_del_tarot: { nome: 'Mapa del Tarot', curto: 'MDT', cls: 'mdt', ig: 'https://www.instagram.com/direct/inbox/' },
-  cartomaps:      { nome: 'Carto Maps',     curto: 'Carto', cls: 'cm' },
-  atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it' },
+  mapa_del_tarot:      { nome: 'Mapa del Tarot', curto: 'MDT', cls: 'mdt', idioma: 'es', thankyou: 'mapadeltaro.online/thank-you/', venda: 'mapadeltaro.online' },
+  cartomaps:           { nome: 'Carto Maps', curto: 'Carto', cls: 'cm', idioma: 'en', thankyou: 'cartomaps.online/thank-you', venda: 'cartomaps.online' },
+  atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: '', venda: 'atlantedellecarte.com' },
 };
-const PAGO = new Set(['APPROVED', 'COMPLETE', 'COMPLETED']);
-const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 7:'var(--u9)', 8:'var(--u8)', 9:'var(--u9)' };
+const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
+const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 7:'var(--u7)', 8:'var(--u8)', 9:'var(--u9)' };
 
 const S = {
   sessao: null, admin: false,
   fila: [], travados: [], erro: null,
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
-  filtro: { marca: 'todas', canal: 'todos', baixa: false },
+  filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', baixa: false },
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
+  comp: null,            // compositor: { canal, ref, idioma, texto, modelo }
+  reemb: null,           // formulário de reembolso aberto
   mobileDetalhe: false,
   timer: null, tick: null,
 };
@@ -199,13 +202,12 @@ const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 const agoraServidor = () => S.agoraMs ? new Date(S.agoraMs + (Date.now() - S.agoraLocalAt)) : new Date();
 const horasDesde = ts => (agoraServidor() - new Date(ts)) / 36e5;
-
 function dur(h, prec = true) {
   if (h == null || isNaN(h)) return '—';
   const neg = h < 0; h = Math.abs(h);
   let s;
   if (h < 1) s = Math.round(h * 60) + ' min';
-  else if (h < 48) s = (prec ? Math.floor(h) + 'h' + (Math.round((h % 1) * 60) ? ' ' + String(Math.round((h % 1) * 60)).padStart(2, '0') + 'min' : '') : Math.round(h) + 'h');
+  else if (h < 48) s = prec ? Math.floor(h) + 'h' + (Math.round((h % 1) * 60) ? ' ' + String(Math.round((h % 1) * 60)).padStart(2, '0') + 'min' : '') : Math.round(h) + 'h';
   else s = (h / 24).toFixed(h / 24 < 10 ? 1 : 0).replace('.', ',') + ' d';
   return (neg ? '-' : '') + s;
 }
@@ -215,26 +217,109 @@ const fmtDataHora = ts => ts ? `${fmtData(ts)} ${fmtHora(ts)}` : '—';
 const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : '';
 const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
 const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
-const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : esc(c || '?');
+const langChip = l => l ? `<span class="chip lang" title="${esc(IDIOMA_NOME[l] || l)}">${esc(l.toUpperCase())}</span>` : '';
+const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : esc(c || '?');
 const nomeAutor = it => it.autor ? '@' + it.autor : `id ${it.autor_id || it.conversa_id}`;
-const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">perfil no Instagram ↗</a>` : '';
+const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">abrir no Instagram ↗</a>` : '';
+const mascararEmail = e => { if (!e || !e.includes('@')) return e || ''; const [u, d] = e.split('@'); return (u.length <= 2 ? u[0] + '*' : u[0] + '***' + u[u.length - 1]) + '@' + d; };
+function toast(msg, err = false) {
+  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), err ? 6000 : 3200);
+}
+async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado'); } catch { toast('Não consegui copiar', true); } }
 
-/* Janelas da Meta, calculadas AO VIVO a partir da última mensagem do cliente,
-   com o relógio ancorado no now() do servidor (não no do celular). */
 function janelas(ultimaEntrada, canal) {
   if (canal !== 'dm' || !ultimaEntrada) return null;
   const passou = horasDesde(ultimaEntrada);
   return { h24: 24 - passou, h7d: 168 - passou };
 }
 function janelaHtml(j) {
-  if (!j) return `<div class="jan muted">Comentário: sem prazo da Meta, mas é <b>público</b></div>`;
-  const b = (rest, total, label, extra) => {
+  if (!j) return `<div class="jan muted">Comentário: sem prazo da Meta, mas é <b>público</b>. Resposta privada ao comentário vale 7 dias.</div>`;
+  const b = (rest, total, label) => {
     const pct = Math.max(0, Math.min(100, rest / total * 100));
-    const cls = rest <= 0 ? 'bad' : pct < 25 ? 'bad' : pct < 50 ? 'warn' : '';
-    return `<div class="jan ${rest <= 0 ? 'closed' : ''}">${label}: <b>${rest <= 0 ? 'fechada' : dur(rest, false) + ' restantes'}</b>${extra || ''}
+    const cls = rest <= 0 || pct < 25 ? 'bad' : pct < 50 ? 'warn' : '';
+    return `<div class="jan ${rest <= 0 ? 'closed' : ''}">${label}: <b>${rest <= 0 ? 'fechada' : dur(rest, false) + ' restantes'}</b>
       <div class="bar"><i class="${cls}" style="width:${pct}%"></i></div></div>`;
   };
   return `<div class="janelas">${b(j.h24, 24, '24h padrão')}${b(j.h7d, 168, '7d human_agent')}</div>`;
+}
+
+/* ---------- modelos de resposta (ES / EN) ----------
+   Seguem "Respostas — o que o Gabriel corrige": tú (nunca vos), 163 páginas,
+   entrega por e-mail (nunca biblioteca), sem país, sem OXXO, sem prometer
+   reembolso. Comentário público: 3 linhas, sem link. {nome} {email} {codigos}
+   são preenchidos com a ficha. */
+const MODELOS = [
+  { id: 'pedir_email', nome: 'Já comprou: pedir o e-mail da compra', canais: ['dm', 'comentario_privado'],
+    es: c => `Vamos a resolverlo ahora. Dime el correo que usaste en la compra y lo busco de mi lado.\nEn cuanto lo encuentre, te reenvío todos los archivos directo a ese correo, sin plataforma ni contraseña.`,
+    en: c => `Let's sort this out now. Tell me the email you used at checkout and I'll look it up.\nAs soon as I find it, I'll resend all the files straight to that inbox. No platform, no password.` },
+  { id: 'acesso_reenviado', nome: 'Compra achada: arquivos reenviados por e-mail', canais: ['dm', 'comentario_privado'],
+    es: c => `¡Encontré tu compra! ✅ Acabo de enviarte todos los archivos a ${c.email || 'tu correo'}, para descargar directo, sin plataforma.\nSi no aparece en unos minutos, revisa spam o promociones y avísame por aquí.`,
+    en: c => `Found your purchase ✅ I've just emailed all the files to ${c.email || 'your inbox'} as direct downloads, no platform needed.\nIf it doesn't show up in a few minutes, check spam or promotions and tell me here.` },
+  { id: 'email_errado', nome: 'E-mail digitado errado na compra', canais: ['dm', 'comentario_privado'],
+    es: c => `¡Encontré tu compra! El correo quedó registrado como ${c.email || '(correo con error)'}, con una letra distinta, y por eso nunca te llegó.\nAcabo de reenviar todo al correo correcto. Revisa y me avisas.`,
+    en: c => `Found your purchase! The email was saved as ${c.email || '(email with a typo)'}, one letter off, which is why nothing ever arrived.\nI've just resent everything to the right address. Check and let me know.` },
+  { id: 'estafa_publico', nome: 'Comentário "estafa": responder em público (3 linhas, sem link)', canais: ['comentario_publico'],
+    es: c => `${c.nome ? c.nome + ', tienes' : 'Tienes'} toda la razón, y no es una estafa: tu compra está confirmada de nuestro lado.\nEl fallo fue nuestro, no tuyo.\nTe acabo de escribir por privado con la solución.`,
+    en: c => `${c.nome ? c.nome + ', you' : 'You'}'re right to be upset, and this is not a scam: your purchase is confirmed on our side.\nThe failure was ours, not yours.\nI've just messaged you privately with the fix.` },
+  { id: 'coment_para_dm', nome: 'Comentário: "te respondo por privado"', canais: ['comentario_publico'],
+    es: c => `¡Hola! 😊 Gracias por escribir, ya te respondo por privado.`,
+    en: c => `Just sent you all the details in a DM! 🎴✨` },
+  { id: 'reembolso', nome: 'Reembolso: passo a passo da Hotmart com o código', canais: ['dm', 'comentario_privado'],
+    es: c => `Claro, te ayudo con el reembolso. Quien lo procesa es Hotmart, y es rápido:\n1) Entra en refund.hotmart.com\n2) Escribe el código de la transacción y el correo de la compra. ${c.codigos.length > 1 ? 'Tus códigos: ' : 'Tu código: '}${c.codigos.join(', ') || 'HP__________'}\n3) Te llega un token por correo (vale 15 minutos): pégalo, elige el motivo y pulsa Finalizar\n4) Hotmart te pide los datos bancarios y el dinero vuelve en hasta 7 días\nSi me cuentas qué pasó, me ayuda a mejorar el material. Y si prefieres quedarte con él, también puedo reenviarte los archivos ahora mismo.`,
+    en: c => `Of course, I'll help with the refund. Hotmart processes it, and it's quick:\n1) Go to refund.hotmart.com\n2) Enter the transaction code and the email you used at checkout. ${c.codigos.length > 1 ? 'Your codes: ' : 'Your code: '}${c.codigos.join(', ') || 'HP__________'}\n3) You'll get a token by email (valid 15 minutes): paste it, pick a reason and click Finish\n4) Hotmart asks for your bank details and the money is back within 7 days\nIf you tell me what went wrong, it helps me improve the material. And if you'd rather keep it, I can resend the files right now.` },
+  { id: 'menu', nome: 'Não entendi: menu de 3 caminhos', canais: ['dm', 'comentario_privado'],
+    es: c => `¡Hola! Dime cuál es tu caso y lo resuelvo ahora:\n👉 Ya compré y no puedo entrar\n👉 Quiero comprar y no me deja\n👉 Tengo una duda sobre el material`,
+    en: c => `Hi! Tell me which one you are and I'll sort it out now:\n👉 I bought it and can't get in\n👉 I want to buy and it won't let me\n👉 I have a question about the material` },
+  { id: 'digital', nome: 'É físico ou digital?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    es: c => `Es 100% digital. Recibes un PDF de 163 páginas apenas se confirma el pago, y lo abres en el celular, la tablet o la computadora.\nSi te gusta el papel, puedes imprimir solo las páginas que estés usando. Sin envío, sin espera.`,
+    en: c => `It's 100% digital. You get a 163-page PDF the moment your payment goes through, and you can open it on your phone, tablet or computer.\nIf you prefer paper, print only the pages you're working on. No shipping, no waiting.` },
+  { id: 'cartas', nome: 'Vem com as cartas?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    es: c => `El Mapa es la guía, no el mazo. Te enseña a leer las 78 cartas del Rider Waite, el mazo más común y el más fácil de conseguir.\nSi ya tienes uno, sirve desde hoy. Si todavía no, cualquier Rider Waite funciona.`,
+    en: c => `The Map is the guide, not the deck. It teaches you to read all 78 Rider Waite cards, the most common deck and the easiest to find.\nIf you already own one, you can start today. If not, any Rider Waite works.` },
+  { id: 'planes', nome: 'Planos / é assinatura?', canais: ['dm', 'comentario_privado'],
+    es: c => `Es un pago único. No hay suscripción ni cobros después.\nBásico: el Mapa completo, las 78 cartas explicadas.\nCompleto: el Mapa más los 4 bonos (interpretación intuitiva, libro de tiradas, cuidado de tu baraja y "Mi Primera Tirada") y más de 150 ejemplos reales de combinaciones.\nLos dos llegan al instante por correo y son tuyos para siempre. Aquí: ${c.venda}`,
+    en: c => `One single payment. No subscription, no charges afterwards.\nBasic: the complete Map, all 78 cards explained.\nComplete: the Map plus the 4 bonuses (intuitive interpretation, ready-made spreads, deck care and "My First Spread") and 150+ real combination examples.\nBoth arrive instantly by email and are yours forever. Here: ${c.venda}` },
+  { id: 'pago', nome: 'Como pago? (sem OXXO)', canais: ['dm', 'comentario_privado'],
+    es: c => `Puedes pagar con tarjeta, PayPal, Nequi o Mercado Pago. El checkout te muestra las opciones de tu país y convierte el precio a tu moneda antes de pagar.\nAquí: ${c.venda}`,
+    en: c => `You can pay by card, PayPal, Apple Pay or Google Pay. Checkout shows the options for your country and converts the price to your currency before you pay.\nHere: ${c.venda}` },
+  { id: 'imprimir', nome: 'Preciso imprimir?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    es: c => `Sí, todo se lee desde la pantalla. Cada carta tiene su página de práctica con espacio para escribir.\nPuedes responderla a mano si la imprimes, o en tu cuaderno o app de notas. Imprimir es opcional.`,
+    en: c => `Yes, everything reads from the screen. Every card has its practice page with space to write.\nFill it in by hand if you print it, or use a notebook or notes app. Printing is optional.` },
+  { id: 'ia', nome: 'É feito por IA?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    es: c => `No. Cada página fue diseñada a mano, con base en referencias de grandes obras del Tarot.\nPor eso el material es coherente y realmente sirve para aprender.`,
+    en: c => `No. Every page was designed by hand, based on references from major Tarot works.\nThat's why the material is coherent and actually useful for learning.` },
+];
+
+/* ---------- verificador de regras ----------
+   Erros bloqueiam; avisos só avisam. As regras vêm do cofre. */
+function lint(texto, canal, ctx) {
+  const out = [];
+  const t = texto || '';
+  const linhas = t.split('\n').filter(l => l.trim() !== '').length;
+  const push = (nivel, msg) => out.push({ nivel, msg });
+  if (!t.trim()) { push('erro', 'Texto vazio.'); return out; }
+  if (t.length > 1000) push('erro', `${t.length} caracteres. O Instagram aceita até 1000.`);
+  if (/mapadeltarot\.online/i.test(t)) push('erro', 'Contém mapadeltarot.online, o domínio do vazamento. O certo é mapadeltaro.online (sem "t").');
+  if (canal === 'comentario_publico') {
+    if (linhas > 3) push('erro', `Comentário público com ${linhas} linhas. Máximo 3.`);
+    if (/(https?:\/\/|www\.|\.(com|online|net|org|io)\b)/i.test(t)) push('erro', 'Comentário público com link ou domínio. Link só em privado.');
+  }
+  if (/\b(vos|contame|decime|podés|tenés|querés|acá|andá|ingresá|fijate|mirá|sabés|escribime|avisame)\b/i.test(t)) push('aviso', 'Forma "vos" (rioplatense). A marca fala "tú": cuéntame, dime, puedes, tienes, aquí.');
+  if (/\b160\b/.test(t)) push('aviso', 'São 163 páginas, não 160.');
+  if (/oxxo/i.test(t)) push('aviso', 'Não citar OXXO: não existe no checkout.');
+  if (/(voy a procesar|proceso (el|los|tu) reembolso|te reembols|reembolso (aprobado|hecho|listo)|i('ll| will) (process|issue|send) (the |your )?refund|refund (is )?(done|processed|approved)|already refunded)/i.test(t)) push('aviso', 'Promessa de reembolso. Quem processa é a Hotmart: mande o passo a passo com o código.');
+  if (/\b(chile|méxico|mexico|argentina|brasil|brazil|colombia|españa|spain|somos de|we are (from|based))\b/i.test(t)) push('aviso', 'Nunca dizer de que país a marca é, nem concordar com o país sugerido.');
+  if (/(biblioteca|library|mapadeltarot\.com|magic link|enlace mágico|link mágico)/i.test(t)) push('aviso', 'Entrega é por e-mail com os arquivos, nunca a biblioteca. Se precisar de página, é a thank you.');
+  if (/(te escrib(o|imos) (por privado|al correo|a tu correo)|alguien del equipo|someone (from|on) (the|our) team|i('ll| will) (email|message|write) you)/i.test(t)) push('aviso', 'Promessa de contato. Faça o envio agora, antes ou junto com esta resposta. Já houve 28 promessas sem ninguém aparecer.');
+  const emojis = (t.match(/\p{Extended_Pictographic}/gu) || []).length;
+  if (emojis > 2) push('aviso', `${emojis} emojis. Máximo 2.`);
+  if (canal === 'dm' && linhas > 8) push('aviso', `${linhas} linhas em DM. Teto sugerido: 8.`);
+  if (ctx && ctx.idiomaDetectado && ctx.idiomaModelo && ctx.idiomaDetectado !== ctx.idiomaModelo) push('aviso', `A pessoa escreve em ${IDIOMA_NOME[ctx.idiomaDetectado] || ctx.idiomaDetectado} e o modelo é em ${IDIOMA_NOME[ctx.idiomaModelo] || ctx.idiomaModelo}. Responder no idioma de quem escreve.`);
+  if (canal === 'dm' && ctx && ctx.j && ctx.j.h24 <= 0) push('aviso', ctx.j.h7d > 0 ? 'Fora das 24h: o envio só passa com a tag human_agent. Se o despachante do n8n ainda não usa a tag, vai falhar. Alternativa: e-mail.' : 'Fora das 24h e dos 7 dias: o Instagram não vai aceitar. Use e-mail e marque "Respondi por fora".');
+  if (canal === 'comentario_privado') push('aviso', 'Resposta privada a comentário: vale 7 dias e o Instagram aceita só uma por comentário.');
+  if (!out.length) push('ok', 'Nenhuma regra ferida.');
+  return out;
 }
 
 /* ---------- auth ---------- */
@@ -245,11 +330,10 @@ async function iniciar() {
     if (sessao && !S.sessao) { S.sessao = sessao; await entrar(); }
   });
   const { data } = await sb.auth.getSession();
-  if (location.hash.includes('type=recovery')) return; // o evento acima cuida
+  if (location.hash.includes('type=recovery')) return;
   if (data.session) { S.sessao = data.session; await entrar(); }
   else renderLogin();
 }
-
 async function entrar() {
   const { data, error } = await sb.rpc('eh_admin');
   if (error) { renderLogin(`Não consegui verificar o acesso: ${error.message}`); return; }
@@ -259,12 +343,11 @@ async function entrar() {
   await carregar();
   iniciarTimers();
 }
-
 function renderLogin(msg, cls = 'err') {
   pararTimers();
   $('#app').innerHTML = `
   <div class="login"><div class="box">
-    <h1><span style="color:var(--accent)">✦</span> Fila de atendimento</h1>
+    <h1><span class="logo">✦</span>Fila de atendimento</h1>
     <div class="muted small">Mapa del Tarot · Carto Maps</div>
     <form id="f">
       <label>E-mail</label><input id="email" type="email" autocomplete="username" required inputmode="email">
@@ -280,43 +363,13 @@ function renderLogin(msg, cls = 'err') {
     const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#senha').value });
     if (error) renderLogin(error.message === 'Invalid login credentials' ? 'E-mail ou senha não batem.' : error.message);
   };
-  // Login por código (OTP) desligado: o modelo de e-mail do Supabase é o da
-  // biblioteca e não traz o código. renderOtp() fica aqui caso o modelo mude.
   $('#esqueci').onclick = async () => {
     const email = $('#email').value.trim();
-    if (!email) return renderLogin('Preencha o e-mail primeiro.', 'err');
+    if (!email) return renderLogin('Preencha o e-mail primeiro.');
     const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
     renderLogin(error ? error.message : `Link enviado para ${email}. Se ele te levar para a biblioteca em vez de voltar aqui, a URL desta tela ainda não está nas "Redirect URLs" do Supabase Auth.`, error ? 'err' : 'ok');
   };
 }
-
-function renderOtp(email, msg, cls = 'ok') {
-  $('#app').innerHTML = `
-  <div class="login"><div class="box">
-    <h1>Código por e-mail</h1>
-    <form id="f">
-      <label>E-mail</label><input id="email" type="email" value="${esc(email)}" required inputmode="email">
-      <div class="row" style="margin-top:12px"><button type="button" id="enviar" class="grow">Enviar código</button></div>
-      <label>Código recebido (6 dígitos)</label><input id="cod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}">
-      <div style="margin-top:14px"><button class="primary" style="width:100%" type="submit">Entrar</button></div>
-    </form>
-    <div class="links"><a id="voltar">← Entrar com senha</a></div>
-    ${msg ? `<div class="msg ${cls}">${esc(msg)}</div>` : '<div class="msg">Só funciona se o modelo de e-mail do Supabase incluir o código ({{ .Token }}). Se vier só um link, use a senha.</div>'}
-  </div></div>`;
-  $('#voltar').onclick = () => renderLogin();
-  $('#enviar').onclick = async () => {
-    const em = $('#email').value.trim();
-    const { error } = await sb.auth.signInWithOtp({ email: em, options: { shouldCreateUser: false } });
-    renderOtp(em, error ? error.message : `Código enviado para ${em}.`, error ? 'err' : 'ok');
-  };
-  $('#f').onsubmit = async e => {
-    e.preventDefault();
-    const em = $('#email').value.trim(), token = $('#cod').value.trim();
-    const { error } = await sb.auth.verifyOtp({ email: em, token, type: 'email' });
-    if (error) renderOtp(em, error.message, 'err');
-  };
-}
-
 function renderNovaSenha(msg) {
   $('#app').innerHTML = `
   <div class="login"><div class="box">
@@ -338,7 +391,6 @@ function renderNovaSenha(msg) {
     await entrar();
   };
 }
-
 function renderSemAcesso() {
   pararTimers();
   $('#app').innerHTML = `
@@ -352,26 +404,29 @@ function renderSemAcesso() {
 
 /* ---------- dados ---------- */
 async function carregar() {
-  const [f, t] = await Promise.all([
-    sb.rpc('fila_atendimento', { p_dias: S.dias }),
-    sb.rpc('atendimento_travados'),
-  ]);
+  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias }), sb.rpc('atendimento_travados')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
   S.erro = null;
   S.fila = f.data || []; S.travados = t.data || [];
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
   S.agoraMs = agora ? new Date(agora).getTime() : Date.now();
-  S.agoraLocalAt = Date.now();
-  S.carregadoEm = Date.now();
-  renderLista(); renderStatus();
-  if (S.sel) renderDetalhe(); // reflete prazos novos sem refazer a ficha
+  S.agoraLocalAt = Date.now(); S.carregadoEm = Date.now();
+  if (S.sel) { // mantém o item selecionado atualizado
+    const novo = S.fila.find(x => x.autor_id === S.sel.autor_id && x.marca === S.sel.marca && x.canal === S.sel.canal);
+    if (novo) S.sel.item = novo;
+  }
+  renderTabs(); renderLista(); renderStatus();
+  if (S.sel) renderDetalhe();
 }
-
 async function abrir(item) {
-  S.sel = { autor_id: item.autor_id || item.conversa_id, marca: item.marca, autor: item.autor, canal: item.canal || 'dm', item };
-  S.ficha = null; S.thread = null; S.fichaErro = null;
+  S.sel = { autor_id: item.autor_id || item.conversa_id, marca: item.marca, autor: item.autor, canal: item.canal || 'dm', idioma: item.idioma, item };
+  S.ficha = null; S.thread = null; S.fichaErro = null; S.comp = null; S.reemb = null;
   S.mobileDetalhe = true;
   renderLista(); renderDetalhe();
+  await recarregarFicha();
+}
+async function recarregarFicha() {
+  if (!S.sel) return;
   const [fi, th] = await Promise.all([
     sb.rpc('ficha_cliente', { p_autor_id: S.sel.autor_id, p_marca: S.sel.marca || null }),
     sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor')
@@ -381,63 +436,60 @@ async function abrir(item) {
   S.ficha = fi.data || null;
   S.thread = (th.data || []).reverse();
   if (!S.sel.autor) S.sel.autor = S.thread.find(m => m.autor)?.autor || null;
+  if (!S.sel.idioma) S.sel.idioma = (MARCA[S.sel.marca] || {}).idioma || 'es';
   renderDetalhe();
 }
-
+async function acao(fn, args, okMsg) {
+  const { data, error } = await sb.rpc(fn, args);
+  if (error) { toast(error.message, true); return null; }
+  toast(okMsg || 'Feito');
+  await Promise.all([carregar(), recarregarFicha()]);
+  return data ?? true;
+}
 function iniciarTimers() {
   pararTimers();
   S.timer = setInterval(carregar, CONFIG.refreshSeg * 1000);
-  S.tick = setInterval(() => { renderStatus(); atualizarJanelasVivas(); }, 30 * 1000);
+  S.tick = setInterval(() => { renderStatus(); if (S.admin) { renderLista(); if (S.sel && !S.comp) renderDetalhe(); } }, 30 * 1000);
   document.addEventListener('visibilitychange', onVisivel);
 }
 function pararTimers() { clearInterval(S.timer); clearInterval(S.tick); document.removeEventListener('visibilitychange', onVisivel); }
 function onVisivel() { if (document.visibilityState === 'visible' && S.admin && Date.now() - (S.carregadoEm || 0) > 20e3) carregar(); }
-function atualizarJanelasVivas() { if (S.admin) { renderLista(); if (S.sel) renderDetalhe(); } }
 
-/* ---------- render: shell ---------- */
+/* ---------- shell ---------- */
 function renderApp() {
   $('#app').innerHTML = `
   <header>
-    <h1><span class="star">✦</span> Fila</h1>
-    <span id="status" class="pill">…</span>
-    <div class="grow"></div>
-    <div class="filters">
-      <select id="fMarca" title="Marca">
-        <option value="todas">Todas as marcas</option>
-        <option value="mapa_del_tarot">Mapa del Tarot</option>
-        <option value="cartomaps">Carto Maps</option>
-        <option value="atlante_delle_carte">Atlante</option>
-      </select>
-      <select id="fCanal" title="Canal">
-        <option value="todos">DM + comentários</option>
-        <option value="dm">Só DM</option>
-        <option value="comentario">Só comentários</option>
-      </select>
-      <select id="fDias" title="Quantos dias olhar para trás">
-        <option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option>
-      </select>
-      <label class="pill" style="cursor:pointer"><input type="checkbox" id="fBaixa" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">spam e já na fila</label>
+    <div class="hrow">
+      <h1><span class="logo">✦</span>Fila</h1>
+      <span id="status" class="pill">…</span>
+      <div class="grow"></div>
+      <div class="filters">
+        <select id="fMarca" title="Marca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot</option><option value="cartomaps">Carto Maps</option><option value="atlante_delle_carte">Atlante</option></select>
+        <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
+        <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option></select>
+        <label class="pill" style="cursor:pointer"><input type="checkbox" id="fBaixa" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">spam e já na fila</label>
+      </div>
+      <button class="small" id="recarregar" title="Recarregar agora">↻</button>
+      <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
     </div>
-    <button class="small" id="recarregar" title="Recarregar agora">↻</button>
-    <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
+    <div class="tabs" id="tabs"></div>
   </header>
   <div class="layout">
     <div class="list" id="lista"></div>
-    <div class="detail" id="detalhe"><div class="empty"><div>Toque em alguém da fila para ver a conversa e a ficha da compra.</div></div></div>
+    <div class="detail" id="detalhe"></div>
   </div>`;
   $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fBaixa').checked = S.filtro.baixa;
-  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderLista(); };
-  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderLista(); };
-  $('#fBaixa').onchange = e => { S.filtro.baixa = e.target.checked; renderLista(); };
+  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderTabs(); renderLista(); };
+  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderTabs(); renderLista(); };
+  $('#fBaixa').onchange = e => { S.filtro.baixa = e.target.checked; renderTabs(); renderLista(); };
   $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
   $('#recarregar').onclick = carregar;
   $('#sair').onclick = () => sb.auth.signOut();
-  renderDetalhe(); // no celular, esconde a coluna de detalhe até alguém ser escolhido
+  renderTabs(); renderDetalhe();
 }
-
 function renderStatus() {
   const el = $('#status'); if (!el) return;
-  if (S.erro) { el.className = 'pill err'; el.textContent = 'erro: ' + S.erro; el.title = S.erro; return; }
+  if (S.erro) { el.className = 'pill err'; el.textContent = 'erro: ' + S.erro; return; }
   if (!S.carregadoEm) { el.className = 'pill'; el.textContent = 'carregando…'; return; }
   const s = Math.round((Date.now() - S.carregadoEm) / 1000);
   el.className = 'pill ' + (s > CONFIG.refreshSeg * 3 ? 'stale' : 'live');
@@ -445,45 +497,51 @@ function renderStatus() {
   el.title = 'Relógio do servidor: ' + agoraServidor().toLocaleString('pt-BR');
 }
 
-/* ---------- render: lista ---------- */
-function visiveis() {
-  return S.fila.filter(it => {
-    if (S.filtro.marca !== 'todas' && it.marca !== S.filtro.marca) return false;
-    if (S.filtro.canal !== 'todos' && it.canal !== S.filtro.canal) return false;
-    if (!S.filtro.baixa && it.urgencia >= 8) return false;
-    return true;
-  }).sort((a, b) => a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde));
+/* ---------- lista ---------- */
+function baseFiltrada() {
+  return S.fila.filter(it =>
+    (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) &&
+    (S.filtro.canal === 'todos' || it.canal === S.filtro.canal) &&
+    (S.filtro.baixa || it.urgencia < 8));
 }
-
+const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
+function visiveis() {
+  return baseFiltrada()
+    .filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
+    .sort((a, b) => a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde));
+}
+function renderTabs() {
+  const el = $('#tabs'); if (!el) return;
+  const base = baseFiltrada();
+  const n = { todos: base.length, es: 0, en: 0, outros: 0 };
+  base.forEach(it => n[grupoIdioma(it.idioma)]++);
+  const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
+  const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n" style="background:var(--danger);color:#fff" title="urgentes">${urg(k)}</span>` : ''}</button>`;
+  el.innerHTML = tab('todos', 'Todos') + tab('es', '🇪🇸 Español') + tab('en', '🇬🇧 English') + tab('outros', 'Outros idiomas');
+  el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; renderTabs(); renderLista(); });
+}
 function renderLista() {
   const el = $('#lista'); if (!el) return;
   el.classList.toggle('hide-m', S.mobileDetalhe);
   const itens = visiveis();
-  const ocultos = S.fila.length - S.fila.filter(it => S.filtro.baixa || it.urgencia < 8).length;
+  const ocultos = S.fila.filter(it => it.urgencia >= 8).length;
   const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
-
   let h = `<div class="section-h">Esperando resposta <span class="n">${itens.length}</span>
            ${ocultos && !S.filtro.baixa ? `<span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">+${ocultos} spam/na fila</span>` : ''}</div>`;
   if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
-  else if (!itens.length) h += `<div class="notice">Ninguém esperando nos últimos ${S.dias} dias com esses filtros. 🎉</div>`;
+  else if (!itens.length) h += `<div class="notice">Ninguém esperando nos últimos ${S.dias} dias com esses filtros.</div>`;
   h += itens.map(cardHtml).join('');
-
   h += `<div class="section-h" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
-        <div class="tiny muted" style="margin:-4px 4px 8px">Estado ≠ resolvido em <span class="mono">atendimento_estado</span>. Só saem quando escreverem de novo ou alguém resolver à mão.</div>`;
-  h += trav.map(t => {
-    const selecionado = S.sel && S.sel.autor_id === t.conversa_id;
-    return `<div class="trav ${selecionado ? 'sel' : ''}" data-trav="${esc(t.id)}">
+        <div class="tiny muted" style="margin:-4px 4px 8px">Estado ≠ resolvido em <span class="mono">atendimento_estado</span>. Abra e use "Marcar resolvido" quando estiver tratado.</div>`;
+  h += trav.map(t => `<div class="trav ${S.sel && S.sel.autor_id === t.conversa_id ? 'sel' : ''}" data-trav="${esc(t.id)}">
       ${marcaChip(t.marca)}
       <span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
         ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}
         ${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}
-        ${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}
-      </span>
+        ${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}</span>
       <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span>
-    </div>`;
-  }).join('');
+    </div>`).join('');
   el.innerHTML = h;
-
   el.querySelectorAll('.card').forEach(c => c.onclick = () => {
     const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal);
     if (it) abrir(it);
@@ -493,16 +551,14 @@ function renderLista() {
     if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t });
   });
 }
-
 function cardHtml(it) {
   const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
   const cor = URG_COR[it.urgencia] || 'var(--u5)';
   const j = janelas(it.ultima_entrada, it.canal);
-  const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto — mídia)</span>`;
-  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''}" style="--ub:${cor}"
-               data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
+  const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
+  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
     <div class="who">
-      <span>${esc(nomeAutor(it))}</span>
+      ${langChip(it.idioma)}<span>${esc(nomeAutor(it))}</span>
       ${marcaChip(it.marca)} <span class="chip">${canalTxt(it.canal)}</span>
       <span class="espera" title="primeira mensagem sem resposta: ${fmtDataHora(it.espera_desde)}">espera ${dur(horasDesde(it.espera_desde), false)}</span>
     </div>
@@ -521,56 +577,85 @@ function cardHtml(it) {
   </div>`;
 }
 
-/* ---------- render: detalhe ---------- */
+/* ---------- detalhe ---------- */
+function ctxModelo() {
+  const f = S.ficha || {}, s = S.sel;
+  const pagas = (f.compras || []).filter(c => c.pago);
+  const nomeCompleto = pagas[0]?.nome || (f.compras || [])[0]?.nome || '';
+  const email = (f.estado?.email_informado) || (f.emails || [])[0] || '';
+  return {
+    nome: nomeCompleto ? nomeCompleto.trim().split(/\s+/)[0] : '',
+    email: mascararEmail(email),
+    emailCompleto: email,
+    codigos: pagas.map(c => c.transacao),
+    venda: (MARCA[s.marca] || MARCA.mapa_del_tarot).venda,
+    thankyou: (MARCA[s.marca] || MARCA.mapa_del_tarot).thankyou,
+    idiomaDetectado: s.idioma,
+  };
+}
 function renderDetalhe() {
   const el = $('#detalhe'); if (!el) return;
   el.classList.toggle('hide-m', !S.mobileDetalhe);
-  if (!S.sel) { el.innerHTML = `<div class="empty"><div>Toque em alguém da fila para ver a conversa e a ficha da compra.</div></div>`; return; }
+  if (!S.sel) { el.innerHTML = `<div class="empty"><div>Toque em alguém da fila para ver a conversa, a ficha da compra e responder.</div></div>`; return; }
   const s = S.sel, it = s.item || {}, f = S.ficha;
-  const j = janelas(it.ultima_entrada || S.thread?.filter(m => m.direcao === 'entrada').slice(-1)[0]?.criado_em, s.canal);
-  const m = MARCA[s.marca] || {};
+  const ultimaEntrada = it.ultima_entrada || S.thread?.filter(m => m.direcao === 'entrada').slice(-1)[0]?.criado_em;
+  const j = janelas(ultimaEntrada, s.canal);
+  const pausaAtiva = f?.pausa && new Date(f.pausa.pausado_ate) > agoraServidor();
+  const est = f?.estado || it.travado || null;
+  const estadoAtual = est?.estado || it.estado || null;
+  const pendentesFila = (f?.fila || []).filter(x => !x.enviado_em);
 
   let h = `<div class="dhead">
     <button class="back small" id="voltar">← Fila</button>
     <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>
-    ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>
+    ${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>
     ${linkIg(s.autor)}
-    <span class="mono muted" title="autor_id / conversa_id">${esc(s.autor_id)}</span>
+    <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span>
+  </div>`;
+  if (it.motivo_urgencia) h += `<div class="notice" style="color:${URG_COR[it.urgencia] || 'inherit'};font-weight:600;background:#fff;border:1px solid var(--line)">${esc(it.motivo_urgencia)} · esperando ${dur(horasDesde(it.espera_desde))}</div>`;
+  if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (comprovante). O banco não guarda a mídia. Abra a conversa no Instagram antes de responder.</div>`;
+  if (pendentesFila.length) h += `<div class="notice ok">✅ ${pendentesFila.length} resposta(s) já na fila, sai(em) em até 5 min. Dá para cancelar lá embaixo, na conversa.</div>`;
+
+  // ações
+  h += `<div class="block"><h3>Ações</h3><div class="acoes">
+    <button class="primary" id="btResponder">${S.comp ? 'Fechar resposta' : 'Responder'}</button>
+    <button id="btFora" title="A resposta foi dada pelo app do Instagram: grava uma saída para a fila parar de mostrar">Respondi pelo Instagram</button>
+    ${pausaAtiva ? `<button id="btDespausar" class="ok" title="pausado até ${fmtDataHora(f.pausa.pausado_ate)}">Despausar bot</button>`
+                 : `<button id="btPausar" title="O bot cala nesta conversa por 24h (exceto entrega de acesso com compra achada). Use enquanto você atende à mão.">Pausar bot 24h</button>`}
+    ${estadoAtual && estadoAtual !== 'resolvido' ? `<button id="btResolver" class="ok">Marcar resolvido</button>` : ''}
+    ${estadoAtual === 'resolvido' ? `<button id="btReabrir">Reabrir (aguardando_gabriel)</button>` : ''}
+    ${!estadoAtual ? `<button id="btResolver" class="ok" title="Cria o registro como resolvido">Marcar resolvido</button>` : ''}
+    <button id="btReembolso">${S.reemb ? 'Fechar reembolso' : 'Registrar reembolso'}</button>
+  </div>
+  <div class="tiny muted" style="margin-top:8px">Nada aqui envia direto: "Responder" põe na fila e o n8n envia em até 5 min. As outras ações mudam só o estado no banco.</div>
   </div>`;
 
-  if (it.motivo_urgencia) h += `<div class="notice" style="color:${URG_COR[it.urgencia] || 'inherit'};font-weight:600">${esc(it.motivo_urgencia)} · esperando ${dur(horasDesde(it.espera_desde))}</div>`;
-  if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (ex.: comprovante). O banco não guarda a mídia — abra a conversa no Instagram antes de responder.</div>`;
+  if (S.comp) h += compositorHtml(j);
+  if (S.reemb) h += reembolsoHtml();
 
   h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}
-        <div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(it.ultima_entrada)}), com o relógio do servidor.</div></div>`;
+        <div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(ultimaEntrada)}), com o relógio do servidor.</div></div>`;
 
-  // estado do fluxo
-  const est = f?.estado || it.travado || null;
-  const pausa = f?.pausa;
   h += `<div class="block"><h3>Estado no fluxo automático</h3><div class="kv">
-    <span class="k">estado</span><span>${esc(est?.estado || it.estado || '— (nunca entrou no fluxo de acesso)')}</span>
-    ${est?.email_informado ? `<span class="k">e-mail informado</span><span class="mono">${esc(est.email_informado)}</span>` : ''}
+    <span class="k">estado</span><span>${esc(estadoAtual || '— (nunca entrou no fluxo de acesso)')}</span>
+    ${est?.email_informado ? `<span class="k">e-mail informado</span><span class="mono copy" data-copy="${esc(est.email_informado)}">${esc(est.email_informado)}</span>` : ''}
     ${est?.tentativas != null ? `<span class="k">tentativas</span><span>${esc(est.tentativas)}</span>` : ''}
     ${est?.atualizado_em ? `<span class="k">atualizado</span><span>${fmtDataHora(est.atualizado_em)} (${dur(horasDesde(est.atualizado_em), false)} atrás)</span>` : ''}
-    ${pausa ? `<span class="k">bot pausado</span><span>${new Date(pausa.pausado_ate) > agoraServidor() ? 'até ' + fmtDataHora(pausa.pausado_ate) : 'expirou ' + fmtDataHora(pausa.pausado_ate)} · ${esc(pausa.motivo || '')}</span>` : ''}
-    ${it.resposta_na_fila ? `<span class="k">fila</span><span style="color:var(--ok)">há resposta agendada em fila_respostas, sai em até 5 min</span>` : ''}
+    ${f?.pausa ? `<span class="k">bot pausado</span><span>${pausaAtiva ? 'até ' + fmtDataHora(f.pausa.pausado_ate) : 'expirou ' + fmtDataHora(f.pausa.pausado_ate)} · ${esc(f.pausa.motivo || '')}</span>` : ''}
   </div></div>`;
 
   if (S.fichaErro) h += `<div class="notice bad">Erro ao carregar a ficha: ${esc(S.fichaErro)}</div>`;
   if (!f && !S.fichaErro) h += `<div class="notice">Carregando ficha…</div>`;
 
   if (f) {
-    // e-mails
     h += `<div class="block"><h3>E-mails achados</h3>`;
-    h += f.emails.length ? f.emails.map(e => `<span class="chip mail" style="font-size:13px">${esc(e)}</span> `).join('')
-                         : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart.</div>`;
-    h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou.</div></div>`;
+    h += f.emails.length ? f.emails.map(e => `<span class="chip mail copy" style="font-size:13px" data-copy="${esc(e)}" title="copiar">${esc(e)}</span> `).join('')
+                         : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart: use o modelo "pedir o e-mail".</div>`;
+    h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou. Toque para copiar. Nas respostas, use a forma mascarada.</div></div>`;
 
-    // compras
     const pagas = f.compras.filter(c => c.pago);
-    const totais = {};
-    pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
-    h += `<div class="block"><h3>Compras na Hotmart <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· ${f.compras.length} registro(s), ${pagas.length} paga(s)${pagas.length ? ' · ' + Object.entries(totais).map(([m, v]) => fmtValor(v, m)).join(' + ') : ''}</span></h3>`;
+    const totais = {}; pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
+    h += `<div class="block"><h3>Compras na Hotmart <span class="sub muted">· ${f.compras.length} registro(s), ${pagas.length} paga(s)${pagas.length ? ' · ' + Object.entries(totais).map(([m, v]) => fmtValor(v, m)).join(' + ') : ''}</span></h3>`;
     if (!f.compras.length) h += `<div class="muted small">Nada encontrado para ${f.emails.length ? 'esses e-mails' : 'este cliente'}.</div>`;
     else h += `<div class="tablewrap"><table><thead><tr><th>Quando</th><th>Produto</th><th>Valor</th><th>Status</th><th>Transação</th><th>Pgto</th></tr></thead><tbody>` +
       f.compras.map(c => `<tr>
@@ -578,23 +663,20 @@ function renderDetalhe() {
         <td>${esc((c.produto_nome || '').replace(/&amp;/g, '&'))}<div class="tiny muted">${esc(c.nome || '')} · ${esc(c.email)}${c.pais ? ' · ' + esc(c.pais) : ''}</div></td>
         <td style="white-space:nowrap">${fmtValor(c.valor, c.moeda)}</td>
         <td><span class="st ${c.pago ? 'pago' : ['REFUNDED','CHARGEBACK','DISPUTE'].includes(c.status) ? 'neg' : ''}">${esc(c.status)}</span></td>
-        <td class="mono">${esc(c.transacao)}</td>
+        <td class="mono copy" data-copy="${esc(c.transacao)}" title="copiar">${esc(c.transacao)}</td>
         <td class="small">${esc(c.pagamento || '—')}</td></tr>`).join('') + `</tbody></table></div>`;
     h += `</div>`;
 
-    // arquivos
-    h += `<div class="block"><h3>Arquivos a que tem direito <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· ${f.n_logins} login(s), ${f.n_downloads} download(s) na biblioteca</span></h3>`;
-    if (!f.itens.length) h += `<div class="muted small">${pagas.length ? 'Compra paga, mas nenhum item em itens_membros libera por esse produto — cadastro faltando.' : 'Sem compra paga, sem arquivo.'}</div>`;
+    h += `<div class="block"><h3>Arquivos a que tem direito <span class="sub muted">· ${f.n_logins} login(s), ${f.n_downloads} download(s) na biblioteca</span></h3>`;
+    if (!f.itens.length) h += `<div class="muted small">${pagas.length ? 'Compra paga, mas nenhum item em itens_membros libera por esse produto: cadastro faltando.' : 'Sem compra paga, sem arquivo.'}</div>`;
     else h += `<div class="tablewrap"><table><thead><tr><th>Arquivo</th><th>Marca</th><th>Baixou?</th></tr></thead><tbody>` +
-      f.itens.map(i => `<tr><td>${esc(i.titulo)}<div class="tiny muted mono">${esc(i.bucket)} / ${esc(i.arquivo)}</div></td>
-        <td>${marcaChip(i.marca)}</td>
+      f.itens.map(i => `<tr><td>${esc(i.titulo)}<div class="tiny muted mono">${esc(i.bucket)} / ${esc(i.arquivo)}</div></td><td>${marcaChip(i.marca)}</td>
         <td>${i.baixado_em ? `<span class="st pago">${fmtDataHora(i.baixado_em)}</span>` : `<span class="st">nunca</span>`}</td></tr>`).join('') + `</tbody></table></div>`;
     if (f.acessos.length) h += `<details style="margin-top:8px"><summary>Últimos ${f.acessos.length} eventos na biblioteca</summary><div class="small" style="margin-top:6px">` +
       f.acessos.map(a => `<div>${fmtDataHora(a.criado_em)} · <b>${esc(a.evento)}</b>${a.arquivo ? ' · ' + esc(a.arquivo) : ''} <span class="muted">${esc(a.email)}</span></div>`).join('') + `</div></details>`;
     h += `</div>`;
 
-    // reembolsos / verificações / pendentes
-    if (f.reembolsos.length) h += `<div class="block"><h3>Reembolso pedido</h3>` + f.reembolsos.map(r => `
+    if (f.reembolsos.length) h += `<div class="block"><h3>Reembolso</h3>` + f.reembolsos.map(r => `
       <div class="kv"><span class="k">pedido em</span><span>${fmtDataHora(r.pedido_em)}</span>
       <span class="k">transações</span><span class="mono">${esc((r.transacoes || []).join(', '))} · ${fmtValor(r.valor_total, r.moeda)}</span>
       <span class="k">motivo</span><span>${esc(r.motivo || '—')} <span class="muted tiny">(${esc(r.motivo_origem || '')})</span></span>
@@ -606,20 +688,146 @@ function renderDetalhe() {
       <div class="small"><b>${esc(p.estado)}</b> · v${esc(p.versao)} · ${fmtDataHora(p.criado_em)}<div style="white-space:pre-wrap;margin-top:4px">${esc(p.resposta)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
   }
 
-  // conversa
-  h += `<div class="block"><h3>Conversa <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
-  if (!S.thread) h += `<div class="muted small">Carregando…</div>`;
-  else h += `<div class="thread">${threadHtml()}</div>`;
+  h += `<div class="block"><h3>Conversa <span class="sub muted">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
+  h += S.thread ? `<div class="thread" id="thread">${threadHtml()}</div>` : `<div class="muted small">Carregando…</div>`;
   h += `</div>`;
 
   el.innerHTML = h;
-  const b = $('#voltar'); if (b) b.onclick = () => { S.mobileDetalhe = false; renderLista(); renderDetalhe(); window.scrollTo(0, 0); };
-  if (S.thread) { const t = el.querySelector('.thread'); if (t) t.scrollTop = t.scrollHeight; }
+  ligarDetalhe(j);
+  const t = $('#thread'); if (t) t.scrollTop = t.scrollHeight;
 }
 
+function ligarDetalhe(j) {
+  const s = S.sel, f = S.ficha, it = s.item || {};
+  const b = $('#voltar'); if (b) b.onclick = () => { S.mobileDetalhe = false; renderLista(); renderDetalhe(); window.scrollTo(0, 0); };
+  document.querySelectorAll('#detalhe .copy').forEach(e => e.onclick = () => copiar(e.dataset.copy));
+  $('#btResponder').onclick = () => { S.comp = S.comp ? null : novoCompositor(); S.reemb = null; renderDetalhe(); if (S.comp) $('#compTexto')?.focus(); };
+  $('#btReembolso').onclick = () => { S.reemb = S.reemb ? null : { motivo: '', origem: 'perguntado', transacoes: (f?.compras || []).filter(c => c.pago).map(c => c.transacao), orientado: true }; S.comp = null; renderDetalhe(); };
+  $('#btFora').onclick = async () => {
+    const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)');
+    if (nota === null) return;
+    await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora');
+  };
+  const p = $('#btPausar'); if (p) p.onclick = async () => { await acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa'); };
+  const d = $('#btDespausar'); if (d) d.onclick = async () => { await acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado'); };
+  const r = $('#btResolver'); if (r) r.onclick = async () => { if (confirm('Marcar como resolvido? Sai da lista de travados.')) await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'resolvido', p_autor: s.autor }, 'Marcado como resolvido'); };
+  const ra = $('#btReabrir'); if (ra) ra.onclick = async () => { await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'aguardando_gabriel', p_autor: s.autor }, 'Reaberto'); };
+  document.querySelectorAll('[data-cancelar]').forEach(e => e.onclick = async () => { if (confirm('Cancelar esta resposta antes de sair?')) await acao('cancelar_resposta', { p_id: Number(e.dataset.cancelar) }, 'Cancelada'); });
+  if (S.comp) ligarCompositor(j);
+  if (S.reemb) ligarReembolso();
+}
+
+/* ---------- compositor ---------- */
+function comentariosSemResposta() {
+  return (S.thread || []).filter(m => m.canal === 'comentario' && m.direcao === 'entrada' && m.mensagem_id && /^[0-9]{15,20}$/.test(m.mensagem_id)).slice(-8).reverse();
+}
+function novoCompositor() {
+  const s = S.sel;
+  const coms = comentariosSemResposta();
+  const canal = s.canal === 'comentario' && coms.length ? 'comentario_publico' : 'dm';
+  return { canal, ref: canal === 'dm' ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
+}
+function compositorHtml(j) {
+  const c = S.comp, s = S.sel, coms = comentariosSemResposta();
+  const ctx = ctxModelo(); ctx.idiomaModelo = c.idioma; ctx.j = j;
+  const avisos = lint(c.texto, c.canal, c.texto ? ctx : null);
+  const temErro = avisos.some(a => a.nivel === 'erro');
+  const linhas = c.texto.split('\n').filter(l => l.trim()).length;
+  const modelos = MODELOS.filter(m => m.canais.includes(c.canal));
+  return `<div class="block" id="comp"><h3>Responder <span class="sub muted">· entra na fila, o n8n envia em até 5 min</span></h3>
+    <div class="form-grid">
+      <div><label class="lbl">Por onde</label>
+        <select id="compCanal">
+          <option value="dm" ${c.canal === 'dm' ? 'selected' : ''}>DM (mensagem direta)</option>
+          ${coms.length ? `<option value="comentario_publico" ${c.canal === 'comentario_publico' ? 'selected' : ''}>Comentário público (3 linhas, sem link)</option>
+          <option value="comentario_privado" ${c.canal === 'comentario_privado' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}
+        </select></div>
+      <div><label class="lbl">Idioma da resposta <span class="muted">(detectado: ${esc(IDIOMA_NOME[s.idioma] || s.idioma || '?')})</span></label>
+        <select id="compIdioma"><option value="es" ${c.idioma === 'es' ? 'selected' : ''}>Español</option><option value="en" ${c.idioma === 'en' ? 'selected' : ''}>English</option></select></div>
+      ${c.canal !== 'dm' ? `<div style="grid-column:1/-1"><label class="lbl">Qual comentário</label>
+        <select id="compRef">${coms.map(m => `<option value="${esc(m.mensagem_id)}" ${m.mensagem_id === c.ref ? 'selected' : ''}>${fmtDataHora(m.criado_em)} · ${esc((m.texto || '(mídia)').slice(0, 90))}</option>`).join('')}</select></div>` : ''}
+      <div style="grid-column:1/-1"><label class="lbl">Modelo</label>
+        <select id="compModelo"><option value="">— escrever do zero —</option>${modelos.map(m => `<option value="${m.id}" ${c.modelo === m.id ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select></div>
+    </div>
+    <div style="margin-top:10px"><textarea id="compTexto" placeholder="Escreva no idioma de quem escreveu. Tú, nunca vos. 163 páginas. Entrega por e-mail, nunca biblioteca.">${esc(c.texto)}</textarea></div>
+    <div class="cnt"><span>${c.texto.length}/1000 caracteres</span><span>${linhas} linha(s)${c.canal === 'comentario_publico' ? ' de 3' : ''}</span>
+      ${ctx.emailCompleto ? `<span class="copy" data-ins="${esc(ctx.email)}" title="inserir no texto">+ e-mail mascarado</span>` : ''}
+      ${ctx.codigos.length ? `<span class="copy" data-ins="${esc(ctx.codigos.join(', '))}" title="inserir no texto">+ código(s) da transação</span>` : ''}
+      ${ctx.thankyou && c.canal !== 'comentario_publico' ? `<span class="copy" data-ins="${esc(ctx.thankyou)}" title="inserir no texto">+ link thank you</span>` : ''}
+    </div>
+    <ul class="lint">${avisos.map(a => `<li class="${a.nivel}">${esc(a.msg)}</li>`).join('')}</ul>
+    <div class="row" style="margin-top:10px">
+      <button class="primary" id="compEnviar" ${temErro || !c.texto.trim() ? 'disabled' : ''}>Pôr na fila</button>
+      <button class="ghost" id="compLimpar">Limpar</button>
+      <span class="tiny muted">Para ${esc(canalTxt(c.canal))} · ref <span class="mono">${esc(c.ref)}</span></span>
+    </div>
+  </div>`;
+}
+function ligarCompositor(j) {
+  const c = S.comp;
+  const rerender = () => { renderDetalhe(); };
+  $('#compCanal').onchange = e => { c.canal = e.target.value; c.ref = c.canal === 'dm' ? S.sel.autor_id : (comentariosSemResposta()[0]?.mensagem_id || ''); c.modelo = ''; rerender(); };
+  $('#compIdioma').onchange = e => { c.idioma = e.target.value; if (c.modelo) aplicarModelo(); rerender(); };
+  const r = $('#compRef'); if (r) r.onchange = e => { c.ref = e.target.value; };
+  $('#compModelo').onchange = e => { c.modelo = e.target.value; aplicarModelo(); rerender(); };
+  const ta = $('#compTexto');
+  let deb; ta.oninput = () => { c.texto = ta.value; clearTimeout(deb); deb = setTimeout(() => { const pos = ta.selectionStart; rerender(); const n = $('#compTexto'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } }, 500); };
+  document.querySelectorAll('#comp [data-ins]').forEach(e => e.onclick = () => { const n = $('#compTexto'); const p = n.selectionStart; c.texto = c.texto.slice(0, p) + e.dataset.ins + c.texto.slice(p); rerender(); });
+  $('#compLimpar').onclick = () => { c.texto = ''; c.modelo = ''; rerender(); };
+  $('#compEnviar').onclick = async () => {
+    const btn = $('#compEnviar'); btn.disabled = true; btn.textContent = 'Pondo na fila…';
+    const id = await acao('responder', { p_marca: S.sel.marca, p_canal: c.canal, p_ref: c.ref, p_texto: c.texto }, 'Na fila. Sai em até 5 min.');
+    if (id) { S.comp = null; renderDetalhe(); } else { btn.disabled = false; btn.textContent = 'Pôr na fila'; }
+  };
+}
+function aplicarModelo() {
+  const c = S.comp; const m = MODELOS.find(x => x.id === c.modelo); if (!m) return;
+  c.texto = (m[c.idioma] || m.es)(ctxModelo());
+}
+
+/* ---------- reembolso ---------- */
+function reembolsoHtml() {
+  const r = S.reemb, f = S.ficha || {}, pagas = (f.compras || []).filter(c => c.pago);
+  return `<div class="block" id="reemb"><h3>Registrar pedido de reembolso <span class="sub muted">· política de 05/09: perguntar o motivo, salvar, mandar o passo a passo mesmo sem resposta</span></h3>
+    <div class="notice warn">Quem processa é a Hotmart. Nunca prometer. Garantia: 7 dias, 100%. Depois de salvar, a resposta com o passo a passo e o código abre pronta.</div>
+    <div class="form-grid">
+      <div style="grid-column:1/-1"><label class="lbl">Transações (marque as do pedido)</label>
+        ${pagas.length ? pagas.map(c => `<label style="display:block;font-size:13.5px;margin:2px 0"><input type="checkbox" data-tx="${esc(c.transacao)}" ${r.transacoes.includes(c.transacao) ? 'checked' : ''} style="width:auto;margin-right:6px">${esc(c.transacao)} · ${esc((c.produto_nome || '').replace(/&amp;/g, '&')).slice(0, 60)} · ${fmtValor(c.valor, c.moeda)}</label>`).join('') : '<div class="muted small">Nenhuma compra paga achada. Registre mesmo assim e anote na observação.</div>'}</div>
+      <div><label class="lbl">Origem do motivo</label><select id="reOrigem"><option value="perguntado" ${r.origem === 'perguntado' ? 'selected' : ''}>perguntado (respondeu quando perguntei)</option><option value="espontaneo" ${r.origem === 'espontaneo' ? 'selected' : ''}>espontâneo (já tinha dito)</option><option value="sem_resposta" ${r.origem === 'sem_resposta' ? 'selected' : ''}>sem resposta (mando o passo a passo assim mesmo)</option></select></div>
+      <div><label class="lbl">Já vou mandar o passo a passo?</label><select id="reOrientado"><option value="1" ${r.orientado ? 'selected' : ''}>sim, agora</option><option value="0" ${!r.orientado ? 'selected' : ''}>ainda não</option></select></div>
+      <div style="grid-column:1/-1"><label class="lbl">Motivo, nas palavras da pessoa</label><textarea id="reMotivo" style="min-height:70px">${esc(r.motivo)}</textarea></div>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="primary" id="reSalvar">Salvar e abrir a resposta</button><button class="ghost" id="reFechar">Cancelar</button></div>
+  </div>`;
+}
+function ligarReembolso() {
+  const r = S.reemb, s = S.sel, f = S.ficha || {};
+  document.querySelectorAll('#reemb [data-tx]').forEach(cb => cb.onchange = () => { r.transacoes = [...document.querySelectorAll('#reemb [data-tx]:checked')].map(x => x.dataset.tx); });
+  $('#reOrigem').onchange = e => r.origem = e.target.value;
+  $('#reOrientado').onchange = e => r.orientado = e.target.value === '1';
+  $('#reMotivo').oninput = e => r.motivo = e.target.value;
+  $('#reFechar').onclick = () => { S.reemb = null; renderDetalhe(); };
+  $('#reSalvar').onclick = async () => {
+    const pagas = (f.compras || []).filter(c => r.transacoes.includes(c.transacao));
+    const total = pagas.reduce((a, c) => a + Number(c.valor || 0), 0);
+    const ctx = ctxModelo();
+    const id = await acao('registrar_reembolso', {
+      p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_autor: s.autor, p_autor_id: s.autor_id,
+      p_email: ctx.emailCompleto || null, p_transacoes: r.transacoes, p_valor_total: pagas.length ? total : null, p_moeda: pagas[0]?.moeda || null,
+      p_motivo: r.motivo, p_motivo_origem: r.origem, p_orientado: r.orientado, p_observacao: null,
+    }, 'Reembolso registrado');
+    if (id) {
+      S.reemb = null;
+      if (r.orientado) { S.comp = novoCompositor(); S.comp.canal = 'dm'; S.comp.ref = s.autor_id; S.comp.modelo = 'reembolso'; aplicarModelo(); }
+      renderDetalhe();
+    }
+  };
+}
+
+/* ---------- conversa ---------- */
 function threadHtml() {
-  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, marca: m.marca, cat: m.categoria, id: m.id }));
-  (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, marca: fr.marca, fila: fr }));
+  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, cat: m.categoria }));
+  (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, fila: fr }));
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
   let dia = '', h = '';
   for (const m of msgs) {
@@ -628,7 +836,8 @@ function threadHtml() {
     const vazio = !m.texto || !String(m.texto).trim();
     const cls = m.dir === 'entrada' ? 'in' : 'out';
     const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
-    const meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}${m.fila ? ' · fila #' + esc(m.fila.id) + (m.fila.enviado_em ? ' enviada' + (m.fila.resultado ? ' (' + esc(m.fila.resultado) + ')' : '') : ' · AINDA NÃO ENVIADA') : ''}`;
+    let meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}`;
+    if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
     if (vazio && m.dir === 'entrada') h += `<div class="msg in midia">📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
     else h += `<div class="msg ${cls} ${extra}">${esc(m.texto)}<span class="m">${meta}</span></div>`;
   }
