@@ -271,7 +271,7 @@ function renderLogin(msg, cls = 'err') {
       <label>Senha</label><input id="senha" type="password" autocomplete="current-password" required>
       <div style="margin-top:16px"><button class="primary" style="width:100%" type="submit">Entrar</button></div>
     </form>
-    <div class="links"><a id="otp">Entrar com código por e-mail</a><a id="esqueci">Esqueci a senha</a></div>
+    <div class="links"><span class="muted">Só e-mail e senha</span><a id="esqueci">Esqueci a senha</a></div>
     ${msg ? `<div class="msg ${cls}">${esc(msg)}</div>` : ''}
   </div></div>`;
   $('#f').onsubmit = async e => {
@@ -280,7 +280,8 @@ function renderLogin(msg, cls = 'err') {
     const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#senha').value });
     if (error) renderLogin(error.message === 'Invalid login credentials' ? 'E-mail ou senha não batem.' : error.message);
   };
-  $('#otp').onclick = () => renderOtp($('#email').value.trim());
+  // Login por código (OTP) desligado: o modelo de e-mail do Supabase é o da
+  // biblioteca e não traz o código. renderOtp() fica aqui caso o modelo mude.
   $('#esqueci').onclick = async () => {
     const email = $('#email').value.trim();
     if (!email) return renderLogin('Preencha o e-mail primeiro.', 'err');
