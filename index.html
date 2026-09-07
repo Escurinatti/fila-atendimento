@@ -245,8 +245,9 @@ const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekd
 const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
 const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
 const langChip = l => l ? `<span class="chip lang" title="${esc(IDIOMA_NOME[l] || l)}">${esc(l.toUpperCase())}</span>` : '';
-const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_fb' ? 'Comentário FB' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : c === 'fb_comentario_publico' ? 'Comentário público FB' : c === 'fb_comentario_privado' ? 'Resposta privada FB' : esc(c || '?');
-const ehFb = c => c === 'comentario_fb' || (c || '').startsWith('fb_');
+const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_fb' ? 'Comentário FB' : c === 'dm_fb' ? 'Messenger' : c === 'fb_dm' ? 'Messenger (Facebook)' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : c === 'fb_comentario_publico' ? 'Comentário público FB' : c === 'fb_comentario_privado' ? 'Resposta privada FB' : esc(c || '?');
+const ehFb = c => c === 'comentario_fb' || c === 'dm_fb' || (c || '').startsWith('fb_');
+const ehDireta = c => c === 'dm' || c === 'dm_fb' || c === 'fb_dm';
 const nomeAutor = it => it.autor ? '@' + it.autor : `id ${it.autor_id || it.conversa_id}`;
 const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">abrir no Instagram ↗</a>` : '';
 const mascararEmail = e => { if (!e || !e.includes('@')) return e || ''; const [u, d] = e.split('@'); return (u.length <= 2 ? u[0] + '*' : u[0] + '***' + u[u.length - 1]) + '@' + d; };
@@ -254,7 +255,7 @@ function toast(msg, err = false) { const t = document.createElement('div'); t.cl
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado'); } catch { toast('Não consegui copiar', true); } }
 
 function janelas(ultimaEntrada, canal) {
-  if (canal !== 'dm' || !ultimaEntrada) return null;
+  if (!(canal === 'dm' || canal === 'dm_fb') || !ultimaEntrada) return null;
   const passou = horasDesde(ultimaEntrada);
   return { h24: 24 - passou, h7d: 168 - passou };
 }
@@ -333,9 +334,9 @@ function lint(texto, canal, ctx) {
   if (/(te escrib(o|imos) (por privado|al correo|a tu correo)|alguien del equipo|someone (from|on) (the|our) team|i('ll| will) (email|message|write) you)/i.test(t)) push('aviso', 'Promessa de contato. Faça o envio agora, antes ou junto com esta resposta.');
   const emojis = (t.match(/\p{Extended_Pictographic}/gu) || []).length;
   if (emojis > 2) push('aviso', `${emojis} emojis. Máximo 2.`);
-  if (canal === 'dm' && linhas > 8) push('aviso', `${linhas} linhas em DM. Teto sugerido: 8.`);
+  if (ehDireta(canal) && linhas > 8) push('aviso', `${linhas} linhas em DM. Teto sugerido: 8.`);
   if (ctx && ctx.idiomaDetectado && ctx.idiomaModelo && ctx.idiomaDetectado !== ctx.idiomaModelo) push('aviso', `A pessoa escreve em ${IDIOMA_NOME[ctx.idiomaDetectado] || ctx.idiomaDetectado} e o modelo é em ${IDIOMA_NOME[ctx.idiomaModelo] || ctx.idiomaModelo}.`);
-  if (canal === 'dm' && ctx && ctx.j && ctx.j.h24 <= 0) push('aviso', ctx.j.h7d > 0 ? 'Fora das 24h: o envio só passa com a tag human_agent. Se o despachante do n8n ainda não usa a tag, vai falhar. Alternativa: e-mail.' : 'Fora das 24h e dos 7 dias: o Instagram não vai aceitar. Use e-mail e marque "Respondi por fora".');
+  if (ehDireta(canal) && ctx && ctx.j && ctx.j.h24 <= 0) push('aviso', ctx.j.h7d > 0 ? 'Fora das 24h: o envio só passa com a tag human_agent. Se o despachante do n8n ainda não usa a tag, vai falhar. Alternativa: e-mail.' : 'Fora das 24h e dos 7 dias: o Instagram não vai aceitar. Use e-mail e marque "Respondi por fora".');
   if (canal === 'comentario_privado') push('aviso', 'Resposta privada a comentário: vale 7 dias e o Instagram aceita só uma por comentário.');
   if (canal === 'fb_comentario_privado') push('aviso', 'Resposta privada no Facebook: vale 7 dias e uma por comentário.');
   if (!out.length) push('ok', 'Nenhuma regra ferida.');
@@ -557,7 +558,7 @@ function renderStatus() {
 /* ---------- lista ---------- */
 const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
 function baseFiltrada() {
-  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.canal === 'todos' || it.canal === S.filtro.canal));
+  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
 }
 function visiveis() {
   return baseFiltrada().filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
@@ -716,7 +717,7 @@ function ligarDetalhe(j) {
   $('#btArqPriv').onclick = () => abrirEnvio('privado');
   $('#btArqEmail').onclick = () => abrirEnvio('email');
   if (S.env) ligarEnvio();
-  $('#btFora').onclick = async () => { const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)'); if (nota === null) return; await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: (s.canal === 'comentario' || s.canal === 'comentario_fb') ? s.canal : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora'); };
+  $('#btFora').onclick = async () => { const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)'); if (nota === null) return; await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: ['comentario', 'comentario_fb', 'dm_fb'].includes(s.canal) ? s.canal : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora'); };
   const p = $('#btPausar'); if (p) p.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa');
   const d = $('#btDespausar'); if (d) d.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado');
   const r = $('#btResolver'); if (r) r.onclick = async () => { if (confirm('Marcar como resolvido? Sai da lista de travados.')) await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'resolvido', p_autor: s.autor }, 'Marcado como resolvido'); };
@@ -732,8 +733,8 @@ function comentariosSemResposta() {
 }
 function novoCompositor() {
   const s = S.sel, coms = comentariosSemResposta();
-  const canal = s.canal === 'comentario_fb' && coms.length ? 'fb_comentario_publico' : (s.canal === 'comentario' && coms.length ? 'comentario_publico' : 'dm');
-  return { canal, ref: canal === 'dm' ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
+  const canal = s.canal === 'dm_fb' ? 'fb_dm' : (s.canal === 'comentario_fb' && coms.length ? 'fb_comentario_publico' : (s.canal === 'comentario' && coms.length ? 'comentario_publico' : 'dm'));
+  return { canal, ref: ehDireta(canal) ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
 }
 function compositorHtml(j) {
   const c = S.comp, s = S.sel, coms = comentariosSemResposta();
@@ -741,12 +742,12 @@ function compositorHtml(j) {
   const avisos = lint(c.texto, c.canal, c.texto ? ctx : null);
   const temErro = avisos.some(a => a.nivel === 'erro');
   const linhas = c.texto.split('\n').filter(l => l.trim()).length;
-  const canalBase = c.canal.replace(/^fb_/, ''); const modelos = MODELOS.filter(m => m.canais.includes(canalBase));
+  const canalBase = c.canal === 'fb_dm' ? 'dm' : c.canal.replace(/^fb_/, ''); const modelos = MODELOS.filter(m => m.canais.includes(canalBase));
   const ia = S.ia;
   return `<div class="block" id="comp"><h3>Responder <span class="sub muted">· entra na fila, o n8n envia em até 5 min</span></h3>
     <div class="form-grid">
       <div><label class="lbl">Por onde</label><select id="compCanal">
-          ${ehFb(s.canal) ? '' : `<option value="dm" ${c.canal === 'dm' ? 'selected' : ''}>DM (mensagem direta)</option>`}
+          ${ehFb(s.canal) ? '' : `<option value="dm" ${c.canal === 'dm' ? 'selected' : ''}>DM (mensagem direta)</option>`}${s.canal === 'dm_fb' ? '<option value="fb_dm" selected>Messenger (Facebook)</option>' : ''}
           ${coms.length && !ehFb(s.canal) ? `<option value="comentario_publico" ${c.canal === 'comentario_publico' ? 'selected' : ''}>Comentário público (3 linhas, sem link)</option><option value="comentario_privado" ${c.canal === 'comentario_privado' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}
           ${coms.length && ehFb(s.canal) ? `<option value="fb_comentario_publico" ${c.canal === 'fb_comentario_publico' ? 'selected' : ''}>Comentário público no Facebook (3 linhas, sem link)</option><option value="fb_comentario_privado" ${c.canal === 'fb_comentario_privado' ? 'selected' : ''}>Resposta privada ao comentário (Messenger)</option>` : ''}
         </select></div>
@@ -791,7 +792,7 @@ function compositorHtml(j) {
 function ligarCompositor(j) {
   const c = S.comp;
   const rerender = () => renderDetalhe();
-  $('#compCanal').onchange = e => { c.canal = e.target.value; c.ref = c.canal === 'dm' ? S.sel.autor_id : (comentariosSemResposta()[0]?.mensagem_id || ''); c.modelo = ''; rerender(); };
+  $('#compCanal').onchange = e => { c.canal = e.target.value; c.ref = ehDireta(c.canal) ? S.sel.autor_id : (comentariosSemResposta()[0]?.mensagem_id || ''); c.modelo = ''; rerender(); };
   $('#compIdioma').onchange = e => { c.idioma = e.target.value; if (c.modelo) aplicarModelo(); rerender(); };
   const r = $('#compRef'); if (r) r.onchange = e => { c.ref = e.target.value; };
   $('#compModelo').onchange = e => { c.modelo = e.target.value; if (c.modelo) { aplicarModelo(); S.ia.pt = ''; S.ia.notas = ''; } rerender(); };
@@ -840,7 +841,7 @@ function ligarReembolso() {
     const id = await acao('registrar_reembolso', { p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_autor: s.autor, p_autor_id: s.autor_id,
       p_email: ctx.emailCompleto || null, p_transacoes: r.transacoes, p_valor_total: pagas.length ? total : null, p_moeda: pagas[0]?.moeda || null,
       p_motivo: r.motivo, p_motivo_origem: r.origem, p_orientado: r.orientado, p_observacao: null }, 'Reembolso registrado');
-    if (id) { S.reemb = null; if (r.orientado) { S.comp = novoCompositor(); S.comp.canal = 'dm'; S.comp.ref = s.autor_id; S.comp.modelo = 'reembolso'; aplicarModelo(); } renderDetalhe(); }
+    if (id) { S.reemb = null; if (r.orientado) { S.comp = novoCompositor(); S.comp.canal = s.canal === 'dm_fb' ? 'fb_dm' : 'dm'; S.comp.ref = s.autor_id; S.comp.modelo = 'reembolso'; aplicarModelo(); } renderDetalhe(); }
   };
 }
 
@@ -908,7 +909,7 @@ function envioHtml() {
       h += `<div class="small muted" style="margin-top:8px">Marque o que vai por privado. Cabem 1000 caracteres: normalmente só o arquivo principal; o resto vai por e-mail.</div>`;
       h += e.links.map((l, i) => `<label style="display:block;font-size:13.5px;margin:3px 0"><input type="checkbox" data-lk="${i}" ${e.sel.includes(i) ? 'checked' : ''} style="width:auto;margin-right:6px">${esc(l.titulo)} <span class="tiny muted mono">${esc(l.bucket)}/${esc(l.arquivo)}</span></label>`).join('');
       if (e.falhas?.length) h += `<div class="notice warn">Não consegui gerar: ${esc(e.falhas.join('; '))}</div>`;
-      h += `<div class="form-grid" style="margin-top:8px"><div><label class="lbl">Por onde</label><select id="envCanal">${ehFb(s.canal) ? '' : '<option value="dm">DM</option>'}${coms.length && !ehFb(s.canal) ? `<option value="comentario_privado" ${s.canal === 'comentario' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}${coms.length && ehFb(s.canal) ? '<option value="fb_comentario_privado" selected>Resposta privada no Facebook</option>' : ''}</select></div>
+      h += `<div class="form-grid" style="margin-top:8px"><div><label class="lbl">Por onde</label><select id="envCanal">${ehFb(s.canal) ? '' : '<option value="dm">DM</option>'}${s.canal === 'dm_fb' ? '<option value="fb_dm" selected>Messenger (Facebook)</option>' : ''}${coms.length && !ehFb(s.canal) ? `<option value="comentario_privado" ${s.canal === 'comentario' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}${coms.length && ehFb(s.canal) ? '<option value="fb_comentario_privado" selected>Resposta privada no Facebook</option>' : ''}</select></div>
         <div><label class="lbl">Idioma</label><select id="envIdioma">${['es', 'en', 'pt', 'it'].map(k => `<option value="${k}" ${e.idioma === k ? 'selected' : ''}>${IDIOMA_NOME[k]}</option>`).join('')}</select></div></div>
         <div class="ptbox" style="margin-top:8px"><span class="l">Mensagem que vai para a caixa de resposta (${txt.length}/1000)</span>${esc(txt)}</div>
         <div class="row" style="margin-top:10px"><button class="primary" id="envParaCaixa" ${txt.length > 1000 || !e.sel.length ? 'disabled' : ''}>Levar para a caixa de resposta</button><span class="tiny muted">Você ainda revisa e aperta "Pôr na fila".</span></div>`;
@@ -933,7 +934,7 @@ function ligarEnvio() {
   const idi = $('#envIdioma'); if (idi) idi.onchange = () => { e.idioma = idi.value; renderDetalhe(); };
   const pc = $('#envParaCaixa'); if (pc) pc.onclick = () => {
     const canal = $('#envCanal').value;
-    S.comp = novoCompositor(); S.comp.canal = canal; S.comp.ref = canal === 'dm' ? s.autor_id : (comentariosSemResposta()[0]?.mensagem_id || s.autor_id); S.comp.idioma = ['es', 'en'].includes(e.idioma) ? e.idioma : S.comp.idioma; S.comp.texto = textoLinks();
+    S.comp = novoCompositor(); S.comp.canal = canal; S.comp.ref = ehDireta(canal) ? s.autor_id : (comentariosSemResposta()[0]?.mensagem_id || s.autor_id); S.comp.idioma = ['es', 'en'].includes(e.idioma) ? e.idioma : S.comp.idioma; S.comp.texto = textoLinks();
     S.ia.pt = ''; S.ia.notas = 'Links assinados de 30 dias, base: ' + (e.base === 'compra' ? 'compra paga na ficha' : 'sua confirmação manual') + '.';
     S.env = null; renderDetalhe();
   };
