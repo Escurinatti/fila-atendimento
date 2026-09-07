@@ -18,8 +18,7 @@
   }
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;-webkit-font-smoothing:antialiased}
   a{color:var(--accent-ink)}
   button,input,select,textarea{font:inherit;color:inherit}
   button{cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:7px 13px;transition:.12s}
@@ -30,6 +29,8 @@
   button.small{padding:4px 10px;font-size:13px}
   button.danger{color:var(--danger)} button.danger:hover{border-color:var(--danger)}
   button.ok{color:var(--ok)} button.ok:hover{border-color:var(--ok)}
+  button.ia{background:#0f1f3d;border-color:#0f1f3d;color:#fff;font-weight:600}
+  button.ia:hover{background:#1f2f55;color:#fff}
   button:disabled{opacity:.45;cursor:not-allowed}
   input,select,textarea{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;width:100%}
   textarea{min-height:120px;resize:vertical;line-height:1.45}
@@ -40,7 +41,6 @@
   .grow{flex:1}
   .hide{display:none!important}
 
-  /* login */
   .login{min-height:100%;display:grid;place-items:center;padding:24px}
   .login .box{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
   .login h1{margin:0 0 4px;font-size:21px;letter-spacing:-.01em}
@@ -51,7 +51,6 @@
   .login .links a{cursor:pointer}
   .logo{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;vertical-align:-7px;margin-right:6px}
 
-  /* shell */
   header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
   .hrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px}
   .hrow h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center}
@@ -62,20 +61,25 @@
   .tabs{display:flex;gap:4px;padding:0 16px 10px;overflow-x:auto}
   .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:13.5px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
   .tab .n{background:var(--soft2);border-radius:999px;padding:0 7px;font-size:12px;font-weight:600}
+  .tab .n.red{background:var(--danger);color:#fff}
   .tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
-  .tab.on .n{background:rgba(255,255,255,.25);color:#fff}
+  .tab.on .n{background:rgba(255,255,255,.25);color:#fff} .tab.on .n.red{background:#fff;color:var(--danger)}
 
   .layout{display:grid;grid-template-columns:minmax(340px,440px) 1fr;min-height:calc(100vh - 96px)}
   .list{border-right:1px solid var(--line);padding:12px;overflow-y:auto;max-height:calc(100vh - 96px)}
   .detail{padding:16px 22px 80px;overflow-y:auto;max-height:calc(100vh - 96px)}
   .detail .empty{height:100%;display:grid;place-items:center;color:var(--muted);text-align:center;padding:40px}
-  .section-h{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
-  .section-h .n{background:var(--soft2);border-radius:999px;padding:1px 8px;color:var(--ink);letter-spacing:0}
+  .grp{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .grp .n{background:var(--soft2);border-radius:999px;padding:1px 8px;color:var(--ink);letter-spacing:0}
+  .grp.red{color:var(--danger)} .grp.red .n{background:var(--danger);color:#fff}
+  .grp.blue{color:var(--accent-ink)}
+  details.baixo summary{cursor:pointer;list-style:none} details.baixo summary::-webkit-details-marker{display:none}
+  details.baixo summary .grp{margin-bottom:4px} details.baixo summary .grp::after{content:"▸";margin-left:auto} details.baixo[open] summary .grp::after{content:"▾"}
 
-  /* cards */
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px 12px 18px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
   .card:hover{border-color:var(--accent)}
   .card.sel{outline:2px solid var(--accent);outline-offset:-1px}
+  .card.red{border-color:#f3c2c2;background:#fffafa}
   .card::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 4px 4px 0;background:var(--ub)}
   .card .who{font-weight:650;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .card .espera{margin-left:auto;font-size:13px;font-weight:600;white-space:nowrap}
@@ -101,7 +105,6 @@
   .trav:hover{border-color:var(--accent)} .trav.sel{outline:2px solid var(--accent);outline-offset:-1px}
   .trav .d{margin-left:auto;font-weight:600;white-space:nowrap}
 
-  /* detail */
   .dhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
   .dhead h2{margin:0;font-size:21px;letter-spacing:-.01em}
   .back{display:none}
@@ -135,14 +138,36 @@
   .lint li.erro{color:var(--danger)} .lint li.erro::before{background:var(--danger)}
   .lint li.aviso{color:#7a4d00} .lint li.aviso::before{background:var(--warn)}
   .lint li.ok{color:var(--ok)} .lint li.ok::before{background:var(--ok)}
-  .cnt{font-size:12px;color:var(--muted);display:flex;gap:12px;margin-top:6px}
-  .cnt b.bad{color:var(--danger)}
+  .cnt{font-size:12px;color:var(--muted);display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .form-grid label,.lbl{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px}
-  .copy{cursor:pointer;border-bottom:1px dotted var(--muted)}
-  .copy:hover{color:var(--accent-ink)}
+  .copy{cursor:pointer;border-bottom:1px dotted var(--muted)} .copy:hover{color:var(--accent-ink)}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f1f3d;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;box-shadow:var(--shadow);z-index:50;max-width:92vw}
   .toast.err{background:var(--danger)}
+
+  /* IA */
+  .iabox{background:#0f1f3d;color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0}
+  .iabox .t{font-size:12px;letter-spacing:.09em;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:8px}
+  .iabox .row input{background:#1b2c52;border-color:#2c3f6b;color:#fff}
+  .iabox .row input::placeholder{color:#9fb0d3}
+  .iabox button{background:#fff;color:#0f1f3d;border-color:#fff;font-weight:600}
+  .iabox button.ghost{background:transparent;color:#fff;border-color:#4a5f8f}
+  .iabox button.mic{width:42px;padding:7px 0;font-size:17px}
+  .iabox button.mic.on{background:var(--danger);border-color:var(--danger);color:#fff;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .iabox .status{font-size:13px;margin-top:8px;opacity:.85}
+  .iabox .status.err{color:#ffb4b4}
+  .ptbox{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:13.5px;margin-top:8px;white-space:pre-wrap}
+  .ptbox .l{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block;margin-bottom:4px}
+  .notas{font-size:12.5px;color:#7a4d00;margin-top:6px}
+
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(15,31,61,.45);z-index:40;display:grid;place-items:center;padding:16px}
+  .modal{background:#fff;border-radius:16px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;padding:18px 20px;box-shadow:var(--shadow)}
+  .modal h2{margin:0 0 6px;font-size:18px}
+  .fato{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+  .fato .tema{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;white-space:nowrap;margin-top:3px}
+  .fato .tx{flex:1;white-space:pre-wrap}
 
   @media (max-width: 880px){
     .layout{display:block}
@@ -158,21 +183,22 @@
 </head>
 <body>
 <div id="app"></div>
+<div id="modal"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 /* =====================================================================
-   Fila de atendimento — Estágio 2
-   Lê o Supabase com a chave PÚBLICA. O banco só devolve linhas para quem
-   está em public.admins. Toda escrita passa por função do banco que exige
-   admin e valida. A tela NÃO envia nada: escreve em fila_respostas e o
-   n8n (📤 Fila de respostas, a cada 5 min) envia.
+   Fila de atendimento — Estágio 2 + IA
+   A tela lê o Supabase com a chave PÚBLICA; o banco só devolve para
+   quem está em public.admins. Escritas passam por funções do banco.
+   A IA roda na função de borda "sugerir-resposta" (Claude), que devolve
+   texto para a caixa; ENVIAR continua sendo pôr na fila e o n8n envia.
    ===================================================================== */
 const CONFIG = {
   url: 'https://vupxofhfgqnqsbwzmndy.supabase.co',
   key: 'sb_publishable_fesL5Nm5u8PYR-YORexjXg_8DSxbCNC',
   refreshSeg: 60,
-  diasPadrao: 30, // comentário público não expira: com 7 dias, 27 dias de "estafa" sumiam da tela
+  diasPadrao: 30,
 };
 const sb = supabase.createClient(CONFIG.url, CONFIG.key);
 
@@ -188,13 +214,14 @@ const S = {
   sessao: null, admin: false,
   fila: [], travados: [], erro: null,
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
-  filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', baixa: false },
+  filtro: { marca: 'todas', canal: 'todos', idioma: 'todos' },
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
-  comp: null,            // compositor: { canal, ref, idioma, texto, modelo }
-  reemb: null,           // formulário de reembolso aberto
-  mobileDetalhe: false,
-  timer: null, tick: null,
+  comp: null, reemb: null,
+  ia: { carregando: false, erro: null, pt: '', notas: '', instrucao: '', ouvindo: false, ultimoModo: null },
+  autoIA: (() => { try { return localStorage.getItem('fila.autoIA') !== '0'; } catch { return true; } })(),
+  conhecimento: null, modal: null,
+  mobileDetalhe: false, timer: null, tick: null,
 };
 
 /* ---------- utilidades ---------- */
@@ -222,10 +249,7 @@ const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c
 const nomeAutor = it => it.autor ? '@' + it.autor : `id ${it.autor_id || it.conversa_id}`;
 const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">abrir no Instagram ↗</a>` : '';
 const mascararEmail = e => { if (!e || !e.includes('@')) return e || ''; const [u, d] = e.split('@'); return (u.length <= 2 ? u[0] + '*' : u[0] + '***' + u[u.length - 1]) + '@' + d; };
-function toast(msg, err = false) {
-  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), err ? 6000 : 3200);
-}
+function toast(msg, err = false) { const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), err ? 7000 : 3200); }
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado'); } catch { toast('Não consegui copiar', true); } }
 
 function janelas(ultimaEntrada, canal) {
@@ -238,17 +262,13 @@ function janelaHtml(j) {
   const b = (rest, total, label) => {
     const pct = Math.max(0, Math.min(100, rest / total * 100));
     const cls = rest <= 0 || pct < 25 ? 'bad' : pct < 50 ? 'warn' : '';
-    return `<div class="jan ${rest <= 0 ? 'closed' : ''}">${label}: <b>${rest <= 0 ? 'fechada' : dur(rest, false) + ' restantes'}</b>
-      <div class="bar"><i class="${cls}" style="width:${pct}%"></i></div></div>`;
+    return `<div class="jan ${rest <= 0 ? 'closed' : ''}">${label}: <b>${rest <= 0 ? 'fechada' : dur(rest, false) + ' restantes'}</b><div class="bar"><i class="${cls}" style="width:${pct}%"></i></div></div>`;
   };
   return `<div class="janelas">${b(j.h24, 24, '24h padrão')}${b(j.h7d, 168, '7d human_agent')}</div>`;
 }
+function janelaTexto(j) { if (!j) return 'comentário, sem prazo'; return j.h24 > 0 ? `DM dentro das 24h (${dur(j.h24, false)} restantes)` : j.h7d > 0 ? `DM fora das 24h, dentro dos 7 dias (${dur(j.h7d, false)})` : 'DM fora das 24h e dos 7 dias'; }
 
-/* ---------- modelos de resposta (ES / EN) ----------
-   Seguem "Respostas — o que o Gabriel corrige": tú (nunca vos), 163 páginas,
-   entrega por e-mail (nunca biblioteca), sem país, sem OXXO, sem prometer
-   reembolso. Comentário público: 3 linhas, sem link. {nome} {email} {codigos}
-   são preenchidos com a ficha. */
+/* ---------- modelos ES/EN (fallback sem IA) ---------- */
 const MODELOS = [
   { id: 'pedir_email', nome: 'Já comprou: pedir o e-mail da compra', canais: ['dm', 'comentario_privado'],
     es: c => `Vamos a resolverlo ahora. Dime el correo que usaste en la compra y lo busco de mi lado.\nEn cuanto lo encuentre, te reenvío todos los archivos directo a ese correo, sin plataforma ni contraseña.`,
@@ -291,11 +311,9 @@ const MODELOS = [
     en: c => `No. Every page was designed by hand, based on references from major Tarot works.\nThat's why the material is coherent and actually useful for learning.` },
 ];
 
-/* ---------- verificador de regras ----------
-   Erros bloqueiam; avisos só avisam. As regras vêm do cofre. */
+/* ---------- verificador de regras ---------- */
 function lint(texto, canal, ctx) {
-  const out = [];
-  const t = texto || '';
+  const out = []; const t = texto || '';
   const linhas = t.split('\n').filter(l => l.trim() !== '').length;
   const push = (nivel, msg) => out.push({ nivel, msg });
   if (!t.trim()) { push('erro', 'Texto vazio.'); return out; }
@@ -311,11 +329,11 @@ function lint(texto, canal, ctx) {
   if (/(voy a procesar|proceso (el|los|tu) reembolso|te reembols|reembolso (aprobado|hecho|listo)|i('ll| will) (process|issue|send) (the |your )?refund|refund (is )?(done|processed|approved)|already refunded)/i.test(t)) push('aviso', 'Promessa de reembolso. Quem processa é a Hotmart: mande o passo a passo com o código.');
   if (/\b(chile|méxico|mexico|argentina|brasil|brazil|colombia|españa|spain|somos de|we are (from|based))\b/i.test(t)) push('aviso', 'Nunca dizer de que país a marca é, nem concordar com o país sugerido.');
   if (/(biblioteca|library|mapadeltarot\.com|magic link|enlace mágico|link mágico)/i.test(t)) push('aviso', 'Entrega é por e-mail com os arquivos, nunca a biblioteca. Se precisar de página, é a thank you.');
-  if (/(te escrib(o|imos) (por privado|al correo|a tu correo)|alguien del equipo|someone (from|on) (the|our) team|i('ll| will) (email|message|write) you)/i.test(t)) push('aviso', 'Promessa de contato. Faça o envio agora, antes ou junto com esta resposta. Já houve 28 promessas sem ninguém aparecer.');
+  if (/(te escrib(o|imos) (por privado|al correo|a tu correo)|alguien del equipo|someone (from|on) (the|our) team|i('ll| will) (email|message|write) you)/i.test(t)) push('aviso', 'Promessa de contato. Faça o envio agora, antes ou junto com esta resposta.');
   const emojis = (t.match(/\p{Extended_Pictographic}/gu) || []).length;
   if (emojis > 2) push('aviso', `${emojis} emojis. Máximo 2.`);
   if (canal === 'dm' && linhas > 8) push('aviso', `${linhas} linhas em DM. Teto sugerido: 8.`);
-  if (ctx && ctx.idiomaDetectado && ctx.idiomaModelo && ctx.idiomaDetectado !== ctx.idiomaModelo) push('aviso', `A pessoa escreve em ${IDIOMA_NOME[ctx.idiomaDetectado] || ctx.idiomaDetectado} e o modelo é em ${IDIOMA_NOME[ctx.idiomaModelo] || ctx.idiomaModelo}. Responder no idioma de quem escreve.`);
+  if (ctx && ctx.idiomaDetectado && ctx.idiomaModelo && ctx.idiomaDetectado !== ctx.idiomaModelo) push('aviso', `A pessoa escreve em ${IDIOMA_NOME[ctx.idiomaDetectado] || ctx.idiomaDetectado} e o modelo é em ${IDIOMA_NOME[ctx.idiomaModelo] || ctx.idiomaModelo}.`);
   if (canal === 'dm' && ctx && ctx.j && ctx.j.h24 <= 0) push('aviso', ctx.j.h7d > 0 ? 'Fora das 24h: o envio só passa com a tag human_agent. Se o despachante do n8n ainda não usa a tag, vai falhar. Alternativa: e-mail.' : 'Fora das 24h e dos 7 dias: o Instagram não vai aceitar. Use e-mail e marque "Respondi por fora".');
   if (canal === 'comentario_privado') push('aviso', 'Resposta privada a comentário: vale 7 dias e o Instagram aceita só uma por comentário.');
   if (!out.length) push('ok', 'Nenhuma regra ferida.');
@@ -331,17 +349,13 @@ async function iniciar() {
   });
   const { data } = await sb.auth.getSession();
   if (location.hash.includes('type=recovery')) return;
-  if (data.session) { S.sessao = data.session; await entrar(); }
-  else renderLogin();
+  if (data.session) { S.sessao = data.session; await entrar(); } else renderLogin();
 }
 async function entrar() {
   const { data, error } = await sb.rpc('eh_admin');
   if (error) { renderLogin(`Não consegui verificar o acesso: ${error.message}`); return; }
   if (!data) { renderSemAcesso(); return; }
-  S.admin = true;
-  renderApp();
-  await carregar();
-  iniciarTimers();
+  S.admin = true; renderApp(); await carregar(); iniciarTimers();
 }
 function renderLogin(msg, cls = 'err') {
   pararTimers();
@@ -367,38 +381,32 @@ function renderLogin(msg, cls = 'err') {
     const email = $('#email').value.trim();
     if (!email) return renderLogin('Preencha o e-mail primeiro.');
     const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
-    renderLogin(error ? error.message : `Link enviado para ${email}. Se ele te levar para a biblioteca em vez de voltar aqui, a URL desta tela ainda não está nas "Redirect URLs" do Supabase Auth.`, error ? 'err' : 'ok');
+    renderLogin(error ? error.message : `Link enviado para ${email}.`, error ? 'err' : 'ok');
   };
 }
 function renderNovaSenha(msg) {
   $('#app').innerHTML = `
   <div class="login"><div class="box">
-    <h1>Definir nova senha</h1>
-    <div class="muted small">Para ${esc(S.sessao?.user?.email || '')}</div>
+    <h1>Definir nova senha</h1><div class="muted small">Para ${esc(S.sessao?.user?.email || '')}</div>
     <form id="f">
       <label>Nova senha (mín. 8)</label><input id="s1" type="password" autocomplete="new-password" minlength="8" required>
       <label>Repita</label><input id="s2" type="password" autocomplete="new-password" minlength="8" required>
       <div style="margin-top:16px"><button class="primary" style="width:100%" type="submit">Salvar e entrar</button></div>
-    </form>
-    ${msg ? `<div class="msg err">${esc(msg)}</div>` : ''}
+    </form>${msg ? `<div class="msg err">${esc(msg)}</div>` : ''}
   </div></div>`;
   $('#f').onsubmit = async e => {
     e.preventDefault();
     if ($('#s1').value !== $('#s2').value) return renderNovaSenha('As duas senhas não são iguais.');
     const { error } = await sb.auth.updateUser({ password: $('#s1').value });
     if (error) return renderNovaSenha(error.message);
-    history.replaceState(null, '', location.pathname);
-    await entrar();
+    history.replaceState(null, '', location.pathname); await entrar();
   };
 }
 function renderSemAcesso() {
   pararTimers();
-  $('#app').innerHTML = `
-  <div class="login"><div class="box">
-    <h1>Sem acesso</h1>
+  $('#app').innerHTML = `<div class="login"><div class="box"><h1>Sem acesso</h1>
     <p class="small">A conta <b>${esc(S.sessao?.user?.email || '')}</b> está logada, mas não está na lista de admins. O banco não devolve nada para ela.</p>
-    <button id="sair" class="primary" style="width:100%">Sair</button>
-  </div></div>`;
+    <button id="sair" class="primary" style="width:100%">Sair</button></div></div>`;
   $('#sair').onclick = () => sb.auth.signOut();
 }
 
@@ -406,35 +414,37 @@ function renderSemAcesso() {
 async function carregar() {
   const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias }), sb.rpc('atendimento_travados')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
-  S.erro = null;
-  S.fila = f.data || []; S.travados = t.data || [];
+  S.erro = null; S.fila = f.data || []; S.travados = t.data || [];
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
   S.agoraMs = agora ? new Date(agora).getTime() : Date.now();
   S.agoraLocalAt = Date.now(); S.carregadoEm = Date.now();
-  if (S.sel) { // mantém o item selecionado atualizado
-    const novo = S.fila.find(x => x.autor_id === S.sel.autor_id && x.marca === S.sel.marca && x.canal === S.sel.canal);
-    if (novo) S.sel.item = novo;
-  }
+  if (S.sel) { const novo = S.fila.find(x => x.autor_id === S.sel.autor_id && x.marca === S.sel.marca && x.canal === S.sel.canal); if (novo) S.sel.item = novo; }
   renderTabs(); renderLista(); renderStatus();
-  if (S.sel) renderDetalhe();
+  if (S.sel && !S.comp) renderDetalhe();
 }
 async function abrir(item) {
   S.sel = { autor_id: item.autor_id || item.conversa_id, marca: item.marca, autor: item.autor, canal: item.canal || 'dm', idioma: item.idioma, item };
   S.ficha = null; S.thread = null; S.fichaErro = null; S.comp = null; S.reemb = null;
+  S.ia = { carregando: false, erro: null, pt: '', notas: '', instrucao: '', ouvindo: false, ultimoModo: null };
   S.mobileDetalhe = true;
   renderLista(); renderDetalhe();
   await recarregarFicha();
+  // Precisa de você e a IA automática está ligada: já abre a caixa com a sugestão
+  const it = item;
+  if (S.autoIA && it.urgencia != null && it.urgencia <= 5 && !it.resposta_na_fila && S.sel && S.sel.autor_id === (item.autor_id || item.conversa_id)) {
+    S.comp = novoCompositor(); renderDetalhe(); sugerirIA('sugerir');
+  }
 }
 async function recarregarFicha() {
   if (!S.sel) return;
+  const alvo = S.sel.autor_id;
   const [fi, th] = await Promise.all([
-    sb.rpc('ficha_cliente', { p_autor_id: S.sel.autor_id, p_marca: S.sel.marca || null }),
-    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor')
-      .eq('autor_id', S.sel.autor_id).order('criado_em', { ascending: false }).limit(120),
+    sb.rpc('ficha_cliente', { p_autor_id: alvo, p_marca: S.sel.marca || null }),
+    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
   ]);
+  if (!S.sel || S.sel.autor_id !== alvo) return;
   if (fi.error || th.error) S.fichaErro = (fi.error || th.error).message;
-  S.ficha = fi.data || null;
-  S.thread = (th.data || []).reverse();
+  S.ficha = fi.data || null; S.thread = (th.data || []).reverse();
   if (!S.sel.autor) S.sel.autor = S.thread.find(m => m.autor)?.autor || null;
   if (!S.sel.idioma) S.sel.idioma = (MARCA[S.sel.marca] || {}).idioma || 'es';
   renderDetalhe();
@@ -449,11 +459,57 @@ async function acao(fn, args, okMsg) {
 function iniciarTimers() {
   pararTimers();
   S.timer = setInterval(carregar, CONFIG.refreshSeg * 1000);
-  S.tick = setInterval(() => { renderStatus(); if (S.admin) { renderLista(); if (S.sel && !S.comp) renderDetalhe(); } }, 30 * 1000);
+  S.tick = setInterval(() => { renderStatus(); if (S.admin) { renderLista(); if (S.sel && !S.comp && !S.reemb) renderDetalhe(); } }, 30 * 1000);
   document.addEventListener('visibilitychange', onVisivel);
 }
 function pararTimers() { clearInterval(S.timer); clearInterval(S.tick); document.removeEventListener('visibilitychange', onVisivel); }
 function onVisivel() { if (document.visibilityState === 'visible' && S.admin && Date.now() - (S.carregadoEm || 0) > 20e3) carregar(); }
+
+/* ---------- IA ---------- */
+async function sugerirIA(modo) {
+  const c = S.comp, s = S.sel; if (!c || !s) return;
+  const it = s.item || {};
+  if (modo === 'melhorar' && !S.ia.instrucao.trim()) { toast('Diga ou escreva o que mudar.', true); return; }
+  S.ia.carregando = true; S.ia.erro = null; S.ia.ultimoModo = modo; renderDetalhe();
+  const j = janelas(it.ultima_entrada, s.canal);
+  const alvo = c.canal !== 'dm' ? comentariosSemResposta().find(m => m.mensagem_id === c.ref) : null;
+  const body = {
+    autor_id: s.autor_id, marca: s.marca, canal: c.canal, idioma: c.idioma, modo,
+    rascunho: c.texto || null, instrucao: modo === 'melhorar' ? S.ia.instrucao.trim() : null,
+    categorias: it.categorias || null, motivo_urgencia: it.motivo_urgencia || null, janela: janelaTexto(j),
+    comentario_alvo: alvo ? (alvo.texto || '(mídia)') : null,
+  };
+  const { data, error } = await sb.functions.invoke('sugerir-resposta', { body });
+  if (!S.comp || S.sel !== s) return;
+  S.ia.carregando = false;
+  if (error) {
+    let msg = error.message || 'erro';
+    try { const ctx = error.context; if (ctx && typeof ctx.json === 'function') { const b = await ctx.json(); if (b?.erro) msg = b.erro; } } catch {}
+    S.ia.erro = msg; renderDetalhe(); return;
+  }
+  if (data?.erro) { S.ia.erro = data.erro; renderDetalhe(); return; }
+  c.texto = data.texto || ''; c.modelo = '';
+  S.ia.pt = data.texto_pt || ''; S.ia.notas = data.notas || '';
+  if (modo === 'melhorar') { S.ia.instrucao = ''; toast('Reescrito. A correção ficou salva como preferência.'); }
+  renderDetalhe();
+}
+function ditar() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Este navegador não faz ditado. Use o Chrome no celular ou escreva.', true); return; }
+  if (S.ia.ouvindo && S.ia.rec) { S.ia.rec.stop(); return; }
+  const rec = new SR(); rec.lang = 'pt-BR'; rec.interimResults = true; rec.continuous = true;
+  let base = S.ia.instrucao ? S.ia.instrucao.trim() + ' ' : '';
+  rec.onresult = e => {
+    let final = '', parcial = '';
+    for (let i = 0; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) final += r[0].transcript + ' '; else parcial += r[0].transcript; }
+    S.ia.instrucao = (base + final + parcial).trim();
+    const inp = $('#iaInstr'); if (inp) inp.value = S.ia.instrucao;
+  };
+  rec.onend = () => { S.ia.ouvindo = false; S.ia.rec = null; const b = $('#iaMic'); if (b) b.classList.remove('on'); };
+  rec.onerror = ev => { S.ia.ouvindo = false; S.ia.rec = null; renderDetalhe(); if (ev.error !== 'no-speech' && ev.error !== 'aborted') toast('Ditado: ' + ev.error, true); };
+  S.ia.rec = rec; S.ia.ouvindo = true; rec.start();
+  const b = $('#iaMic'); if (b) b.classList.add('on');
+}
 
 /* ---------- shell ---------- */
 function renderApp() {
@@ -466,23 +522,22 @@ function renderApp() {
       <div class="filters">
         <select id="fMarca" title="Marca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot</option><option value="cartomaps">Carto Maps</option><option value="atlante_delle_carte">Atlante</option></select>
         <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
-        <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option></select>
-        <label class="pill" style="cursor:pointer"><input type="checkbox" id="fBaixa" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">spam e já na fila</label>
+        <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="90">90 dias</option></select>
+        <label class="pill" style="cursor:pointer" title="Ao abrir alguém que precisa de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">IA automática</label>
+        <button class="small" id="btConhec" title="O que a IA sabe sobre a empresa">Conhecimento da IA</button>
       </div>
       <button class="small" id="recarregar" title="Recarregar agora">↻</button>
       <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
     </div>
     <div class="tabs" id="tabs"></div>
   </header>
-  <div class="layout">
-    <div class="list" id="lista"></div>
-    <div class="detail" id="detalhe"></div>
-  </div>`;
-  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fBaixa').checked = S.filtro.baixa;
+  <div class="layout"><div class="list" id="lista"></div><div class="detail" id="detalhe"></div></div>`;
+  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA;
   $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderTabs(); renderLista(); };
   $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderTabs(); renderLista(); };
-  $('#fBaixa').onchange = e => { S.filtro.baixa = e.target.checked; renderTabs(); renderLista(); };
   $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
+  $('#fAuto').onchange = e => { S.autoIA = e.target.checked; try { localStorage.setItem('fila.autoIA', S.autoIA ? '1' : '0'); } catch {} };
+  $('#btConhec').onclick = abrirConhecimento;
   $('#recarregar').onclick = carregar;
   $('#sair').onclick = () => sb.auth.signOut();
   renderTabs(); renderDetalhe();
@@ -498,25 +553,20 @@ function renderStatus() {
 }
 
 /* ---------- lista ---------- */
-function baseFiltrada() {
-  return S.fila.filter(it =>
-    (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) &&
-    (S.filtro.canal === 'todos' || it.canal === S.filtro.canal) &&
-    (S.filtro.baixa || it.urgencia < 8));
-}
 const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
+function baseFiltrada() {
+  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.canal === 'todos' || it.canal === S.filtro.canal));
+}
 function visiveis() {
-  return baseFiltrada()
-    .filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
+  return baseFiltrada().filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
     .sort((a, b) => a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde));
 }
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
-  const base = baseFiltrada();
-  const n = { todos: base.length, es: 0, en: 0, outros: 0 };
-  base.forEach(it => n[grupoIdioma(it.idioma)]++);
+  const base = baseFiltrada().filter(it => it.urgencia <= 5);
+  const n = { todos: base.length, es: 0, en: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
-  const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n" style="background:var(--danger);color:#fff" title="urgentes">${urg(k)}</span>` : ''}</button>`;
+  const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
   el.innerHTML = tab('todos', 'Todos') + tab('es', '🇪🇸 Español') + tab('en', '🇬🇧 English') + tab('outros', 'Outros idiomas');
   el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; renderTabs(); renderLista(); });
 }
@@ -524,44 +574,33 @@ function renderLista() {
   const el = $('#lista'); if (!el) return;
   el.classList.toggle('hide-m', S.mobileDetalhe);
   const itens = visiveis();
-  const ocultos = S.fila.filter(it => it.urgencia >= 8).length;
+  const g1 = itens.filter(i => i.urgencia <= 2), g2 = itens.filter(i => i.urgencia >= 3 && i.urgencia <= 5), g3 = itens.filter(i => i.urgencia >= 7);
   const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
-  let h = `<div class="section-h">Esperando resposta <span class="n">${itens.length}</span>
-           ${ocultos && !S.filtro.baixa ? `<span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">+${ocultos} spam/na fila</span>` : ''}</div>`;
+  let h = '';
   if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
-  else if (!itens.length) h += `<div class="notice">Ninguém esperando nos últimos ${S.dias} dias com esses filtros.</div>`;
-  h += itens.map(cardHtml).join('');
-  h += `<div class="section-h" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
+  h += `<div class="grp red">🔴 Precisa de você agora <span class="n">${g1.length}</span></div>`;
+  h += g1.length ? g1.map(cardHtml).join('') : `<div class="notice ok">Nada urgente. 👍</div>`;
+  h += `<div class="grp blue">Pode esperar um pouco <span class="n">${g2.length}</span></div>`;
+  h += g2.length ? g2.map(cardHtml).join('') : `<div class="notice">Ninguém nos últimos ${S.dias} dias com esses filtros.</div>`;
+  h += `<details class="baixo"><summary><div class="grp">Não precisa de você <span class="n">${g3.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">agradecimento, spam, já na fila</span></div></summary>${g3.map(cardHtml).join('')}</details>`;
+  h += `<div class="grp" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
         <div class="tiny muted" style="margin:-4px 4px 8px">Estado ≠ resolvido em <span class="mono">atendimento_estado</span>. Abra e use "Marcar resolvido" quando estiver tratado.</div>`;
   h += trav.map(t => `<div class="trav ${S.sel && S.sel.autor_id === t.conversa_id ? 'sel' : ''}" data-trav="${esc(t.id)}">
-      ${marcaChip(t.marca)}
-      <span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
-        ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}
-        ${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}
-        ${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}</span>
-      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span>
-    </div>`).join('');
+      ${marcaChip(t.marca)}<span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
+        ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}</span>
+      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span></div>`).join('');
   el.innerHTML = h;
-  el.querySelectorAll('.card').forEach(c => c.onclick = () => {
-    const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal);
-    if (it) abrir(it);
-  });
-  el.querySelectorAll('.trav').forEach(c => c.onclick = () => {
-    const t = S.travados.find(x => String(x.id) === c.dataset.trav);
-    if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t });
-  });
+  el.querySelectorAll('.card').forEach(c => c.onclick = () => { const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal); if (it) abrir(it); });
+  el.querySelectorAll('.trav').forEach(c => c.onclick = () => { const t = S.travados.find(x => String(x.id) === c.dataset.trav); if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t }); });
 }
 function cardHtml(it) {
   const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
   const cor = URG_COR[it.urgencia] || 'var(--u5)';
   const j = janelas(it.ultima_entrada, it.canal);
   const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
-  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
-    <div class="who">
-      ${langChip(it.idioma)}<span>${esc(nomeAutor(it))}</span>
-      ${marcaChip(it.marca)} <span class="chip">${canalTxt(it.canal)}</span>
-      <span class="espera" title="primeira mensagem sem resposta: ${fmtDataHora(it.espera_desde)}">espera ${dur(horasDesde(it.espera_desde), false)}</span>
-    </div>
+  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
+    <div class="who">${langChip(it.idioma)}<span>${esc(nomeAutor(it))}</span>${marcaChip(it.marca)} <span class="chip">${canalTxt(it.canal)}</span>
+      <span class="espera" title="primeira mensagem sem resposta: ${fmtDataHora(it.espera_desde)}">espera ${dur(horasDesde(it.espera_desde), false)}</span></div>
     <div class="motivo">${esc(it.motivo_urgencia)}</div>
     <div class="txt">${txt}</div>
     <div class="chips">
@@ -572,9 +611,7 @@ function cardHtml(it) {
       ${it.email_informado ? `<span class="chip mail">${esc(it.email_informado)}</span>` : ''}
       ${it.pausado_ate && new Date(it.pausado_ate) > agoraServidor() ? `<span class="chip pausa">bot pausado até ${fmtHora(it.pausado_ate)}</span>` : ''}
       ${it.resposta_na_fila ? `<span class="chip fila">resposta na fila</span>` : ''}
-    </div>
-    ${janelaHtml(j)}
-  </div>`;
+    </div>${janelaHtml(j)}</div>`;
 }
 
 /* ---------- detalhe ---------- */
@@ -583,15 +620,8 @@ function ctxModelo() {
   const pagas = (f.compras || []).filter(c => c.pago);
   const nomeCompleto = pagas[0]?.nome || (f.compras || [])[0]?.nome || '';
   const email = (f.estado?.email_informado) || (f.emails || [])[0] || '';
-  return {
-    nome: nomeCompleto ? nomeCompleto.trim().split(/\s+/)[0] : '',
-    email: mascararEmail(email),
-    emailCompleto: email,
-    codigos: pagas.map(c => c.transacao),
-    venda: (MARCA[s.marca] || MARCA.mapa_del_tarot).venda,
-    thankyou: (MARCA[s.marca] || MARCA.mapa_del_tarot).thankyou,
-    idiomaDetectado: s.idioma,
-  };
+  return { nome: nomeCompleto ? nomeCompleto.trim().split(/\s+/)[0] : '', email: mascararEmail(email), emailCompleto: email,
+    codigos: pagas.map(c => c.transacao), venda: (MARCA[s.marca] || MARCA.mapa_del_tarot).venda, thankyou: (MARCA[s.marca] || MARCA.mapa_del_tarot).thankyou, idiomaDetectado: s.idioma };
 }
 function renderDetalhe() {
   const el = $('#detalhe'); if (!el) return;
@@ -605,37 +635,27 @@ function renderDetalhe() {
   const estadoAtual = est?.estado || it.estado || null;
   const pendentesFila = (f?.fila || []).filter(x => !x.enviado_em);
 
-  let h = `<div class="dhead">
-    <button class="back small" id="voltar">← Fila</button>
-    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>
-    ${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>
-    ${linkIg(s.autor)}
-    <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span>
-  </div>`;
+  let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
+    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>${linkIg(s.autor)}
+    <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
   if (it.motivo_urgencia) h += `<div class="notice" style="color:${URG_COR[it.urgencia] || 'inherit'};font-weight:600;background:#fff;border:1px solid var(--line)">${esc(it.motivo_urgencia)} · esperando ${dur(horasDesde(it.espera_desde))}</div>`;
   if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (comprovante). O banco não guarda a mídia. Abra a conversa no Instagram antes de responder.</div>`;
   if (pendentesFila.length) h += `<div class="notice ok">✅ ${pendentesFila.length} resposta(s) já na fila, sai(em) em até 5 min. Dá para cancelar lá embaixo, na conversa.</div>`;
 
-  // ações
   h += `<div class="block"><h3>Ações</h3><div class="acoes">
     <button class="primary" id="btResponder">${S.comp ? 'Fechar resposta' : 'Responder'}</button>
     <button id="btFora" title="A resposta foi dada pelo app do Instagram: grava uma saída para a fila parar de mostrar">Respondi pelo Instagram</button>
-    ${pausaAtiva ? `<button id="btDespausar" class="ok" title="pausado até ${fmtDataHora(f.pausa.pausado_ate)}">Despausar bot</button>`
-                 : `<button id="btPausar" title="O bot cala nesta conversa por 24h (exceto entrega de acesso com compra achada). Use enquanto você atende à mão.">Pausar bot 24h</button>`}
+    ${pausaAtiva ? `<button id="btDespausar" class="ok" title="pausado até ${fmtDataHora(f.pausa.pausado_ate)}">Despausar bot</button>` : `<button id="btPausar" title="O bot cala nesta conversa por 24h (exceto entrega de acesso com compra achada).">Pausar bot 24h</button>`}
     ${estadoAtual && estadoAtual !== 'resolvido' ? `<button id="btResolver" class="ok">Marcar resolvido</button>` : ''}
     ${estadoAtual === 'resolvido' ? `<button id="btReabrir">Reabrir (aguardando_gabriel)</button>` : ''}
     ${!estadoAtual ? `<button id="btResolver" class="ok" title="Cria o registro como resolvido">Marcar resolvido</button>` : ''}
     <button id="btReembolso">${S.reemb ? 'Fechar reembolso' : 'Registrar reembolso'}</button>
-  </div>
-  <div class="tiny muted" style="margin-top:8px">Nada aqui envia direto: "Responder" põe na fila e o n8n envia em até 5 min. As outras ações mudam só o estado no banco.</div>
-  </div>`;
+  </div><div class="tiny muted" style="margin-top:8px">Nada aqui envia direto: "Responder" põe na fila e o n8n envia em até 5 min.</div></div>`;
 
   if (S.comp) h += compositorHtml(j);
   if (S.reemb) h += reembolsoHtml();
 
-  h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}
-        <div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(ultimaEntrada)}), com o relógio do servidor.</div></div>`;
-
+  h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}<div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(ultimaEntrada)}), com o relógio do servidor.</div></div>`;
   h += `<div class="block"><h3>Estado no fluxo automático</h3><div class="kv">
     <span class="k">estado</span><span>${esc(estadoAtual || '— (nunca entrou no fluxo de acesso)')}</span>
     ${est?.email_informado ? `<span class="k">e-mail informado</span><span class="mono copy" data-copy="${esc(est.email_informado)}">${esc(est.email_informado)}</span>` : ''}
@@ -646,72 +666,53 @@ function renderDetalhe() {
 
   if (S.fichaErro) h += `<div class="notice bad">Erro ao carregar a ficha: ${esc(S.fichaErro)}</div>`;
   if (!f && !S.fichaErro) h += `<div class="notice">Carregando ficha…</div>`;
-
   if (f) {
     h += `<div class="block"><h3>E-mails achados</h3>`;
     h += f.emails.length ? f.emails.map(e => `<span class="chip mail copy" style="font-size:13px" data-copy="${esc(e)}" title="copiar">${esc(e)}</span> `).join('')
-                         : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart: use o modelo "pedir o e-mail".</div>`;
-    h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou. Toque para copiar. Nas respostas, use a forma mascarada.</div></div>`;
-
-    const pagas = f.compras.filter(c => c.pago);
-    const totais = {}; pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
+                         : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart.</div>`;
+    h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou. Toque para copiar.</div></div>`;
+    const pagas = f.compras.filter(c => c.pago); const totais = {}; pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
     h += `<div class="block"><h3>Compras na Hotmart <span class="sub muted">· ${f.compras.length} registro(s), ${pagas.length} paga(s)${pagas.length ? ' · ' + Object.entries(totais).map(([m, v]) => fmtValor(v, m)).join(' + ') : ''}</span></h3>`;
     if (!f.compras.length) h += `<div class="muted small">Nada encontrado para ${f.emails.length ? 'esses e-mails' : 'este cliente'}.</div>`;
     else h += `<div class="tablewrap"><table><thead><tr><th>Quando</th><th>Produto</th><th>Valor</th><th>Status</th><th>Transação</th><th>Pgto</th></tr></thead><tbody>` +
-      f.compras.map(c => `<tr>
-        <td class="small" style="white-space:nowrap">${fmtDataHora(c.aprovado_em || c.registrado_em)}</td>
+      f.compras.map(c => `<tr><td class="small" style="white-space:nowrap">${fmtDataHora(c.aprovado_em || c.registrado_em)}</td>
         <td>${esc((c.produto_nome || '').replace(/&amp;/g, '&'))}<div class="tiny muted">${esc(c.nome || '')} · ${esc(c.email)}${c.pais ? ' · ' + esc(c.pais) : ''}</div></td>
         <td style="white-space:nowrap">${fmtValor(c.valor, c.moeda)}</td>
         <td><span class="st ${c.pago ? 'pago' : ['REFUNDED','CHARGEBACK','DISPUTE'].includes(c.status) ? 'neg' : ''}">${esc(c.status)}</span></td>
-        <td class="mono copy" data-copy="${esc(c.transacao)}" title="copiar">${esc(c.transacao)}</td>
-        <td class="small">${esc(c.pagamento || '—')}</td></tr>`).join('') + `</tbody></table></div>`;
+        <td class="mono copy" data-copy="${esc(c.transacao)}" title="copiar">${esc(c.transacao)}</td><td class="small">${esc(c.pagamento || '—')}</td></tr>`).join('') + `</tbody></table></div>`;
     h += `</div>`;
-
     h += `<div class="block"><h3>Arquivos a que tem direito <span class="sub muted">· ${f.n_logins} login(s), ${f.n_downloads} download(s) na biblioteca</span></h3>`;
     if (!f.itens.length) h += `<div class="muted small">${pagas.length ? 'Compra paga, mas nenhum item em itens_membros libera por esse produto: cadastro faltando.' : 'Sem compra paga, sem arquivo.'}</div>`;
     else h += `<div class="tablewrap"><table><thead><tr><th>Arquivo</th><th>Marca</th><th>Baixou?</th></tr></thead><tbody>` +
-      f.itens.map(i => `<tr><td>${esc(i.titulo)}<div class="tiny muted mono">${esc(i.bucket)} / ${esc(i.arquivo)}</div></td><td>${marcaChip(i.marca)}</td>
-        <td>${i.baixado_em ? `<span class="st pago">${fmtDataHora(i.baixado_em)}</span>` : `<span class="st">nunca</span>`}</td></tr>`).join('') + `</tbody></table></div>`;
-    if (f.acessos.length) h += `<details style="margin-top:8px"><summary>Últimos ${f.acessos.length} eventos na biblioteca</summary><div class="small" style="margin-top:6px">` +
-      f.acessos.map(a => `<div>${fmtDataHora(a.criado_em)} · <b>${esc(a.evento)}</b>${a.arquivo ? ' · ' + esc(a.arquivo) : ''} <span class="muted">${esc(a.email)}</span></div>`).join('') + `</div></details>`;
+      f.itens.map(i => `<tr><td>${esc(i.titulo)}<div class="tiny muted mono">${esc(i.bucket)} / ${esc(i.arquivo)}</div></td><td>${marcaChip(i.marca)}</td><td>${i.baixado_em ? `<span class="st pago">${fmtDataHora(i.baixado_em)}</span>` : `<span class="st">nunca</span>`}</td></tr>`).join('') + `</tbody></table></div>`;
+    if (f.acessos.length) h += `<details style="margin-top:8px"><summary>Últimos ${f.acessos.length} eventos na biblioteca</summary><div class="small" style="margin-top:6px">` + f.acessos.map(a => `<div>${fmtDataHora(a.criado_em)} · <b>${esc(a.evento)}</b>${a.arquivo ? ' · ' + esc(a.arquivo) : ''} <span class="muted">${esc(a.email)}</span></div>`).join('') + `</div></details>`;
     h += `</div>`;
-
-    if (f.reembolsos.length) h += `<div class="block"><h3>Reembolso</h3>` + f.reembolsos.map(r => `
-      <div class="kv"><span class="k">pedido em</span><span>${fmtDataHora(r.pedido_em)}</span>
+    if (f.reembolsos.length) h += `<div class="block"><h3>Reembolso</h3>` + f.reembolsos.map(r => `<div class="kv"><span class="k">pedido em</span><span>${fmtDataHora(r.pedido_em)}</span>
       <span class="k">transações</span><span class="mono">${esc((r.transacoes || []).join(', '))} · ${fmtValor(r.valor_total, r.moeda)}</span>
       <span class="k">motivo</span><span>${esc(r.motivo || '—')} <span class="muted tiny">(${esc(r.motivo_origem || '')})</span></span>
       <span class="k">orientado</span><span>${r.orientado_em ? fmtDataHora(r.orientado_em) : '<span style="color:var(--danger)">ainda não recebeu o passo a passo</span>'}</span>
       ${r.observacao ? `<span class="k">obs.</span><span class="small">${esc(r.observacao)}</span>` : ''}</div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
-    if (f.verificacoes.length) h += `<div class="block"><h3>Verificações automáticas de compra</h3>` + f.verificacoes.map(v => `
-      <div class="small">${fmtDataHora(v.criado_em)} · <span class="mono">${esc(v.email_consultado)}</span> → <b>${esc(v.resultado)}</b> (${esc(v.qtd_encontrada)} achada(s)${v.status_compra ? ', ' + esc(v.status_compra) : ''}) · ${esc(v.acao_tomada || '')}</div>`).join('') + `</div>`;
-    if (f.pendentes.length) h += `<div class="block"><h3>Respostas aguardando aprovação</h3>` + f.pendentes.map(p => `
-      <div class="small"><b>${esc(p.estado)}</b> · v${esc(p.versao)} · ${fmtDataHora(p.criado_em)}<div style="white-space:pre-wrap;margin-top:4px">${esc(p.resposta)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
+    if (f.verificacoes.length) h += `<div class="block"><h3>Verificações automáticas de compra</h3>` + f.verificacoes.map(v => `<div class="small">${fmtDataHora(v.criado_em)} · <span class="mono">${esc(v.email_consultado)}</span> → <b>${esc(v.resultado)}</b> (${esc(v.qtd_encontrada)} achada(s)${v.status_compra ? ', ' + esc(v.status_compra) : ''}) · ${esc(v.acao_tomada || '')}</div>`).join('') + `</div>`;
+    if (f.pendentes.length) h += `<div class="block"><h3>Respostas aguardando aprovação</h3>` + f.pendentes.map(p => `<div class="small"><b>${esc(p.estado)}</b> · v${esc(p.versao)} · ${fmtDataHora(p.criado_em)}<div style="white-space:pre-wrap;margin-top:4px">${esc(p.resposta)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
   }
-
   h += `<div class="block"><h3>Conversa <span class="sub muted">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
   h += S.thread ? `<div class="thread" id="thread">${threadHtml()}</div>` : `<div class="muted small">Carregando…</div>`;
   h += `</div>`;
-
   el.innerHTML = h;
   ligarDetalhe(j);
   const t = $('#thread'); if (t) t.scrollTop = t.scrollHeight;
 }
-
 function ligarDetalhe(j) {
-  const s = S.sel, f = S.ficha, it = s.item || {};
+  const s = S.sel, f = S.ficha;
   const b = $('#voltar'); if (b) b.onclick = () => { S.mobileDetalhe = false; renderLista(); renderDetalhe(); window.scrollTo(0, 0); };
   document.querySelectorAll('#detalhe .copy').forEach(e => e.onclick = () => copiar(e.dataset.copy));
-  $('#btResponder').onclick = () => { S.comp = S.comp ? null : novoCompositor(); S.reemb = null; renderDetalhe(); if (S.comp) $('#compTexto')?.focus(); };
+  $('#btResponder').onclick = () => { S.comp = S.comp ? null : novoCompositor(); S.reemb = null; renderDetalhe(); };
   $('#btReembolso').onclick = () => { S.reemb = S.reemb ? null : { motivo: '', origem: 'perguntado', transacoes: (f?.compras || []).filter(c => c.pago).map(c => c.transacao), orientado: true }; S.comp = null; renderDetalhe(); };
-  $('#btFora').onclick = async () => {
-    const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)');
-    if (nota === null) return;
-    await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora');
-  };
-  const p = $('#btPausar'); if (p) p.onclick = async () => { await acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa'); };
-  const d = $('#btDespausar'); if (d) d.onclick = async () => { await acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado'); };
+  $('#btFora').onclick = async () => { const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)'); if (nota === null) return; await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora'); };
+  const p = $('#btPausar'); if (p) p.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa');
+  const d = $('#btDespausar'); if (d) d.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado');
   const r = $('#btResolver'); if (r) r.onclick = async () => { if (confirm('Marcar como resolvido? Sai da lista de travados.')) await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'resolvido', p_autor: s.autor }, 'Marcado como resolvido'); };
-  const ra = $('#btReabrir'); if (ra) ra.onclick = async () => { await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'aguardando_gabriel', p_autor: s.autor }, 'Reaberto'); };
+  const ra = $('#btReabrir'); if (ra) ra.onclick = () => acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'aguardando_gabriel', p_autor: s.autor }, 'Reaberto');
   document.querySelectorAll('[data-cancelar]').forEach(e => e.onclick = async () => { if (confirm('Cancelar esta resposta antes de sair?')) await acao('cancelar_resposta', { p_id: Number(e.dataset.cancelar) }, 'Cancelada'); });
   if (S.comp) ligarCompositor(j);
   if (S.reemb) ligarReembolso();
@@ -722,8 +723,7 @@ function comentariosSemResposta() {
   return (S.thread || []).filter(m => m.canal === 'comentario' && m.direcao === 'entrada' && m.mensagem_id && /^[0-9]{15,20}$/.test(m.mensagem_id)).slice(-8).reverse();
 }
 function novoCompositor() {
-  const s = S.sel;
-  const coms = comentariosSemResposta();
+  const s = S.sel, coms = comentariosSemResposta();
   const canal = s.canal === 'comentario' && coms.length ? 'comentario_publico' : 'dm';
   return { canal, ref: canal === 'dm' ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
 }
@@ -734,22 +734,39 @@ function compositorHtml(j) {
   const temErro = avisos.some(a => a.nivel === 'erro');
   const linhas = c.texto.split('\n').filter(l => l.trim()).length;
   const modelos = MODELOS.filter(m => m.canais.includes(c.canal));
+  const ia = S.ia;
   return `<div class="block" id="comp"><h3>Responder <span class="sub muted">· entra na fila, o n8n envia em até 5 min</span></h3>
     <div class="form-grid">
-      <div><label class="lbl">Por onde</label>
-        <select id="compCanal">
+      <div><label class="lbl">Por onde</label><select id="compCanal">
           <option value="dm" ${c.canal === 'dm' ? 'selected' : ''}>DM (mensagem direta)</option>
-          ${coms.length ? `<option value="comentario_publico" ${c.canal === 'comentario_publico' ? 'selected' : ''}>Comentário público (3 linhas, sem link)</option>
-          <option value="comentario_privado" ${c.canal === 'comentario_privado' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}
+          ${coms.length ? `<option value="comentario_publico" ${c.canal === 'comentario_publico' ? 'selected' : ''}>Comentário público (3 linhas, sem link)</option><option value="comentario_privado" ${c.canal === 'comentario_privado' ? 'selected' : ''}>Resposta privada ao comentário</option>` : ''}
         </select></div>
       <div><label class="lbl">Idioma da resposta <span class="muted">(detectado: ${esc(IDIOMA_NOME[s.idioma] || s.idioma || '?')})</span></label>
-        <select id="compIdioma"><option value="es" ${c.idioma === 'es' ? 'selected' : ''}>Español</option><option value="en" ${c.idioma === 'en' ? 'selected' : ''}>English</option></select></div>
-      ${c.canal !== 'dm' ? `<div style="grid-column:1/-1"><label class="lbl">Qual comentário</label>
-        <select id="compRef">${coms.map(m => `<option value="${esc(m.mensagem_id)}" ${m.mensagem_id === c.ref ? 'selected' : ''}>${fmtDataHora(m.criado_em)} · ${esc((m.texto || '(mídia)').slice(0, 90))}</option>`).join('')}</select></div>` : ''}
-      <div style="grid-column:1/-1"><label class="lbl">Modelo</label>
-        <select id="compModelo"><option value="">— escrever do zero —</option>${modelos.map(m => `<option value="${m.id}" ${c.modelo === m.id ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select></div>
+        <select id="compIdioma"><option value="es" ${c.idioma === 'es' ? 'selected' : ''}>Español</option><option value="en" ${c.idioma === 'en' ? 'selected' : ''}>English</option><option value="pt" ${c.idioma === 'pt' ? 'selected' : ''}>Português</option><option value="it" ${c.idioma === 'it' ? 'selected' : ''}>Italiano</option><option value="de" ${c.idioma === 'de' ? 'selected' : ''}>Deutsch</option></select></div>
+      ${c.canal !== 'dm' ? `<div style="grid-column:1/-1"><label class="lbl">Qual comentário</label><select id="compRef">${coms.map(m => `<option value="${esc(m.mensagem_id)}" ${m.mensagem_id === c.ref ? 'selected' : ''}>${fmtDataHora(m.criado_em)} · ${esc((m.texto || '(mídia)').slice(0, 90))}</option>`).join('')}</select></div>` : ''}
     </div>
-    <div style="margin-top:10px"><textarea id="compTexto" placeholder="Escreva no idioma de quem escreveu. Tú, nunca vos. 163 páginas. Entrega por e-mail, nunca biblioteca.">${esc(c.texto)}</textarea></div>
+
+    <div class="iabox">
+      <div class="t">✨ IA · sugere e reescreve com a ficha, a conversa, o conhecimento da empresa e suas correções</div>
+      <div class="row">
+        <button id="iaSugerir" ${ia.carregando ? 'disabled' : ''}>${c.texto ? 'Sugerir de novo' : 'Sugerir resposta'}</button>
+        <span class="tiny" style="opacity:.75">ou ajuste o que já está na caixa:</span>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input id="iaInstr" class="grow" placeholder="Diga o que mudar: 'mais curta, cita a garantia, pede o e-mail'…" value="${esc(ia.instrucao)}" ${ia.carregando ? 'disabled' : ''}>
+        <button id="iaMic" class="mic ${ia.ouvindo ? 'on' : ''}" title="Ditar (Chrome no celular ou PC)">🎤</button>
+        <button id="iaMelhorar" ${ia.carregando || !c.texto ? 'disabled' : ''}>Melhorar</button>
+      </div>
+      ${ia.carregando ? `<div class="status">IA pensando… (${ia.ultimoModo === 'melhorar' ? 'reescrevendo com a sua instrução' : 'lendo ficha e conversa'})</div>` : ''}
+      ${ia.erro ? `<div class="status err">${esc(ia.erro)}</div>` : ''}
+      ${!ia.carregando && !ia.erro ? `<div class="status tiny" style="opacity:.6">Cada "Melhorar" fica salvo como preferência sua. Não vira regra sozinho; a IA consulta antes de escrever a próxima.</div>` : ''}
+    </div>
+
+    <div class="row" style="margin-top:8px"><label class="lbl" style="margin:0">Ou um modelo fixo:</label>
+      <select id="compModelo" style="width:auto;flex:1"><option value="">— nenhum —</option>${modelos.map(m => `<option value="${m.id}" ${c.modelo === m.id ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select></div>
+    <div style="margin-top:10px"><textarea id="compTexto" placeholder="A resposta que vai para o cliente, no idioma dele.">${esc(c.texto)}</textarea></div>
+    ${ia.pt ? `<div class="ptbox"><span class="l">Em português (para você conferir)</span>${esc(ia.pt)}</div>` : ''}
+    ${ia.notas ? `<div class="notas">⚠︎ IA: ${esc(ia.notas)}</div>` : ''}
     <div class="cnt"><span>${c.texto.length}/1000 caracteres</span><span>${linhas} linha(s)${c.canal === 'comentario_publico' ? ' de 3' : ''}</span>
       ${ctx.emailCompleto ? `<span class="copy" data-ins="${esc(ctx.email)}" title="inserir no texto">+ e-mail mascarado</span>` : ''}
       ${ctx.codigos.length ? `<span class="copy" data-ins="${esc(ctx.codigos.join(', '))}" title="inserir no texto">+ código(s) da transação</span>` : ''}
@@ -760,30 +777,31 @@ function compositorHtml(j) {
       <button class="primary" id="compEnviar" ${temErro || !c.texto.trim() ? 'disabled' : ''}>Pôr na fila</button>
       <button class="ghost" id="compLimpar">Limpar</button>
       <span class="tiny muted">Para ${esc(canalTxt(c.canal))} · ref <span class="mono">${esc(c.ref)}</span></span>
-    </div>
-  </div>`;
+    </div></div>`;
 }
 function ligarCompositor(j) {
   const c = S.comp;
-  const rerender = () => { renderDetalhe(); };
+  const rerender = () => renderDetalhe();
   $('#compCanal').onchange = e => { c.canal = e.target.value; c.ref = c.canal === 'dm' ? S.sel.autor_id : (comentariosSemResposta()[0]?.mensagem_id || ''); c.modelo = ''; rerender(); };
   $('#compIdioma').onchange = e => { c.idioma = e.target.value; if (c.modelo) aplicarModelo(); rerender(); };
   const r = $('#compRef'); if (r) r.onchange = e => { c.ref = e.target.value; };
-  $('#compModelo').onchange = e => { c.modelo = e.target.value; aplicarModelo(); rerender(); };
+  $('#compModelo').onchange = e => { c.modelo = e.target.value; if (c.modelo) { aplicarModelo(); S.ia.pt = ''; S.ia.notas = ''; } rerender(); };
   const ta = $('#compTexto');
-  let deb; ta.oninput = () => { c.texto = ta.value; clearTimeout(deb); deb = setTimeout(() => { const pos = ta.selectionStart; rerender(); const n = $('#compTexto'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } }, 500); };
+  let deb; ta.oninput = () => { c.texto = ta.value; clearTimeout(deb); deb = setTimeout(() => { const pos = ta.selectionStart; rerender(); const n = $('#compTexto'); if (n) { n.focus(); n.setSelectionRange(pos, pos); } }, 600); };
   document.querySelectorAll('#comp [data-ins]').forEach(e => e.onclick = () => { const n = $('#compTexto'); const p = n.selectionStart; c.texto = c.texto.slice(0, p) + e.dataset.ins + c.texto.slice(p); rerender(); });
-  $('#compLimpar').onclick = () => { c.texto = ''; c.modelo = ''; rerender(); };
+  $('#compLimpar').onclick = () => { c.texto = ''; c.modelo = ''; S.ia.pt = ''; S.ia.notas = ''; rerender(); };
   $('#compEnviar').onclick = async () => {
     const btn = $('#compEnviar'); btn.disabled = true; btn.textContent = 'Pondo na fila…';
     const id = await acao('responder', { p_marca: S.sel.marca, p_canal: c.canal, p_ref: c.ref, p_texto: c.texto }, 'Na fila. Sai em até 5 min.');
     if (id) { S.comp = null; renderDetalhe(); } else { btn.disabled = false; btn.textContent = 'Pôr na fila'; }
   };
+  $('#iaSugerir').onclick = () => sugerirIA('sugerir');
+  $('#iaMelhorar').onclick = () => sugerirIA('melhorar');
+  const inp = $('#iaInstr'); inp.oninput = () => { S.ia.instrucao = inp.value; $('#iaMelhorar').disabled = !c.texto || !inp.value.trim(); };
+  inp.onkeydown = e => { if (e.key === 'Enter' && inp.value.trim() && c.texto) { e.preventDefault(); sugerirIA('melhorar'); } };
+  $('#iaMic').onclick = ditar;
 }
-function aplicarModelo() {
-  const c = S.comp; const m = MODELOS.find(x => x.id === c.modelo); if (!m) return;
-  c.texto = (m[c.idioma] || m.es)(ctxModelo());
-}
+function aplicarModelo() { const c = S.comp; const m = MODELOS.find(x => x.id === c.modelo); if (!m) return; c.texto = (m[c.idioma] || m.es)(ctxModelo()); }
 
 /* ---------- reembolso ---------- */
 function reembolsoHtml() {
@@ -792,13 +810,12 @@ function reembolsoHtml() {
     <div class="notice warn">Quem processa é a Hotmart. Nunca prometer. Garantia: 7 dias, 100%. Depois de salvar, a resposta com o passo a passo e o código abre pronta.</div>
     <div class="form-grid">
       <div style="grid-column:1/-1"><label class="lbl">Transações (marque as do pedido)</label>
-        ${pagas.length ? pagas.map(c => `<label style="display:block;font-size:13.5px;margin:2px 0"><input type="checkbox" data-tx="${esc(c.transacao)}" ${r.transacoes.includes(c.transacao) ? 'checked' : ''} style="width:auto;margin-right:6px">${esc(c.transacao)} · ${esc((c.produto_nome || '').replace(/&amp;/g, '&')).slice(0, 60)} · ${fmtValor(c.valor, c.moeda)}</label>`).join('') : '<div class="muted small">Nenhuma compra paga achada. Registre mesmo assim e anote na observação.</div>'}</div>
+        ${pagas.length ? pagas.map(c => `<label style="display:block;font-size:13.5px;margin:2px 0"><input type="checkbox" data-tx="${esc(c.transacao)}" ${r.transacoes.includes(c.transacao) ? 'checked' : ''} style="width:auto;margin-right:6px">${esc(c.transacao)} · ${esc((c.produto_nome || '').replace(/&amp;/g, '&')).slice(0, 60)} · ${fmtValor(c.valor, c.moeda)}</label>`).join('') : '<div class="muted small">Nenhuma compra paga achada. Registre mesmo assim.</div>'}</div>
       <div><label class="lbl">Origem do motivo</label><select id="reOrigem"><option value="perguntado" ${r.origem === 'perguntado' ? 'selected' : ''}>perguntado (respondeu quando perguntei)</option><option value="espontaneo" ${r.origem === 'espontaneo' ? 'selected' : ''}>espontâneo (já tinha dito)</option><option value="sem_resposta" ${r.origem === 'sem_resposta' ? 'selected' : ''}>sem resposta (mando o passo a passo assim mesmo)</option></select></div>
       <div><label class="lbl">Já vou mandar o passo a passo?</label><select id="reOrientado"><option value="1" ${r.orientado ? 'selected' : ''}>sim, agora</option><option value="0" ${!r.orientado ? 'selected' : ''}>ainda não</option></select></div>
       <div style="grid-column:1/-1"><label class="lbl">Motivo, nas palavras da pessoa</label><textarea id="reMotivo" style="min-height:70px">${esc(r.motivo)}</textarea></div>
     </div>
-    <div class="row" style="margin-top:10px"><button class="primary" id="reSalvar">Salvar e abrir a resposta</button><button class="ghost" id="reFechar">Cancelar</button></div>
-  </div>`;
+    <div class="row" style="margin-top:10px"><button class="primary" id="reSalvar">Salvar e abrir a resposta</button><button class="ghost" id="reFechar">Cancelar</button></div></div>`;
 }
 function ligarReembolso() {
   const r = S.reemb, s = S.sel, f = S.ficha || {};
@@ -811,17 +828,45 @@ function ligarReembolso() {
     const pagas = (f.compras || []).filter(c => r.transacoes.includes(c.transacao));
     const total = pagas.reduce((a, c) => a + Number(c.valor || 0), 0);
     const ctx = ctxModelo();
-    const id = await acao('registrar_reembolso', {
-      p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_autor: s.autor, p_autor_id: s.autor_id,
+    const id = await acao('registrar_reembolso', { p_marca: s.marca, p_canal: s.canal === 'comentario' ? 'comentario' : 'dm', p_autor: s.autor, p_autor_id: s.autor_id,
       p_email: ctx.emailCompleto || null, p_transacoes: r.transacoes, p_valor_total: pagas.length ? total : null, p_moeda: pagas[0]?.moeda || null,
-      p_motivo: r.motivo, p_motivo_origem: r.origem, p_orientado: r.orientado, p_observacao: null,
-    }, 'Reembolso registrado');
-    if (id) {
-      S.reemb = null;
-      if (r.orientado) { S.comp = novoCompositor(); S.comp.canal = 'dm'; S.comp.ref = s.autor_id; S.comp.modelo = 'reembolso'; aplicarModelo(); }
-      renderDetalhe();
-    }
+      p_motivo: r.motivo, p_motivo_origem: r.origem, p_orientado: r.orientado, p_observacao: null }, 'Reembolso registrado');
+    if (id) { S.reemb = null; if (r.orientado) { S.comp = novoCompositor(); S.comp.canal = 'dm'; S.comp.ref = s.autor_id; S.comp.modelo = 'reembolso'; aplicarModelo(); } renderDetalhe(); }
   };
+}
+
+/* ---------- conhecimento da IA ---------- */
+async function abrirConhecimento() {
+  S.modal = { novoTema: 'entrega', novoTexto: '', carregando: true };
+  renderModal();
+  const { data, error } = await sb.from('ia_conhecimento').select('id,tema,texto,atualizado_em,atualizado_por').eq('ativo', true).order('tema').order('id');
+  S.modal.carregando = false; S.conhecimento = error ? [] : data; if (error) toast(error.message, true);
+  renderModal();
+}
+function renderModal() {
+  const el = $('#modal'); if (!S.modal) { el.innerHTML = ''; return; }
+  const m = S.modal, lista = S.conhecimento || [];
+  const temas = ['entrega', 'produto', 'pagamento', 'reembolso', 'empresa', 'canais', 'problemas conhecidos', 'geral'];
+  el.innerHTML = `<div class="modal-bg" id="mbg"><div class="modal">
+    <div class="row"><h2 class="grow">O que a IA sabe sobre a empresa</h2><button class="small" id="mFechar">Fechar</button></div>
+    <div class="small muted" style="margin-bottom:10px">Fatos, não regras de escrita (as regras estão fixas no prompt). Tudo aqui entra em toda sugestão. Escreva como explicaria para um funcionário novo.</div>
+    <div class="block" style="margin:8px 0"><div class="form-grid">
+      <div><label class="lbl">Tema</label><select id="mTema">${temas.map(t => `<option ${m.novoTema === t ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+      <div style="grid-column:1/-1"><label class="lbl">Fato novo</label><textarea id="mTexto" style="min-height:70px" placeholder="Ex.: Quando a pessoa manda o e-mail e a compra é válida, mandamos o link da thank you e reenviamos o e-mail com os arquivos.">${esc(m.novoTexto)}</textarea></div>
+    </div><div class="row" style="margin-top:8px"><button class="primary" id="mSalvar">Adicionar</button></div></div>
+    ${m.carregando ? '<div class="notice">Carregando…</div>' : lista.map(k => `<div class="fato"><span class="tema">${esc(k.tema)}</span><span class="tx">${esc(k.texto)}</span><button class="small danger" data-del="${k.id}" title="remover">×</button></div>`).join('')}
+  </div></div>`;
+  $('#mFechar').onclick = () => { S.modal = null; renderModal(); };
+  $('#mbg').onclick = e => { if (e.target.id === 'mbg') { S.modal = null; renderModal(); } };
+  $('#mTema').onchange = e => m.novoTema = e.target.value;
+  $('#mTexto').oninput = e => m.novoTexto = e.target.value;
+  $('#mSalvar').onclick = async () => {
+    if (!m.novoTexto.trim()) return toast('Escreva o fato.', true);
+    const { error } = await sb.rpc('salvar_conhecimento', { p_id: null, p_tema: m.novoTema, p_texto: m.novoTexto });
+    if (error) return toast(error.message, true);
+    toast('Adicionado. Vale a partir da próxima sugestão.'); m.novoTexto = ''; abrirConhecimento();
+  };
+  el.querySelectorAll('[data-del]').forEach(b => b.onclick = async () => { if (!confirm('Remover este fato do conhecimento da IA?')) return; const { error } = await sb.rpc('apagar_conhecimento', { p_id: Number(b.dataset.del) }); if (error) return toast(error.message, true); abrirConhecimento(); });
 }
 
 /* ---------- conversa ---------- */
@@ -831,8 +876,7 @@ function threadHtml() {
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
   let dia = '', h = '';
   for (const m of msgs) {
-    const d = fmtDataLonga(m.t);
-    if (d !== dia) { dia = d; h += `<div class="day">${esc(d)}</div>`; }
+    const d = fmtDataLonga(m.t); if (d !== dia) { dia = d; h += `<div class="day">${esc(d)}</div>`; }
     const vazio = !m.texto || !String(m.texto).trim();
     const cls = m.dir === 'entrada' ? 'in' : 'out';
     const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
