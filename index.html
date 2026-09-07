@@ -211,13 +211,14 @@ const MARCA = {
   atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: 'atlantedellecarte.com/thank-you-x7f3q9/', venda: 'atlantedellecarte.com' },
 };
 const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
-const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 7:'var(--u7)', 8:'var(--u8)', 9:'var(--u9)' };
+const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 6:'var(--u5)', 7:'var(--u7)', 8:'var(--u8)', 9:'var(--u9)' };
 
 const S = {
   sessao: null, admin: false,
   fila: [], travados: [], erro: null,
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
   filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', origem: 'todas' },
+  verBot: (() => { try { return localStorage.getItem('fila.verBot') === '1'; } catch { return false; } })(),
   ordem: (() => { try { return localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
@@ -419,7 +420,7 @@ function renderSemAcesso() {
 
 /* ---------- dados ---------- */
 async function carregar() {
-  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias }), sb.rpc('atendimento_travados')]);
+  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: S.verBot }), sb.rpc('atendimento_travados')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
   S.erro = null; S.fila = f.data || []; S.travados = t.data || [];
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
@@ -532,6 +533,7 @@ function renderApp() {
         <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
         <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="90">90 dias</option></select>
         <div class="seg" title="Ordem da lista"><button id="ordUrg" class="${S.ordem === 'urgencia' ? 'on' : ''}">Urgência</button><button id="ordRec" class="${S.ordem === 'recentes' ? 'on' : ''}">Mais recentes</button></div>
+        <label class="pill" style="cursor:pointer" title="Mostra também as conversas das últimas 24h que o bot respondeu sozinho, para você conferir"><input type="checkbox" id="fVerBot" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">ver o que o bot respondeu (24h)</label>
         <label class="pill" style="cursor:pointer" title="Ao abrir alguém que precisa de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">IA automática</label>
         <button class="small" id="btConhec" title="O que a IA sabe sobre a empresa">Conhecimento da IA</button>
       </div>
@@ -541,7 +543,8 @@ function renderApp() {
     <div class="tabs" id="tabs"></div>
   </header>
   <div class="layout"><div class="list" id="lista"></div><div class="detail" id="detalhe"></div></div>`;
-  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA;
+  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA; $('#fVerBot').checked = S.verBot;
+  $('#fVerBot').onchange = e => { S.verBot = e.target.checked; try { localStorage.setItem('fila.verBot', S.verBot ? '1' : '0'); } catch {} carregar(); };
   $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderTabs(); renderLista(); };
   $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderTabs(); renderLista(); };
   $('#fOrigem').value = S.filtro.origem; $('#fOrigem').onchange = e => { S.filtro.origem = e.target.value; renderTabs(); renderLista(); };
@@ -586,7 +589,7 @@ function renderLista() {
   const el = $('#lista'); if (!el) return;
   el.classList.toggle('hide-m', S.mobileDetalhe);
   const itens = visiveis();
-  const g1 = itens.filter(i => i.urgencia <= 2), g2 = itens.filter(i => i.urgencia >= 3 && i.urgencia <= 5), g3 = itens.filter(i => i.urgencia >= 7);
+  const g1 = itens.filter(i => i.urgencia <= 2), g2 = itens.filter(i => i.urgencia >= 3 && i.urgencia <= 5), gb = itens.filter(i => i.urgencia === 6), g3 = itens.filter(i => i.urgencia >= 7);
   const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
   let h = '';
   if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
@@ -599,6 +602,7 @@ function renderLista() {
   h += g1.length ? g1.map(cardHtml).join('') : `<div class="notice ok">Nada urgente. 👍</div>`;
   h += `<div class="grp blue">Pode esperar um pouco <span class="n">${g2.length}</span></div>`;
   h += g2.length ? g2.map(cardHtml).join('') : `<div class="notice">Ninguém nos últimos ${S.dias} dias com esses filtros.</div>`;
+  if (gb.length && S.ordem !== 'recentes') h += `<div class="grp">Bot respondeu sozinho (24h) <span class="n">${gb.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">só para conferir</span></div>` + gb.map(cardHtml).join('');
   }
   h += `<details class="baixo"><summary><div class="grp">Não precisa de você <span class="n">${g3.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">agradecimento, spam, já na fila, ignorados</span></div></summary>${g3.map(cardHtml).join('')}</details>`;
   h += `<div class="grp" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
