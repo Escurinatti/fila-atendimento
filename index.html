@@ -219,6 +219,8 @@ const S = {
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
   filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', origem: 'todas' },
   verBot: (() => { try { return localStorage.getItem('fila.verBot') === '1'; } catch { return false; } })(),
+  visao: (() => { try { return localStorage.getItem('fila.visao') || 'fila'; } catch { return 'fila'; } })(),
+  situacao: 'todas',
   ordem: (() => { try { return localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
@@ -420,7 +422,7 @@ function renderSemAcesso() {
 
 /* ---------- dados ---------- */
 async function carregar() {
-  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: S.verBot }), sb.rpc('atendimento_travados')]);
+  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: S.verBot, p_tudo: S.visao === 'tudo' }), sb.rpc('atendimento_travados')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
   S.erro = null; S.fila = f.data || []; S.travados = t.data || [];
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
@@ -439,7 +441,7 @@ async function abrir(item) {
   await recarregarFicha();
   // Precisa de você e a IA automática está ligada: já abre a caixa com a sugestão
   const it = item;
-  if (S.autoIA && it.urgencia != null && it.urgencia <= 5 && !it.resposta_na_fila && S.sel && S.sel.autor_id === (item.autor_id || item.conversa_id)) {
+  if (S.autoIA && S.visao !== 'tudo' && it.urgencia != null && it.urgencia <= 5 && !it.resposta_na_fila && S.sel && S.sel.autor_id === (item.autor_id || item.conversa_id)) {
     S.comp = novoCompositor(); renderDetalhe(); sugerirIA('sugerir');
   }
 }
@@ -528,6 +530,8 @@ function renderApp() {
       <span id="status" class="pill">…</span>
       <div class="grow"></div>
       <div class="filters">
+        <div class="seg" title="Fila: só o que espera resposta. Tudo: todas as conversas, com quem respondeu"><button id="visFila" class="${S.visao === 'fila' ? 'on' : ''}">Fila</button><button id="visTudo" class="${S.visao === 'tudo' ? 'on' : ''}">Tudo</button></div>
+        <select id="fSit" title="Situação" class="${S.visao === 'tudo' ? '' : 'hide'}"><option value="todas">Todas as situações</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select>
         <select id="fMarca" title="Marca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot</option><option value="cartomaps">Carto Maps</option><option value="atlante_delle_carte">Atlante</option></select>
         <select id="fOrigem" title="Instagram ou Facebook"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select>
         <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
@@ -551,6 +555,9 @@ function renderApp() {
   $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
   $('#fAuto').onchange = e => { S.autoIA = e.target.checked; try { localStorage.setItem('fila.autoIA', S.autoIA ? '1' : '0'); } catch {} };
   $('#btConhec').onclick = abrirConhecimento;
+  const setVisao = v => { S.visao = v; try { localStorage.setItem('fila.visao', v); } catch {} $('#visFila').className = v === 'fila' ? 'on' : ''; $('#visTudo').className = v === 'tudo' ? 'on' : ''; $('#fSit').classList.toggle('hide', v !== 'tudo'); carregar(); };
+  $('#visFila').onclick = () => setVisao('fila'); $('#visTudo').onclick = () => setVisao('tudo');
+  $('#fSit').value = S.situacao; $('#fSit').onchange = e => { S.situacao = e.target.value; renderTabs(); renderLista(); };
   const setOrdem = o => { S.ordem = o; try { localStorage.setItem('fila.ordem', o); } catch {} $('#ordUrg').className = o === 'urgencia' ? 'on' : ''; $('#ordRec').className = o === 'recentes' ? 'on' : ''; renderLista(); };
   $('#ordUrg').onclick = () => setOrdem('urgencia'); $('#ordRec').onclick = () => setOrdem('recentes');
   $('#recarregar').onclick = carregar;
@@ -570,15 +577,15 @@ function renderStatus() {
 /* ---------- lista ---------- */
 const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
 function baseFiltrada() {
-  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
+  return S.fila.filter(it => (S.visao !== 'tudo' || S.situacao === 'todas' || it.situacao === S.situacao) && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
 }
 function visiveis() {
   return baseFiltrada().filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
-    .sort((a, b) => S.ordem === 'recentes' ? (new Date(b.ultima_entrada) - new Date(a.ultima_entrada)) : (a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde)));
+    .sort((a, b) => (S.visao === 'tudo' || S.ordem === 'recentes') ? (Math.max(+new Date(b.ultima_entrada), +new Date(b.ultima_resposta_em || 0)) - Math.max(+new Date(a.ultima_entrada), +new Date(a.ultima_resposta_em || 0))) : (a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde)));
 }
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
-  const base = baseFiltrada().filter(it => it.urgencia <= 5);
+  const base = S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5);
   const n = { todos: base.length, es: 0, en: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
   const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
@@ -593,7 +600,11 @@ function renderLista() {
   const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
   let h = '';
   if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
-  if (S.ordem === 'recentes') {
+  if (S.visao === 'tudo') {
+    const c = k => itens.filter(i => i.situacao === k).length;
+    h += `<div class="grp blue">Tudo <span class="n">${itens.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">${c('precisa')} precisam de você · ${c('sem_resposta')} sem resposta · ${c('bot')} bot · ${c('voce')} você · ${c('ignorado')} ignorados</span></div>`;
+    h += itens.length ? itens.map(cardHtml).join('') : `<div class="notice">Nenhuma conversa nos últimos ${S.dias} dias com esses filtros.</div>`;
+  } else if (S.ordem === 'recentes') {
     const ativos = itens.filter(i => i.urgencia < 7);
     h += `<div class="grp blue">Mais recentes primeiro <span class="n">${ativos.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">${g1.length} em vermelho</span></div>`;
     h += ativos.length ? ativos.map(cardHtml).join('') : `<div class="notice">Ninguém nos últimos ${S.dias} dias com esses filtros.</div>`;
@@ -617,14 +628,15 @@ function renderLista() {
 }
 function cardHtml(it) {
   const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
-  const cor = URG_COR[it.urgencia] || 'var(--u5)';
+  const cor = S.visao === 'tudo' ? ({ precisa: 'var(--u1)', sem_resposta: 'var(--u2)', bot: 'var(--u5)', voce: 'var(--ok)', ignorado: 'var(--u9)' }[it.situacao] || 'var(--u5)') : (URG_COR[it.urgencia] || 'var(--u5)');
   const j = janelas(it.ultima_entrada, it.canal);
   const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
   return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
     <div class="who">${langChip(it.idioma)}<span>${esc(nomeAutor(it))}</span>${marcaChip(it.marca)} <span class="chip" ${ehFb(it.canal) ? 'style="background:#e8f0fe;color:#1a4fd6;font-weight:600"' : ''}>${canalTxt(it.canal)}</span>
-      <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${S.ordem === 'recentes' ? 'há ' + dur(horasDesde(it.ultima_entrada), false) : 'espera ' + dur(horasDesde(it.espera_desde), false)}</span></div>
+      <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${(S.visao === 'tudo' || S.ordem === 'recentes') ? 'há ' + dur(horasDesde(Math.max(+new Date(it.ultima_entrada), +new Date(it.ultima_resposta_em || 0))), false) : 'espera ' + dur(horasDesde(it.espera_desde), false)}</span></div>
     <div class="motivo">${esc(it.motivo_urgencia)}</div>
     <div class="txt">${txt}</div>
+    ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:2px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600">sem nenhuma resposta</div>`) : ''}
     <div class="chips">
       ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
       ${it.n_sem_resposta > 1 ? `<span class="chip">${it.n_sem_resposta} msgs sem resposta</span>` : ''}
