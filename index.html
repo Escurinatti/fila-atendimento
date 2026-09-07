@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Fila — Atendimento</title>
+<style>
+  :root{
+    --bg:#faf7f2; --card:#fff; --ink:#1c1a17; --muted:#6b6459; --line:#e6dfd4;
+    --accent:#c8811f; --accent-ink:#8a5610; --soft:#f3ede3;
+    --ok:#2f7a4d; --warn:#b8860b; --danger:#b23b3b; --info:#3a63b8;
+    --u1:#b23b3b; --u2:#d9662a; --u3:#b8860b; --u4:#3a63b8; --u5:#7a7368; --u8:#2f7a4d; --u9:#a39c91;
+    --shadow:0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#16150f; --card:#211f18; --ink:#f2ede3; --muted:#a49b8c; --line:#352f24;
+      --accent:#e0a54a; --accent-ink:#f0c884; --soft:#2a271f;
+      --ok:#6fc08c; --warn:#e0b84a; --danger:#e88a8a; --info:#8fa9e8;
+      --u1:#e88a8a; --u2:#f0955e; --u3:#e0b84a; --u4:#8fa9e8; --u5:#a49b8c; --u8:#6fc08c; --u9:#6b655b;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  a{color:var(--accent-ink)}
+  button,input,select{font:inherit}
+  button{cursor:pointer;border-radius:9px;border:1px solid var(--line);background:var(--card);
+         color:var(--ink);padding:7px 13px;transition:.12s}
+  button:hover{border-color:var(--accent)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button.ghost{background:transparent}
+  button.small{padding:4px 9px;font-size:13px}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  input,select{border:1px solid var(--line);background:var(--card);color:var(--ink);
+               border-radius:9px;padding:9px 11px;width:100%}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:12px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .grow{flex:1}
+  .hide{display:none!important}
+
+  /* ---- login ---- */
+  .login{min-height:100%;display:grid;place-items:center;padding:24px}
+  .login .box{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);
+              border-radius:16px;padding:26px;box-shadow:var(--shadow)}
+  .login h1{margin:0 0 4px;font-size:20px}
+  .login label{display:block;margin:14px 0 5px;font-size:13px;color:var(--muted)}
+  .login .msg{margin-top:12px;font-size:13.5px;padding:10px 12px;border-radius:10px;background:var(--soft)}
+  .login .msg.err{color:var(--danger)} .login .msg.ok{color:var(--ok)}
+  .login .links{margin-top:14px;display:flex;justify-content:space-between;gap:10px;font-size:13px}
+  .login .links a{cursor:pointer}
+
+  /* ---- app shell ---- */
+  header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
+         padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  header h1{font-size:16px;margin:0;font-weight:650;letter-spacing:-.01em}
+  header h1 .star{color:var(--accent)}
+  .pill{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
+        color:var(--muted);white-space:nowrap;background:var(--card)}
+  .pill.live{color:var(--ok);border-color:currentColor}
+  .pill.stale{color:var(--warn);border-color:currentColor}
+  .pill.err{color:var(--danger);border-color:currentColor}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .filters select{width:auto;padding:5px 8px;font-size:13px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{border:0;border-radius:0;padding:5px 10px;font-size:13px;background:var(--card)}
+  .seg button.on{background:var(--accent);color:#fff}
+
+  .layout{display:grid;grid-template-columns:minmax(340px,440px) 1fr;gap:0;min-height:calc(100vh - 54px)}
+  .list{border-right:1px solid var(--line);padding:12px;overflow-y:auto;max-height:calc(100vh - 54px)}
+  .detail{padding:16px 20px 60px;overflow-y:auto;max-height:calc(100vh - 54px)}
+  .detail .empty{height:100%;display:grid;place-items:center;color:var(--muted);text-align:center;padding:40px}
+  .section-h{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:12px;letter-spacing:.09em;
+             text-transform:uppercase;color:var(--muted);font-weight:650}
+  .section-h .n{background:var(--soft);border-radius:999px;padding:1px 8px;color:var(--ink);letter-spacing:0}
+
+  /* ---- cards ---- */
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;
+        padding:12px 14px 12px 18px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
+  .card:hover{border-color:var(--accent)}
+  .card.sel{outline:2px solid var(--accent);outline-offset:-1px}
+  .card::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 4px 4px 0;background:var(--ub)}
+  .card .who{font-weight:650;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .card .who .at{color:var(--muted);font-weight:500}
+  .card .espera{margin-left:auto;font-size:13px;font-weight:600;white-space:nowrap}
+  .card .motivo{font-size:12.5px;font-weight:600;color:var(--ub);margin-top:2px}
+  .card .txt{margin:6px 0;font-size:14px;color:var(--ink);opacity:.9;
+             display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+  .card.dim{opacity:.6}
+  .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .chip{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+  .chip.mdt{background:#f1e2c8;color:#6d4a15} .chip.cm{background:#d9e4f5;color:#243f78} .chip.it{background:#dcefe0;color:#245a35}
+  @media (prefers-color-scheme: dark){ .chip.mdt{background:#4a3719;color:#f0c884} .chip.cm{background:#22355a;color:#b9c9ee} .chip.it{background:#1f3d29;color:#a8dcb5} }
+  .chip.midia{background:var(--danger);color:#fff;font-weight:600}
+  .chip.fila{background:var(--ok);color:#fff}
+  .chip.pausa{border:1px dashed var(--warn);background:transparent;color:var(--warn)}
+  .chip.mail{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}
+  .chip.compra{background:var(--ok);color:#fff}
+  .janelas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .jan{font-size:12px;color:var(--muted)}
+  .jan b{color:var(--ink);font-weight:600}
+  .bar{height:4px;background:var(--soft);border-radius:2px;margin-top:3px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--ok);border-radius:2px}
+  .bar i.warn{background:var(--warn)} .bar i.bad{background:var(--danger)}
+  .jan.closed b{color:var(--danger)}
+
+  .trav{display:flex;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:10px;
+        background:var(--card);margin-bottom:6px;cursor:pointer;font-size:13.5px}
+  .trav:hover{border-color:var(--accent)}
+  .trav .d{margin-left:auto;font-weight:600;white-space:nowrap}
+
+  /* ---- detail ---- */
+  .dhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .dhead h2{margin:0;font-size:20px}
+  .back{display:none}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0;box-shadow:var(--shadow)}
+  .block h3{margin:0 0 8px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:650}
+  .kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px}
+  .kv .k{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-size:11.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;padding:4px 8px 6px;border-bottom:1px solid var(--line)}
+  td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .st{font-size:11.5px;padding:2px 7px;border-radius:999px;background:var(--soft);white-space:nowrap}
+  .st.pago{background:var(--ok);color:#fff} .st.neg{background:var(--danger);color:#fff}
+  .tablewrap{overflow-x:auto}
+  .thread{display:flex;flex-direction:column;gap:6px}
+  .msg{max-width:82%;padding:8px 12px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-break:break-word}
+  .msg.in{align-self:flex-start;background:var(--soft);border-bottom-left-radius:4px}
+  .msg.out{align-self:flex-end;background:#e9d9bf;color:#2b1e0c;border-bottom-right-radius:4px}
+  @media (prefers-color-scheme: dark){ .msg.out{background:#4a3719;color:#f7ecd8} }
+  .msg .m{display:block;font-size:11px;opacity:.65;margin-top:4px}
+  .msg.midia{border:1px dashed var(--danger);background:transparent;color:var(--danger);font-weight:600}
+  .msg.fila{border:1px solid var(--ok)}
+  .msg.pend{border:1px dashed var(--ok);background:transparent}
+  .day{align-self:center;font-size:11.5px;color:var(--muted);margin:8px 0 2px}
+  details summary{cursor:pointer;color:var(--muted);font-size:13px}
+  .notice{font-size:13px;padding:10px 12px;border-radius:10px;background:var(--soft);margin:8px 0}
+  .notice.warn{color:var(--warn);border:1px solid var(--warn)}
+  .notice.bad{color:var(--danger);border:1px solid var(--danger)}
+
+  @media (max-width: 880px){
+    .layout{display:block}
+    .list,.detail{max-height:none;border-right:0}
+    .list.hide-m,.detail.hide-m{display:none}
+    .back{display:inline-block}
+    .msg{max-width:92%}
+    header{padding:8px 10px}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+/* =====================================================================
+   Fila de atendimento — Estágio 1 (só leitura)
+   Lê o Supabase com a chave PÚBLICA. Quem decide o que aparece é o
+   banco: só quem está em public.admins (e logado) enxerga alguma coisa.
+   Nada aqui escreve em tabela nenhuma.
+   ===================================================================== */
+const CONFIG = {
+  url: 'https://vupxofhfgqnqsbwzmndy.supabase.co',
+  key: 'sb_publishable_fesL5Nm5u8PYR-YORexjXg_8DSxbCNC',
+  refreshSeg: 60,
+  diasPadrao: 7,
+};
+const sb = supabase.createClient(CONFIG.url, CONFIG.key);
+
+const MARCA = {
+  mapa_del_tarot: { nome: 'Mapa del Tarot', curto: 'MDT', cls: 'mdt', ig: 'https://www.instagram.com/direct/inbox/' },
+  cartomaps:      { nome: 'Carto Maps',     curto: 'Carto', cls: 'cm' },
+  atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it' },
+};
+const PAGO = new Set(['APPROVED', 'COMPLETE', 'COMPLETED']);
+const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 7:'var(--u9)', 8:'var(--u8)', 9:'var(--u9)' };
+
+const S = {
+  sessao: null, admin: false,
+  fila: [], travados: [], erro: null,
+  agoraMs: null, agoraLocalAt: null, carregadoEm: null,
+  filtro: { marca: 'todas', canal: 'todos', baixa: false },
+  dias: CONFIG.diasPadrao,
+  sel: null, ficha: null, thread: null, fichaErro: null,
+  mobileDetalhe: false,
+  timer: null, tick: null,
+};
+
+/* ---------- utilidades ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const agoraServidor = () => S.agoraMs ? new Date(S.agoraMs + (Date.now() - S.agoraLocalAt)) : new Date();
+const horasDesde = ts => (agoraServidor() - new Date(ts)) / 36e5;
+
+function dur(h, prec = true) {
+  if (h == null || isNaN(h)) return '—';
+  const neg = h < 0; h = Math.abs(h);
+  let s;
+  if (h < 1) s = Math.round(h * 60) + ' min';
+  else if (h < 48) s = (prec ? Math.floor(h) + 'h' + (Math.round((h % 1) * 60) ? ' ' + String(Math.round((h % 1) * 60)).padStart(2, '0') + 'min' : '') : Math.round(h) + 'h');
+  else s = (h / 24).toFixed(h / 24 < 10 ? 1 : 0).replace('.', ',') + ' d';
+  return (neg ? '-' : '') + s;
+}
+const fmtHora = ts => ts ? new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '—';
+const fmtData = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '—';
+const fmtDataHora = ts => ts ? `${fmtData(ts)} ${fmtHora(ts)}` : '—';
+const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : '';
+const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
+const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
+const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : esc(c || '?');
+const nomeAutor = it => it.autor ? '@' + it.autor : `id ${it.autor_id || it.conversa_id}`;
+const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">perfil no Instagram ↗</a>` : '';
+
+/* Janelas da Meta, calculadas AO VIVO a partir da última mensagem do cliente,
+   com o relógio ancorado no now() do servidor (não no do celular). */
+function janelas(ultimaEntrada, canal) {
+  if (canal !== 'dm' || !ultimaEntrada) return null;
+  const passou = horasDesde(ultimaEntrada);
+  return { h24: 24 - passou, h7d: 168 - passou };
+}
+function janelaHtml(j) {
+  if (!j) return `<div class="jan muted">Comentário: sem prazo da Meta, mas é <b>público</b></div>`;
+  const b = (rest, total, label, extra) => {
+    const pct = Math.max(0, Math.min(100, rest / total * 100));
+    const cls = rest <= 0 ? 'bad' : pct < 25 ? 'bad' : pct < 50 ? 'warn' : '';
+    return `<div class="jan ${rest <= 0 ? 'closed' : ''}">${label}: <b>${rest <= 0 ? 'fechada' : dur(rest, false) + ' restantes'}</b>${extra || ''}
+      <div class="bar"><i class="${cls}" style="width:${pct}%"></i></div></div>`;
+  };
+  return `<div class="janelas">${b(j.h24, 24, '24h padrão')}${b(j.h7d, 168, '7d human_agent')}</div>`;
+}
+
+/* ---------- auth ---------- */
+async function iniciar() {
+  sb.auth.onAuthStateChange(async (evento, sessao) => {
+    if (evento === 'PASSWORD_RECOVERY') { S.sessao = sessao; renderNovaSenha(); return; }
+    if (evento === 'SIGNED_OUT') { S.sessao = null; S.admin = false; pararTimers(); renderLogin(); return; }
+    if (sessao && !S.sessao) { S.sessao = sessao; await entrar(); }
+  });
+  const { data } = await sb.auth.getSession();
+  if (location.hash.includes('type=recovery')) return; // o evento acima cuida
+  if (data.session) { S.sessao = data.session; await entrar(); }
+  else renderLogin();
+}
+
+async function entrar() {
+  const { data, error } = await sb.rpc('eh_admin');
+  if (error) { renderLogin(`Não consegui verificar o acesso: ${error.message}`); return; }
+  if (!data) { renderSemAcesso(); return; }
+  S.admin = true;
+  renderApp();
+  await carregar();
+  iniciarTimers();
+}
+
+function renderLogin(msg, cls = 'err') {
+  pararTimers();
+  $('#app').innerHTML = `
+  <div class="login"><div class="box">
+    <h1><span style="color:var(--accent)">✦</span> Fila de atendimento</h1>
+    <div class="muted small">Mapa del Tarot · Carto Maps</div>
+    <form id="f">
+      <label>E-mail</label><input id="email" type="email" autocomplete="username" required inputmode="email">
+      <label>Senha</label><input id="senha" type="password" autocomplete="current-password" required>
+      <div style="margin-top:16px"><button class="primary" style="width:100%" type="submit">Entrar</button></div>
+    </form>
+    <div class="links"><a id="otp">Entrar com código por e-mail</a><a id="esqueci">Esqueci a senha</a></div>
+    ${msg ? `<div class="msg ${cls}">${esc(msg)}</div>` : ''}
+  </div></div>`;
+  $('#f').onsubmit = async e => {
+    e.preventDefault();
+    const btn = $('#f button'); btn.disabled = true; btn.textContent = 'Entrando…';
+    const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#senha').value });
+    if (error) renderLogin(error.message === 'Invalid login credentials' ? 'E-mail ou senha não batem.' : error.message);
+  };
+  $('#otp').onclick = () => renderOtp($('#email').value.trim());
+  $('#esqueci').onclick = async () => {
+    const email = $('#email').value.trim();
+    if (!email) return renderLogin('Preencha o e-mail primeiro.', 'err');
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    renderLogin(error ? error.message : `Link enviado para ${email}. Se ele te levar para a biblioteca em vez de voltar aqui, a URL desta tela ainda não está nas "Redirect URLs" do Supabase Auth.`, error ? 'err' : 'ok');
+  };
+}
+
+function renderOtp(email, msg, cls = 'ok') {
+  $('#app').innerHTML = `
+  <div class="login"><div class="box">
+    <h1>Código por e-mail</h1>
+    <form id="f">
+      <label>E-mail</label><input id="email" type="email" value="${esc(email)}" required inputmode="email">
+      <div class="row" style="margin-top:12px"><button type="button" id="enviar" class="grow">Enviar código</button></div>
+      <label>Código recebido (6 dígitos)</label><input id="cod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}">
+      <div style="margin-top:14px"><button class="primary" style="width:100%" type="submit">Entrar</button></div>
+    </form>
+    <div class="links"><a id="voltar">← Entrar com senha</a></div>
+    ${msg ? `<div class="msg ${cls}">${esc(msg)}</div>` : '<div class="msg">Só funciona se o modelo de e-mail do Supabase incluir o código ({{ .Token }}). Se vier só um link, use a senha.</div>'}
+  </div></div>`;
+  $('#voltar').onclick = () => renderLogin();
+  $('#enviar').onclick = async () => {
+    const em = $('#email').value.trim();
+    const { error } = await sb.auth.signInWithOtp({ email: em, options: { shouldCreateUser: false } });
+    renderOtp(em, error ? error.message : `Código enviado para ${em}.`, error ? 'err' : 'ok');
+  };
+  $('#f').onsubmit = async e => {
+    e.preventDefault();
+    const em = $('#email').value.trim(), token = $('#cod').value.trim();
+    const { error } = await sb.auth.verifyOtp({ email: em, token, type: 'email' });
+    if (error) renderOtp(em, error.message, 'err');
+  };
+}
+
+function renderNovaSenha(msg) {
+  $('#app').innerHTML = `
+  <div class="login"><div class="box">
+    <h1>Definir nova senha</h1>
+    <div class="muted small">Para ${esc(S.sessao?.user?.email || '')}</div>
+    <form id="f">
+      <label>Nova senha (mín. 8)</label><input id="s1" type="password" autocomplete="new-password" minlength="8" required>
+      <label>Repita</label><input id="s2" type="password" autocomplete="new-password" minlength="8" required>
+      <div style="margin-top:16px"><button class="primary" style="width:100%" type="submit">Salvar e entrar</button></div>
+    </form>
+    ${msg ? `<div class="msg err">${esc(msg)}</div>` : ''}
+  </div></div>`;
+  $('#f').onsubmit = async e => {
+    e.preventDefault();
+    if ($('#s1').value !== $('#s2').value) return renderNovaSenha('As duas senhas não são iguais.');
+    const { error } = await sb.auth.updateUser({ password: $('#s1').value });
+    if (error) return renderNovaSenha(error.message);
+    history.replaceState(null, '', location.pathname);
+    await entrar();
+  };
+}
+
+function renderSemAcesso() {
+  pararTimers();
+  $('#app').innerHTML = `
+  <div class="login"><div class="box">
+    <h1>Sem acesso</h1>
+    <p class="small">A conta <b>${esc(S.sessao?.user?.email || '')}</b> está logada, mas não está na lista de admins. O banco não devolve nada para ela.</p>
+    <button id="sair" class="primary" style="width:100%">Sair</button>
+  </div></div>`;
+  $('#sair').onclick = () => sb.auth.signOut();
+}
+
+/* ---------- dados ---------- */
+async function carregar() {
+  const [f, t] = await Promise.all([
+    sb.rpc('fila_atendimento', { p_dias: S.dias }),
+    sb.rpc('atendimento_travados'),
+  ]);
+  if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
+  S.erro = null;
+  S.fila = f.data || []; S.travados = t.data || [];
+  const agora = S.fila[0]?.agora || S.travados[0]?.agora;
+  S.agoraMs = agora ? new Date(agora).getTime() : Date.now();
+  S.agoraLocalAt = Date.now();
+  S.carregadoEm = Date.now();
+  renderLista(); renderStatus();
+  if (S.sel) renderDetalhe(); // reflete prazos novos sem refazer a ficha
+}
+
+async function abrir(item) {
+  S.sel = { autor_id: item.autor_id || item.conversa_id, marca: item.marca, autor: item.autor, canal: item.canal || 'dm', item };
+  S.ficha = null; S.thread = null; S.fichaErro = null;
+  S.mobileDetalhe = true;
+  renderLista(); renderDetalhe();
+  const [fi, th] = await Promise.all([
+    sb.rpc('ficha_cliente', { p_autor_id: S.sel.autor_id, p_marca: S.sel.marca || null }),
+    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor')
+      .eq('autor_id', S.sel.autor_id).order('criado_em', { ascending: false }).limit(120),
+  ]);
+  if (fi.error || th.error) S.fichaErro = (fi.error || th.error).message;
+  S.ficha = fi.data || null;
+  S.thread = (th.data || []).reverse();
+  if (!S.sel.autor) S.sel.autor = S.thread.find(m => m.autor)?.autor || null;
+  renderDetalhe();
+}
+
+function iniciarTimers() {
+  pararTimers();
+  S.timer = setInterval(carregar, CONFIG.refreshSeg * 1000);
+  S.tick = setInterval(() => { renderStatus(); atualizarJanelasVivas(); }, 30 * 1000);
+  document.addEventListener('visibilitychange', onVisivel);
+}
+function pararTimers() { clearInterval(S.timer); clearInterval(S.tick); document.removeEventListener('visibilitychange', onVisivel); }
+function onVisivel() { if (document.visibilityState === 'visible' && S.admin && Date.now() - (S.carregadoEm || 0) > 20e3) carregar(); }
+function atualizarJanelasVivas() { if (S.admin) { renderLista(); if (S.sel) renderDetalhe(); } }
+
+/* ---------- render: shell ---------- */
+function renderApp() {
+  $('#app').innerHTML = `
+  <header>
+    <h1><span class="star">✦</span> Fila</h1>
+    <span id="status" class="pill">…</span>
+    <div class="grow"></div>
+    <div class="filters">
+      <select id="fMarca" title="Marca">
+        <option value="todas">Todas as marcas</option>
+        <option value="mapa_del_tarot">Mapa del Tarot</option>
+        <option value="cartomaps">Carto Maps</option>
+        <option value="atlante_delle_carte">Atlante</option>
+      </select>
+      <select id="fCanal" title="Canal">
+        <option value="todos">DM + comentários</option>
+        <option value="dm">Só DM</option>
+        <option value="comentario">Só comentários</option>
+      </select>
+      <select id="fDias" title="Quantos dias olhar para trás">
+        <option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option>
+      </select>
+      <label class="pill" style="cursor:pointer"><input type="checkbox" id="fBaixa" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">spam e já na fila</label>
+    </div>
+    <button class="small" id="recarregar" title="Recarregar agora">↻</button>
+    <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
+  </header>
+  <div class="layout">
+    <div class="list" id="lista"></div>
+    <div class="detail" id="detalhe"><div class="empty"><div>Toque em alguém da fila para ver a conversa e a ficha da compra.</div></div></div>
+  </div>`;
+  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fBaixa').checked = S.filtro.baixa;
+  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderLista(); };
+  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderLista(); };
+  $('#fBaixa').onchange = e => { S.filtro.baixa = e.target.checked; renderLista(); };
+  $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
+  $('#recarregar').onclick = carregar;
+  $('#sair').onclick = () => sb.auth.signOut();
+  renderDetalhe(); // no celular, esconde a coluna de detalhe até alguém ser escolhido
+}
+
+function renderStatus() {
+  const el = $('#status'); if (!el) return;
+  if (S.erro) { el.className = 'pill err'; el.textContent = 'erro: ' + S.erro; el.title = S.erro; return; }
+  if (!S.carregadoEm) { el.className = 'pill'; el.textContent = 'carregando…'; return; }
+  const s = Math.round((Date.now() - S.carregadoEm) / 1000);
+  el.className = 'pill ' + (s > CONFIG.refreshSeg * 3 ? 'stale' : 'live');
+  el.textContent = s < 5 ? 'agora' : s < 60 ? `há ${s}s` : `há ${Math.round(s / 60)} min`;
+  el.title = 'Relógio do servidor: ' + agoraServidor().toLocaleString('pt-BR');
+}
+
+/* ---------- render: lista ---------- */
+function visiveis() {
+  return S.fila.filter(it => {
+    if (S.filtro.marca !== 'todas' && it.marca !== S.filtro.marca) return false;
+    if (S.filtro.canal !== 'todos' && it.canal !== S.filtro.canal) return false;
+    if (!S.filtro.baixa && it.urgencia >= 8) return false;
+    return true;
+  }).sort((a, b) => a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde));
+}
+
+function renderLista() {
+  const el = $('#lista'); if (!el) return;
+  el.classList.toggle('hide-m', S.mobileDetalhe);
+  const itens = visiveis();
+  const ocultos = S.fila.length - S.fila.filter(it => S.filtro.baixa || it.urgencia < 8).length;
+  const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
+
+  let h = `<div class="section-h">Esperando resposta <span class="n">${itens.length}</span>
+           ${ocultos && !S.filtro.baixa ? `<span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">+${ocultos} spam/na fila</span>` : ''}</div>`;
+  if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
+  else if (!itens.length) h += `<div class="notice">Ninguém esperando nos últimos ${S.dias} dias com esses filtros. 🎉</div>`;
+  h += itens.map(cardHtml).join('');
+
+  h += `<div class="section-h" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
+        <div class="tiny muted" style="margin:-4px 4px 8px">Estado ≠ resolvido em <span class="mono">atendimento_estado</span>. Só saem quando escreverem de novo ou alguém resolver à mão.</div>`;
+  h += trav.map(t => {
+    const selecionado = S.sel && S.sel.autor_id === t.conversa_id;
+    return `<div class="trav ${selecionado ? 'sel' : ''}" data-trav="${esc(t.id)}">
+      ${marcaChip(t.marca)}
+      <span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
+        ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}
+        ${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}
+        ${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}
+      </span>
+      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span>
+    </div>`;
+  }).join('');
+  el.innerHTML = h;
+
+  el.querySelectorAll('.card').forEach(c => c.onclick = () => {
+    const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal);
+    if (it) abrir(it);
+  });
+  el.querySelectorAll('.trav').forEach(c => c.onclick = () => {
+    const t = S.travados.find(x => String(x.id) === c.dataset.trav);
+    if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t });
+  });
+}
+
+function cardHtml(it) {
+  const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
+  const cor = URG_COR[it.urgencia] || 'var(--u5)';
+  const j = janelas(it.ultima_entrada, it.canal);
+  const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto — mídia)</span>`;
+  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''}" style="--ub:${cor}"
+               data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
+    <div class="who">
+      <span>${esc(nomeAutor(it))}</span>
+      ${marcaChip(it.marca)} <span class="chip">${canalTxt(it.canal)}</span>
+      <span class="espera" title="primeira mensagem sem resposta: ${fmtDataHora(it.espera_desde)}">espera ${dur(horasDesde(it.espera_desde), false)}</span>
+    </div>
+    <div class="motivo">${esc(it.motivo_urgencia)}</div>
+    <div class="txt">${txt}</div>
+    <div class="chips">
+      ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
+      ${it.n_sem_resposta > 1 ? `<span class="chip">${it.n_sem_resposta} msgs sem resposta</span>` : ''}
+      ${(it.categorias || '').split(', ').filter(Boolean).map(c => `<span class="chip">${esc(c)}</span>`).join('')}
+      ${it.estado ? `<span class="chip">${esc(it.estado)}</span>` : ''}
+      ${it.email_informado ? `<span class="chip mail">${esc(it.email_informado)}</span>` : ''}
+      ${it.pausado_ate && new Date(it.pausado_ate) > agoraServidor() ? `<span class="chip pausa">bot pausado até ${fmtHora(it.pausado_ate)}</span>` : ''}
+      ${it.resposta_na_fila ? `<span class="chip fila">resposta na fila</span>` : ''}
+    </div>
+    ${janelaHtml(j)}
+  </div>`;
+}
+
+/* ---------- render: detalhe ---------- */
+function renderDetalhe() {
+  const el = $('#detalhe'); if (!el) return;
+  el.classList.toggle('hide-m', !S.mobileDetalhe);
+  if (!S.sel) { el.innerHTML = `<div class="empty"><div>Toque em alguém da fila para ver a conversa e a ficha da compra.</div></div>`; return; }
+  const s = S.sel, it = s.item || {}, f = S.ficha;
+  const j = janelas(it.ultima_entrada || S.thread?.filter(m => m.direcao === 'entrada').slice(-1)[0]?.criado_em, s.canal);
+  const m = MARCA[s.marca] || {};
+
+  let h = `<div class="dhead">
+    <button class="back small" id="voltar">← Fila</button>
+    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>
+    ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>
+    ${linkIg(s.autor)}
+    <span class="mono muted" title="autor_id / conversa_id">${esc(s.autor_id)}</span>
+  </div>`;
+
+  if (it.motivo_urgencia) h += `<div class="notice" style="color:${URG_COR[it.urgencia] || 'inherit'};font-weight:600">${esc(it.motivo_urgencia)} · esperando ${dur(horasDesde(it.espera_desde))}</div>`;
+  if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (ex.: comprovante). O banco não guarda a mídia — abra a conversa no Instagram antes de responder.</div>`;
+
+  h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}
+        <div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(it.ultima_entrada)}), com o relógio do servidor.</div></div>`;
+
+  // estado do fluxo
+  const est = f?.estado || it.travado || null;
+  const pausa = f?.pausa;
+  h += `<div class="block"><h3>Estado no fluxo automático</h3><div class="kv">
+    <span class="k">estado</span><span>${esc(est?.estado || it.estado || '— (nunca entrou no fluxo de acesso)')}</span>
+    ${est?.email_informado ? `<span class="k">e-mail informado</span><span class="mono">${esc(est.email_informado)}</span>` : ''}
+    ${est?.tentativas != null ? `<span class="k">tentativas</span><span>${esc(est.tentativas)}</span>` : ''}
+    ${est?.atualizado_em ? `<span class="k">atualizado</span><span>${fmtDataHora(est.atualizado_em)} (${dur(horasDesde(est.atualizado_em), false)} atrás)</span>` : ''}
+    ${pausa ? `<span class="k">bot pausado</span><span>${new Date(pausa.pausado_ate) > agoraServidor() ? 'até ' + fmtDataHora(pausa.pausado_ate) : 'expirou ' + fmtDataHora(pausa.pausado_ate)} · ${esc(pausa.motivo || '')}</span>` : ''}
+    ${it.resposta_na_fila ? `<span class="k">fila</span><span style="color:var(--ok)">há resposta agendada em fila_respostas, sai em até 5 min</span>` : ''}
+  </div></div>`;
+
+  if (S.fichaErro) h += `<div class="notice bad">Erro ao carregar a ficha: ${esc(S.fichaErro)}</div>`;
+  if (!f && !S.fichaErro) h += `<div class="notice">Carregando ficha…</div>`;
+
+  if (f) {
+    // e-mails
+    h += `<div class="block"><h3>E-mails achados</h3>`;
+    h += f.emails.length ? f.emails.map(e => `<span class="chip mail" style="font-size:13px">${esc(e)}</span> `).join('')
+                         : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart.</div>`;
+    h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou.</div></div>`;
+
+    // compras
+    const pagas = f.compras.filter(c => c.pago);
+    const totais = {};
+    pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
+    h += `<div class="block"><h3>Compras na Hotmart <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· ${f.compras.length} registro(s), ${pagas.length} paga(s)${pagas.length ? ' · ' + Object.entries(totais).map(([m, v]) => fmtValor(v, m)).join(' + ') : ''}</span></h3>`;
+    if (!f.compras.length) h += `<div class="muted small">Nada encontrado para ${f.emails.length ? 'esses e-mails' : 'este cliente'}.</div>`;
+    else h += `<div class="tablewrap"><table><thead><tr><th>Quando</th><th>Produto</th><th>Valor</th><th>Status</th><th>Transação</th><th>Pgto</th></tr></thead><tbody>` +
+      f.compras.map(c => `<tr>
+        <td class="small" style="white-space:nowrap">${fmtDataHora(c.aprovado_em || c.registrado_em)}</td>
+        <td>${esc((c.produto_nome || '').replace(/&amp;/g, '&'))}<div class="tiny muted">${esc(c.nome || '')} · ${esc(c.email)}${c.pais ? ' · ' + esc(c.pais) : ''}</div></td>
+        <td style="white-space:nowrap">${fmtValor(c.valor, c.moeda)}</td>
+        <td><span class="st ${c.pago ? 'pago' : ['REFUNDED','CHARGEBACK','DISPUTE'].includes(c.status) ? 'neg' : ''}">${esc(c.status)}</span></td>
+        <td class="mono">${esc(c.transacao)}</td>
+        <td class="small">${esc(c.pagamento || '—')}</td></tr>`).join('') + `</tbody></table></div>`;
+    h += `</div>`;
+
+    // arquivos
+    h += `<div class="block"><h3>Arquivos a que tem direito <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· ${f.n_logins} login(s), ${f.n_downloads} download(s) na biblioteca</span></h3>`;
+    if (!f.itens.length) h += `<div class="muted small">${pagas.length ? 'Compra paga, mas nenhum item em itens_membros libera por esse produto — cadastro faltando.' : 'Sem compra paga, sem arquivo.'}</div>`;
+    else h += `<div class="tablewrap"><table><thead><tr><th>Arquivo</th><th>Marca</th><th>Baixou?</th></tr></thead><tbody>` +
+      f.itens.map(i => `<tr><td>${esc(i.titulo)}<div class="tiny muted mono">${esc(i.bucket)} / ${esc(i.arquivo)}</div></td>
+        <td>${marcaChip(i.marca)}</td>
+        <td>${i.baixado_em ? `<span class="st pago">${fmtDataHora(i.baixado_em)}</span>` : `<span class="st">nunca</span>`}</td></tr>`).join('') + `</tbody></table></div>`;
+    if (f.acessos.length) h += `<details style="margin-top:8px"><summary>Últimos ${f.acessos.length} eventos na biblioteca</summary><div class="small" style="margin-top:6px">` +
+      f.acessos.map(a => `<div>${fmtDataHora(a.criado_em)} · <b>${esc(a.evento)}</b>${a.arquivo ? ' · ' + esc(a.arquivo) : ''} <span class="muted">${esc(a.email)}</span></div>`).join('') + `</div></details>`;
+    h += `</div>`;
+
+    // reembolsos / verificações / pendentes
+    if (f.reembolsos.length) h += `<div class="block"><h3>Reembolso pedido</h3>` + f.reembolsos.map(r => `
+      <div class="kv"><span class="k">pedido em</span><span>${fmtDataHora(r.pedido_em)}</span>
+      <span class="k">transações</span><span class="mono">${esc((r.transacoes || []).join(', '))} · ${fmtValor(r.valor_total, r.moeda)}</span>
+      <span class="k">motivo</span><span>${esc(r.motivo || '—')} <span class="muted tiny">(${esc(r.motivo_origem || '')})</span></span>
+      <span class="k">orientado</span><span>${r.orientado_em ? fmtDataHora(r.orientado_em) : '<span style="color:var(--danger)">ainda não recebeu o passo a passo</span>'}</span>
+      ${r.observacao ? `<span class="k">obs.</span><span class="small">${esc(r.observacao)}</span>` : ''}</div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
+    if (f.verificacoes.length) h += `<div class="block"><h3>Verificações automáticas de compra</h3>` + f.verificacoes.map(v => `
+      <div class="small">${fmtDataHora(v.criado_em)} · <span class="mono">${esc(v.email_consultado)}</span> → <b>${esc(v.resultado)}</b> (${esc(v.qtd_encontrada)} achada(s)${v.status_compra ? ', ' + esc(v.status_compra) : ''}) · ${esc(v.acao_tomada || '')}</div>`).join('') + `</div>`;
+    if (f.pendentes.length) h += `<div class="block"><h3>Respostas aguardando aprovação</h3>` + f.pendentes.map(p => `
+      <div class="small"><b>${esc(p.estado)}</b> · v${esc(p.versao)} · ${fmtDataHora(p.criado_em)}<div style="white-space:pre-wrap;margin-top:4px">${esc(p.resposta)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
+  }
+
+  // conversa
+  h += `<div class="block"><h3>Conversa <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:500">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
+  if (!S.thread) h += `<div class="muted small">Carregando…</div>`;
+  else h += `<div class="thread">${threadHtml()}</div>`;
+  h += `</div>`;
+
+  el.innerHTML = h;
+  const b = $('#voltar'); if (b) b.onclick = () => { S.mobileDetalhe = false; renderLista(); renderDetalhe(); window.scrollTo(0, 0); };
+  if (S.thread) { const t = el.querySelector('.thread'); if (t) t.scrollTop = t.scrollHeight; }
+}
+
+function threadHtml() {
+  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, marca: m.marca, cat: m.categoria, id: m.id }));
+  (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, marca: fr.marca, fila: fr }));
+  msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
+  let dia = '', h = '';
+  for (const m of msgs) {
+    const d = fmtDataLonga(m.t);
+    if (d !== dia) { dia = d; h += `<div class="day">${esc(d)}</div>`; }
+    const vazio = !m.texto || !String(m.texto).trim();
+    const cls = m.dir === 'entrada' ? 'in' : 'out';
+    const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
+    const meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}${m.fila ? ' · fila #' + esc(m.fila.id) + (m.fila.enviado_em ? ' enviada' + (m.fila.resultado ? ' (' + esc(m.fila.resultado) + ')' : '') : ' · AINDA NÃO ENVIADA') : ''}`;
+    if (vazio && m.dir === 'entrada') h += `<div class="msg in midia">📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra}">${esc(m.texto)}<span class="m">${meta}</span></div>`;
+  }
+  return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
+}
+
+iniciar();
+</script>
+</body>
+</html>
