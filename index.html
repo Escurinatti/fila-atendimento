@@ -217,7 +217,7 @@ const S = {
   sessao: null, admin: false,
   fila: [], travados: [], erro: null,
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
-  filtro: { marca: 'todas', canal: 'todos', idioma: 'todos' },
+  filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', origem: 'todas' },
   ordem: (() => { try { return localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
@@ -528,6 +528,7 @@ function renderApp() {
       <div class="grow"></div>
       <div class="filters">
         <select id="fMarca" title="Marca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot</option><option value="cartomaps">Carto Maps</option><option value="atlante_delle_carte">Atlante</option></select>
+        <select id="fOrigem" title="Instagram ou Facebook"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select>
         <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
         <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="90">90 dias</option></select>
         <div class="seg" title="Ordem da lista"><button id="ordUrg" class="${S.ordem === 'urgencia' ? 'on' : ''}">Urgência</button><button id="ordRec" class="${S.ordem === 'recentes' ? 'on' : ''}">Mais recentes</button></div>
@@ -543,6 +544,7 @@ function renderApp() {
   $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA;
   $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderTabs(); renderLista(); };
   $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderTabs(); renderLista(); };
+  $('#fOrigem').value = S.filtro.origem; $('#fOrigem').onchange = e => { S.filtro.origem = e.target.value; renderTabs(); renderLista(); };
   $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
   $('#fAuto').onchange = e => { S.autoIA = e.target.checked; try { localStorage.setItem('fila.autoIA', S.autoIA ? '1' : '0'); } catch {} };
   $('#btConhec').onclick = abrirConhecimento;
@@ -565,7 +567,7 @@ function renderStatus() {
 /* ---------- lista ---------- */
 const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
 function baseFiltrada() {
-  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
+  return S.fila.filter(it => (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
 }
 function visiveis() {
   return baseFiltrada().filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
