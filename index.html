@@ -172,7 +172,66 @@
   .fato .tema{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;white-space:nowrap;margin-top:3px}
   .fato .tx{flex:1;white-space:pre-wrap}
 
+  /* redesenho 07/09: cabeçalho em 2 linhas, busca, filtros recolhidos */
+  .hrow{padding:8px 16px}
+  .search{display:flex;align-items:center;gap:6px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:0 8px 0 10px;min-width:220px;flex:1;max-width:420px}
+  .search input{border:0;background:transparent;padding:7px 0;width:100%;font-size:14px} .search input:focus{outline:none}
+  .search button{border:0;background:transparent;padding:2px 6px;color:var(--muted);font-size:16px;line-height:1}
+  .toolbar{display:flex;align-items:center;gap:8px;padding:0 16px 8px;flex-wrap:wrap}
+  .toolbar .tabs{padding:0;flex:1;min-width:0}
+  .tools{display:flex;gap:6px;align-items:center;margin-left:auto}
+  .tools .n{background:var(--accent);color:#fff;border-radius:999px;padding:0 6px;font-size:11px;font-weight:700;margin-left:3px}
+  .tools .n:empty{display:none}
+  .fpanel{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;padding:12px 16px 14px;border-top:1px solid var(--line);background:var(--soft)}
+  .fpanel label.lbl{margin-bottom:3px}
+  .fpanel select{width:100%;font-size:13.5px;padding:7px 9px;background:#fff}
+  .fpanel .chk{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:7px 0;cursor:pointer}
+  .fpanel .chk input{width:auto;margin:0}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 8px}
+  .fchips:empty{display:none}
+  .fchip{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--soft2);color:var(--accent-ink);display:inline-flex;gap:6px;align-items:center;cursor:pointer;border:0}
+  .fchip:hover{background:var(--accent);color:#fff}
+  .grp{position:sticky;top:0;z-index:2;background:var(--bg);padding:6px 4px;margin:8px 0 6px}
+  .card{padding:11px 14px 11px 16px}
+  .card .av{width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:700;background:var(--soft2);color:var(--ink);flex:none}
+  .card .av.mdt{background:#e8eefc;color:#1a4fd6} .card .av.cm{background:#e6f4ee;color:#166b45} .card .av.it{background:#f3e9fb;color:#6b2fa0}
+  .card .nm{font-weight:650;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  .card .who{flex-wrap:nowrap}
+  .card .chip.canal{background:transparent;border:1px solid var(--line);padding:1px 7px}
+  .card .motivo{margin-top:4px}
+  .card .txt{margin:4px 0 0}
+  .card .chips{margin-top:6px} .card .chips:empty{display:none}
+  .resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}
+  .rs{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;min-width:0}
+  .rs .k{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+  .rs b{font-weight:600;font-size:13.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rs.alerta{border-color:#f3c2c2;background:#fffafa} .rs.alerta b{color:var(--danger)}
+  .rs.ok b{color:var(--ok)}
+  .rs.sit b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .actbar{position:sticky;top:0;z-index:5;display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:rgba(244,247,251,.94);backdrop-filter:blur(6px);padding:8px 0;margin:6px 0 4px}
+  .dd{position:relative;display:inline-block}
+  .ddm{position:absolute;top:calc(100% + 6px);left:0;z-index:30;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(15,31,61,.14);padding:6px;min-width:260px;display:flex;flex-direction:column;gap:2px}
+  .ddm button{border:0;text-align:left;border-radius:8px;padding:9px 12px;background:transparent;width:100%}
+  .ddm button:hover{background:var(--soft)}
+  .ddm .sep{height:1px;background:var(--line);margin:4px 6px}
+  .ddm .hint{font-size:11.5px;color:var(--muted);padding:4px 12px 6px}
+  details.ficha{margin:14px 0}
+  details.ficha>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);font-weight:600}
+  details.ficha>summary::-webkit-details-marker{display:none}
+  details.ficha>summary::after{content:"▸";margin-left:auto;color:var(--muted)} details.ficha[open]>summary::after{content:"▾"}
+  details.ficha>summary .sub{font-weight:500;color:var(--muted);font-size:13px}
+  .dhead .mono{font-size:11.5px}
+
   @media (max-width: 880px){
+    .search{min-width:0;max-width:none;order:9;flex-basis:100%}
+    .toolbar{padding:0 10px 8px}
+    .fpanel{padding:10px}
+    .fchips{padding:0 10px 8px}
+    .resumo{grid-template-columns:1fr 1fr}
+    .ddm{position:fixed;left:10px;right:10px;top:auto;bottom:12px;min-width:0;max-height:70vh;overflow-y:auto}
+    .toolbar .tabs{flex-basis:100%;order:1}
+    .tools{order:2;margin-left:0;width:100%;justify-content:space-between}
+    .actbar span.tiny{display:none}
     .layout{display:block}
     .list,.detail{max-height:none;border-right:0}
     .list.hide-m,.detail.hide-m{display:none}
@@ -221,6 +280,8 @@ const S = {
   verBot: (() => { try { return localStorage.getItem('fila.verBot') === '1'; } catch { return false; } })(),
   visao: (() => { try { return localStorage.getItem('fila.visao') || 'fila'; } catch { return 'fila'; } })(),
   situacao: 'todas',
+  busca: '', fpanel: false,
+  fichaAberta: (() => { try { return localStorage.getItem('fila.fichaAberta') === '1'; } catch { return false; } })(),
   ordem: (() => { try { return localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
@@ -527,42 +588,73 @@ function renderApp() {
   <header>
     <div class="hrow">
       <h1><span class="logo">✦</span>Fila</h1>
+      <div class="seg" title="Fila: só o que espera resposta. Tudo: todas as conversas, com quem respondeu"><button id="visFila" class="${S.visao === 'fila' ? 'on' : ''}">Fila</button><button id="visTudo" class="${S.visao === 'tudo' ? 'on' : ''}">Tudo</button></div>
       <span id="status" class="pill">…</span>
       <div class="grow"></div>
-      <div class="filters">
-        <div class="seg" title="Fila: só o que espera resposta. Tudo: todas as conversas, com quem respondeu"><button id="visFila" class="${S.visao === 'fila' ? 'on' : ''}">Fila</button><button id="visTudo" class="${S.visao === 'tudo' ? 'on' : ''}">Tudo</button></div>
-        <select id="fSit" title="Situação" class="${S.visao === 'tudo' ? '' : 'hide'}"><option value="todas">Todas as situações</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select>
-        <select id="fMarca" title="Marca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot</option><option value="cartomaps">Carto Maps</option><option value="atlante_delle_carte">Atlante</option></select>
-        <select id="fOrigem" title="Instagram ou Facebook"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select>
-        <select id="fCanal" title="Canal"><option value="todos">DM + comentários</option><option value="dm">Só DM</option><option value="comentario">Só comentários</option></select>
-        <select id="fDias" title="Quantos dias olhar para trás"><option value="3">3 dias</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="90">90 dias</option></select>
-        <div class="seg" title="Ordem da lista"><button id="ordUrg" class="${S.ordem === 'urgencia' ? 'on' : ''}">Urgência</button><button id="ordRec" class="${S.ordem === 'recentes' ? 'on' : ''}">Mais recentes</button></div>
-        <label class="pill" style="cursor:pointer" title="Mostra também as conversas das últimas 24h que o bot respondeu sozinho, para você conferir"><input type="checkbox" id="fVerBot" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">ver o que o bot respondeu (24h)</label>
-        <label class="pill" style="cursor:pointer" title="Ao abrir alguém que precisa de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto" style="width:auto;margin:0 5px 0 0;vertical-align:-2px">IA automática</label>
-        <button class="small" id="btConhec" title="O que a IA sabe sobre a empresa">Conhecimento da IA</button>
-      </div>
+      <div class="search"><span class="muted">🔍</span><input id="busca" placeholder="Buscar por nome, texto ou e-mail…" value="${esc(S.busca)}" autocomplete="off"><button id="buscaX" class="${S.busca ? '' : 'hide'}" title="limpar">×</button></div>
       <button class="small" id="recarregar" title="Recarregar agora">↻</button>
       <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
     </div>
-    <div class="tabs" id="tabs"></div>
+    <div class="toolbar">
+      <div class="tabs" id="tabs"></div>
+      <div class="tools">
+        <div class="seg ${S.visao === 'tudo' ? 'hide' : ''}" id="segOrdem" title="Ordem da lista"><button id="ordUrg" class="${S.ordem === 'urgencia' ? 'on' : ''}">Urgência</button><button id="ordRec" class="${S.ordem === 'recentes' ? 'on' : ''}">Recentes</button></div>
+        <button class="small ${S.fpanel ? 'primary' : ''}" id="btFiltros" title="Marca, rede, canal, período e opções">Filtros<span class="n" id="nFiltros"></span></button>
+        <button class="small ghost" id="btConhec" title="O que a IA sabe sobre a empresa">✨ IA</button>
+      </div>
+    </div>
+    <div id="fpanel" class="fpanel ${S.fpanel ? '' : 'hide'}">
+      <div class="${S.visao === 'tudo' ? '' : 'hide'}" id="wrapSit"><label class="lbl">Situação</label><select id="fSit"><option value="todas">Todas</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select></div>
+      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option></select></div>
+      <div><label class="lbl">Rede</label><select id="fOrigem"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select></div>
+      <div><label class="lbl">Canal</label><select id="fCanal"><option value="todos">DM + comentários</option><option value="dm">Só mensagens diretas</option><option value="comentario">Só comentários</option></select></div>
+      <div><label class="lbl">Período</label><select id="fDias"><option value="3">Últimos 3 dias</option><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></div>
+      <div><label class="lbl">Opções</label>
+        <label class="chk" title="Mostra também as conversas das últimas 24h que o bot respondeu sozinho, para você conferir"><input type="checkbox" id="fVerBot"> ver o que o bot respondeu (24h)</label>
+        <label class="chk" title="Ao abrir alguém que precisa de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto"> IA sugere sozinha ao abrir</label>
+      </div>
+    </div>
+    <div id="fchips" class="fchips"></div>
   </header>
   <div class="layout"><div class="list" id="lista"></div><div class="detail" id="detalhe"></div></div>`;
   $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA; $('#fVerBot').checked = S.verBot;
-  $('#fVerBot').onchange = e => { S.verBot = e.target.checked; try { localStorage.setItem('fila.verBot', S.verBot ? '1' : '0'); } catch {} carregar(); };
-  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderTabs(); renderLista(); };
-  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderTabs(); renderLista(); };
-  $('#fOrigem').value = S.filtro.origem; $('#fOrigem').onchange = e => { S.filtro.origem = e.target.value; renderTabs(); renderLista(); };
-  $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
+  $('#fVerBot').onchange = e => { S.verBot = e.target.checked; try { localStorage.setItem('fila.verBot', S.verBot ? '1' : '0'); } catch {} renderChips(); carregar(); };
+  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderChips(); renderTabs(); renderLista(); };
+  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderChips(); renderTabs(); renderLista(); };
+  $('#fOrigem').value = S.filtro.origem; $('#fOrigem').onchange = e => { S.filtro.origem = e.target.value; renderChips(); renderTabs(); renderLista(); };
+  $('#fDias').onchange = e => { S.dias = Number(e.target.value); renderChips(); carregar(); };
   $('#fAuto').onchange = e => { S.autoIA = e.target.checked; try { localStorage.setItem('fila.autoIA', S.autoIA ? '1' : '0'); } catch {} };
   $('#btConhec').onclick = abrirConhecimento;
-  const setVisao = v => { S.visao = v; try { localStorage.setItem('fila.visao', v); } catch {} $('#visFila').className = v === 'fila' ? 'on' : ''; $('#visTudo').className = v === 'tudo' ? 'on' : ''; $('#fSit').classList.toggle('hide', v !== 'tudo'); carregar(); };
+  $('#btFiltros').onclick = () => { S.fpanel = !S.fpanel; $('#fpanel').classList.toggle('hide', !S.fpanel); $('#btFiltros').classList.toggle('primary', S.fpanel); };
+  const setVisao = v => { S.visao = v; try { localStorage.setItem('fila.visao', v); } catch {} $('#visFila').className = v === 'fila' ? 'on' : ''; $('#visTudo').className = v === 'tudo' ? 'on' : ''; $('#wrapSit').classList.toggle('hide', v !== 'tudo'); $('#segOrdem').classList.toggle('hide', v === 'tudo'); renderChips(); carregar(); };
   $('#visFila').onclick = () => setVisao('fila'); $('#visTudo').onclick = () => setVisao('tudo');
-  $('#fSit').value = S.situacao; $('#fSit').onchange = e => { S.situacao = e.target.value; renderTabs(); renderLista(); };
+  $('#fSit').value = S.situacao; $('#fSit').onchange = e => { S.situacao = e.target.value; renderChips(); renderTabs(); renderLista(); };
   const setOrdem = o => { S.ordem = o; try { localStorage.setItem('fila.ordem', o); } catch {} $('#ordUrg').className = o === 'urgencia' ? 'on' : ''; $('#ordRec').className = o === 'recentes' ? 'on' : ''; renderLista(); };
   $('#ordUrg').onclick = () => setOrdem('urgencia'); $('#ordRec').onclick = () => setOrdem('recentes');
+  const bu = $('#busca'); let debB;
+  bu.oninput = () => { S.busca = bu.value; $('#buscaX').classList.toggle('hide', !S.busca); clearTimeout(debB); debB = setTimeout(() => { renderTabs(); renderLista(); }, 200); };
+  bu.onkeydown = e => { if (e.key === 'Escape') { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderTabs(); renderLista(); } };
+  $('#buscaX').onclick = () => { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderTabs(); renderLista(); bu.focus(); };
   $('#recarregar').onclick = carregar;
   $('#sair').onclick = () => sb.auth.signOut();
-  renderTabs(); renderDetalhe();
+  renderChips(); renderTabs(); renderDetalhe();
+}
+function filtrosAtivos() {
+  const a = [];
+  if (S.filtro.marca !== 'todas') a.push({ t: (MARCA[S.filtro.marca] || {}).nome || S.filtro.marca, off: () => { S.filtro.marca = 'todas'; $('#fMarca').value = 'todas'; } });
+  if (S.filtro.origem !== 'todas') a.push({ t: S.filtro.origem === 'fb' ? 'Só Facebook' : 'Só Instagram', off: () => { S.filtro.origem = 'todas'; $('#fOrigem').value = 'todas'; } });
+  if (S.filtro.canal !== 'todos') a.push({ t: S.filtro.canal === 'dm' ? 'Só mensagens diretas' : 'Só comentários', off: () => { S.filtro.canal = 'todos'; $('#fCanal').value = 'todos'; } });
+  if (S.dias !== CONFIG.diasPadrao) a.push({ t: 'Últimos ' + S.dias + ' dias', off: () => { S.dias = CONFIG.diasPadrao; $('#fDias').value = String(S.dias); carregar(); } });
+  if (S.visao === 'tudo' && S.situacao !== 'todas') a.push({ t: $('#fSit') ? $('#fSit').selectedOptions[0].textContent : S.situacao, off: () => { S.situacao = 'todas'; $('#fSit').value = 'todas'; } });
+  if (S.verBot && S.visao !== 'tudo') a.push({ t: 'vendo o que o bot respondeu', off: () => { S.verBot = false; $('#fVerBot').checked = false; try { localStorage.setItem('fila.verBot', '0'); } catch {} carregar(); } });
+  return a;
+}
+function renderChips() {
+  const el = $('#fchips'), nb = $('#nFiltros'); if (!el) return;
+  const a = filtrosAtivos();
+  nb.textContent = a.length ? String(a.length) : '';
+  el.innerHTML = a.map((f, i) => `<button class="fchip" data-i="${i}" title="tirar este filtro">${esc(f.t)} ×</button>`).join('');
+  el.querySelectorAll('.fchip').forEach(b => b.onclick = () => { a[Number(b.dataset.i)].off(); renderChips(); renderTabs(); renderLista(); });
 }
 function renderStatus() {
   const el = $('#status'); if (!el) return;
@@ -579,13 +671,17 @@ const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
 function baseFiltrada() {
   return S.fila.filter(it => (S.visao !== 'tudo' || S.situacao === 'todas' || it.situacao === S.situacao) && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
 }
+function casaBusca(it) {
+  const q = (S.busca || '').trim().toLowerCase(); if (!q) return true;
+  return [it.autor, it.autor_id, it.ultimo_texto, it.ultima_resposta, it.email_informado, it.motivo_urgencia, it.categorias].some(v => v && String(v).toLowerCase().includes(q));
+}
 function visiveis() {
-  return baseFiltrada().filter(it => S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma)
+  return baseFiltrada().filter(it => (S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma) && casaBusca(it))
     .sort((a, b) => (S.visao === 'tudo' || S.ordem === 'recentes') ? (Math.max(+new Date(b.ultima_entrada), +new Date(b.ultima_resposta_em || 0)) - Math.max(+new Date(a.ultima_entrada), +new Date(a.ultima_resposta_em || 0))) : (a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde)));
 }
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
-  const base = S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5);
+  const base = (S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5)).filter(casaBusca);
   const n = { todos: base.length, es: 0, en: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
   const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
@@ -616,36 +712,38 @@ function renderLista() {
   if (gb.length && S.ordem !== 'recentes') h += `<div class="grp">Bot respondeu sozinho (24h) <span class="n">${gb.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">só para conferir</span></div>` + gb.map(cardHtml).join('');
   }
   h += `<details class="baixo"><summary><div class="grp">Não precisa de você <span class="n">${g3.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">agradecimento, spam, já na fila, ignorados</span></div></summary>${g3.map(cardHtml).join('')}</details>`;
-  h += `<div class="grp" style="margin-top:22px">Travados no fluxo <span class="n">${trav.length}</span></div>
-        <div class="tiny muted" style="margin:-4px 4px 8px">Estado ≠ resolvido em <span class="mono">atendimento_estado</span>. Abra e use "Marcar resolvido" quando estiver tratado.</div>`;
-  h += trav.map(t => `<div class="trav ${S.sel && S.sel.autor_id === t.conversa_id ? 'sel' : ''}" data-trav="${esc(t.id)}">
+  h += `<details class="baixo"><summary><div class="grp" style="margin-top:18px">Travados no fluxo <span class="n">${trav.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">estado ≠ resolvido no fluxo de acesso</span></div></summary>` + trav.map(t => `<div class="trav ${S.sel && S.sel.autor_id === t.conversa_id ? 'sel' : ''}" data-trav="${esc(t.id)}">
       ${marcaChip(t.marca)}<span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
         ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}</span>
-      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span></div>`).join('');
+      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span></div>`).join('') + '</details>';
   el.innerHTML = h;
   el.querySelectorAll('.card').forEach(c => c.onclick = () => { const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal); if (it) abrir(it); });
   el.querySelectorAll('.trav').forEach(c => c.onclick = () => { const t = S.travados.find(x => String(x.id) === c.dataset.trav); if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t }); });
 }
+const canalCurto = c => c === 'dm' ? 'DM' : c === 'dm_fb' ? 'Messenger' : 'Comentário';
 function cardHtml(it) {
   const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
   const cor = S.visao === 'tudo' ? ({ precisa: 'var(--u1)', sem_resposta: 'var(--u2)', bot: 'var(--u5)', voce: 'var(--ok)', ignorado: 'var(--u9)' }[it.situacao] || 'var(--u5)') : (URG_COR[it.urgencia] || 'var(--u5)');
-  const j = janelas(it.ultima_entrada, it.canal);
   const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
+  const recente = S.visao === 'tudo' || S.ordem === 'recentes';
+  const quando = recente ? 'há ' + dur(horasDesde(Math.max(+new Date(it.ultima_entrada), +new Date(it.ultima_resposta_em || 0))), false) : 'espera ' + dur(horasDesde(it.espera_desde), false);
+  const mk = MARCA[it.marca] || { cls: '', nome: it.marca };
+  const ini = (it.autor || '?').replace(/^@/, '').charAt(0).toUpperCase();
+  const fecha24 = ehDireta(it.canal) && it.janela_24h_h != null && it.janela_24h_h > 0 && it.janela_24h_h <= 6;
   return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
-    <div class="who">${langChip(it.idioma)}<span>${esc(nomeAutor(it))}</span>${marcaChip(it.marca)} <span class="chip" ${ehFb(it.canal) ? 'style="background:#e8f0fe;color:#1a4fd6;font-weight:600"' : ''}>${canalTxt(it.canal)}</span>
-      <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${(S.visao === 'tudo' || S.ordem === 'recentes') ? 'há ' + dur(horasDesde(Math.max(+new Date(it.ultima_entrada), +new Date(it.ultima_resposta_em || 0))), false) : 'espera ' + dur(horasDesde(it.espera_desde), false)}</span></div>
+    <div class="who"><span class="av ${mk.cls}" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm" title="${esc(mk.nome)}">${esc(nomeAutor(it))}</span>${langChip(it.idioma)}<span class="chip canal" title="${esc(mk.nome)} · ${ehFb(it.canal) ? 'Facebook' : 'Instagram'}">${ehFb(it.canal) ? '📘' : '📷'} ${canalCurto(it.canal)}</span>
+      <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${quando}</span></div>
     <div class="motivo">${esc(it.motivo_urgencia)}</div>
     <div class="txt">${txt}</div>
-    ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:2px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600">sem nenhuma resposta</div>`) : ''}
+    ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:4px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600;margin-top:4px">sem nenhuma resposta</div>`) : ''}
     <div class="chips">
       ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
       ${it.n_sem_resposta > 1 ? `<span class="chip">${it.n_sem_resposta} msgs sem resposta</span>` : ''}
-      ${(it.categorias || '').split(', ').filter(Boolean).map(c => `<span class="chip">${esc(c)}</span>`).join('')}
-      ${it.estado ? `<span class="chip">${esc(it.estado)}</span>` : ''}
+      ${fecha24 ? `<span class="chip" style="background:#fff7e8;color:#7a4d00;font-weight:600">⏳ 24h fecha em ${dur(it.janela_24h_h, false)}</span>` : ''}
       ${it.email_informado ? `<span class="chip mail">${esc(it.email_informado)}</span>` : ''}
-      ${it.pausado_ate && new Date(it.pausado_ate) > agoraServidor() ? `<span class="chip pausa">bot pausado até ${fmtHora(it.pausado_ate)}</span>` : ''}
+      ${it.pausado_ate && new Date(it.pausado_ate) > agoraServidor() ? `<span class="chip pausa">bot pausado</span>` : ''}
       ${it.resposta_na_fila ? `<span class="chip fila">resposta na fila</span>` : ''}
-    </div>${janelaHtml(j)}</div>`;
+    </div></div>`;
 }
 
 /* ---------- detalhe ---------- */
@@ -669,30 +767,48 @@ function renderDetalhe() {
   const estadoAtual = est?.estado || it.estado || null;
   const pendentesFila = (f?.fila || []).filter(x => !x.enviado_em);
 
+  const pagas = (f?.compras || []).filter(c => c.pago);
+  const emailResumo = est?.email_informado || (f?.emails || [])[0] || '';
+  const ignorada = it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '');
   let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
-    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${canalTxt(s.canal)}</span>${linkIg(s.autor)}
+    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${ehFb(s.canal) ? '📘' : '📷'} ${canalTxt(s.canal)}</span>${linkIg(s.autor)}
     <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
-  if (it.motivo_urgencia) h += `<div class="notice" style="color:${URG_COR[it.urgencia] || 'inherit'};font-weight:600;background:#fff;border:1px solid var(--line)">${esc(it.motivo_urgencia)} · esperando ${dur(horasDesde(it.espera_desde))}</div>`;
+  h += `<div class="resumo">
+    <div class="rs sit ${it.urgencia <= 2 ? 'alerta' : ''}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}" style="color:${URG_COR[it.urgencia] || 'inherit'}">${esc(it.motivo_urgencia || (it.travado ? 'Travado no fluxo' : '—'))}</b>${it.espera_desde ? `<span class="tiny muted">esperando ${dur(horasDesde(it.espera_desde))}</span>` : ''}</div>
+    <div class="rs ${f ? (pagas.length ? 'ok' : (f.compras.length ? 'alerta' : '')) : ''}"><span class="k">Compra</span><b>${!f ? '…' : pagas.length ? '✓ ' + pagas.length + ' paga(s)' : f.compras.length ? f.compras.length + ' registro(s), nenhuma paga' : 'nenhuma achada'}</b>${f && pagas.length ? `<span class="tiny muted">${esc((pagas[0].produto_nome || '').replace(/&amp;/g, '&').slice(0, 40))}</span>` : ''}</div>
+    <div class="rs"><span class="k">E-mail</span><b class="${emailResumo ? 'copy mono' : 'muted'}" ${emailResumo ? `data-copy="${esc(emailResumo)}" title="copiar"` : ''}>${emailResumo ? esc(emailResumo) : 'nenhum'}</b>${f && f.emails.length > 1 ? `<span class="tiny muted">+${f.emails.length - 1} outro(s) na ficha</span>` : ''}</div>
+    <div class="rs ${j && j.h24 <= 0 ? 'alerta' : ''}"><span class="k">Prazo da Meta</span><b>${j ? (j.h24 > 0 ? '24h: ' + dur(j.h24, false) + ' restantes' : j.h7d > 0 ? 'só human_agent (' + dur(j.h7d, false) + ')' : 'janelas fechadas') : 'comentário público'}</b><span class="tiny muted">${estadoAtual ? 'fluxo: ' + esc(estadoAtual) : (pausaAtiva ? 'bot pausado' : 'bot ativo')}</span></div>
+  </div>`;
   if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (comprovante). O banco não guarda a mídia. Abra a conversa no Instagram antes de responder.</div>`;
-  if (pendentesFila.length) h += `<div class="notice ok">✅ ${pendentesFila.length} resposta(s) já na fila, sai(em) em até 5 min. Dá para cancelar lá embaixo, na conversa.</div>`;
+  if (pendentesFila.length) h += `<div class="notice ok">✅ ${pendentesFila.length} resposta(s) já na fila, sai(em) em até 5 min. Dá para cancelar na conversa, logo abaixo.</div>`;
 
-  h += `<div class="block"><h3>Ações</h3><div class="acoes">
-    <button class="primary" id="btResponder">${S.comp ? 'Fechar resposta' : 'Responder'}</button>
-    <button id="btFora" title="A resposta foi dada pelo app do Instagram: grava uma saída para a fila parar de mostrar">Respondi pelo Instagram</button>
-    ${pausaAtiva ? `<button id="btDespausar" class="ok" title="pausado até ${fmtDataHora(f.pausa.pausado_ate)}">Despausar bot</button>` : `<button id="btPausar" title="O bot cala nesta conversa por 24h (exceto entrega de acesso com compra achada).">Pausar bot 24h</button>`}
-    ${estadoAtual && estadoAtual !== 'resolvido' ? `<button id="btResolver" class="ok">Marcar resolvido</button>` : ''}
-    ${estadoAtual === 'resolvido' ? `<button id="btReabrir">Reabrir (aguardando_gabriel)</button>` : ''}
-    ${!estadoAtual ? `<button id="btResolver" class="ok" title="Cria o registro como resolvido">Marcar resolvido</button>` : ''}
-    <button id="btReembolso">${S.reemb ? 'Fechar reembolso' : 'Registrar reembolso'}</button>
-    ${it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '') ? `<button id="btReativar">Voltar para a fila</button>` : `<button id="btIgnorar" title="Some da fila por um tempo. Volta sozinha se a pessoa escrever de novo.">Ignorar por enquanto ▾</button>`}
-    <button id="btArqPriv" class="ok" title="Gera links assinados (30 dias) e monta a mensagem privada">📎 Arquivos por privado</button>
-    <button id="btArqEmail" class="ok" title="Reenvia o e-mail com todos os arquivos (Resend)">✉️ Arquivos por e-mail</button>
-  </div><div class="tiny muted" style="margin-top:8px">"Responder" e "Arquivos por privado" põem na fila e o n8n envia em até 5 min. "Arquivos por e-mail" envia na hora pelo Resend. Arquivo só sai para quem tem compra paga na ficha, ou com sua confirmação registrada.</div></div>`;
+  h += `<div class="actbar">
+    <button class="primary" id="btResponder">${S.comp ? 'Fechar resposta' : '✍️ Responder'}</button>
+    <div class="dd"><button id="btArq" class="ok" title="Manda os arquivos do produto. Só sai para quem tem compra paga, ou com sua confirmação registrada.">📎 Arquivos ▾</button>
+      <div class="ddm hide" id="ddArq"><button id="btArqPriv">Por mensagem privada <span class="muted small">· links de 30 dias, vai pela fila</span></button><button id="btArqEmail">Por e-mail <span class="muted small">· envia na hora pelo Resend</span></button><div class="hint">Trava: compra paga na ficha ou confirmação manual (fica registrada).</div></div></div>
+    <div class="dd"><button id="btMais">Mais ▾</button>
+      <div class="ddm hide" id="ddMais">
+        <button id="btFora">Respondi pelo app <span class="muted small">· grava uma saída e tira da fila</span></button>
+        ${pausaAtiva ? `<button id="btDespausar">Despausar bot <span class="muted small">· pausado até ${fmtDataHora(f.pausa.pausado_ate)}</span></button>` : `<button id="btPausar">Pausar bot 24h <span class="muted small">· nesta conversa</span></button>`}
+        <div class="sep"></div>
+        ${estadoAtual && estadoAtual !== 'resolvido' ? `<button id="btResolver">Marcar resolvido</button>` : ''}
+        ${estadoAtual === 'resolvido' ? `<button id="btReabrir">Reabrir (aguardando_gabriel)</button>` : ''}
+        ${!estadoAtual ? `<button id="btResolver">Marcar resolvido</button>` : ''}
+        <button id="btReembolso">${S.reemb ? 'Fechar reembolso' : 'Registrar reembolso'}</button>
+        <div class="sep"></div>
+        ${ignorada ? `<button id="btReativar">Voltar para a fila</button>` : `<button id="btIgnorar">Ignorar por enquanto… <span class="muted small">· volta se a pessoa escrever</span></button>`}
+      </div></div>
+    <span class="tiny muted" style="margin-left:auto">Responder e arquivos por privado entram na fila; o n8n envia em até 5 min.</span>
+  </div>`;
 
   if (S.env) h += envioHtml();
   if (S.comp) h += compositorHtml(j);
   if (S.reemb) h += reembolsoHtml();
 
+  h += `<div class="block"><h3>Conversa <span class="sub muted">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
+  h += S.thread ? `<div class="thread" id="thread">${threadHtml()}</div>` : `<div class="muted small">Carregando…</div>`;
+  h += `</div>`;
+  h += `<details class="ficha" id="fichaDet" ${S.fichaAberta ? 'open' : ''}><summary>📇 Ficha do cliente <span class="sub">· compras na Hotmart, arquivos, e-mails, estado no fluxo, prazos</span></summary>`;
   h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}<div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(ultimaEntrada)}), com o relógio do servidor.</div></div>`;
   h += `<div class="block"><h3>Estado no fluxo automático</h3><div class="kv">
     <span class="k">estado</span><span>${esc(estadoAtual || '— (nunca entrou no fluxo de acesso)')}</span>
@@ -733,9 +849,7 @@ function renderDetalhe() {
     if (f.verificacoes.length) h += `<div class="block"><h3>Verificações automáticas de compra</h3>` + f.verificacoes.map(v => `<div class="small">${fmtDataHora(v.criado_em)} · <span class="mono">${esc(v.email_consultado)}</span> → <b>${esc(v.resultado)}</b> (${esc(v.qtd_encontrada)} achada(s)${v.status_compra ? ', ' + esc(v.status_compra) : ''}) · ${esc(v.acao_tomada || '')}</div>`).join('') + `</div>`;
     if (f.pendentes.length) h += `<div class="block"><h3>Respostas aguardando aprovação</h3>` + f.pendentes.map(p => `<div class="small"><b>${esc(p.estado)}</b> · v${esc(p.versao)} · ${fmtDataHora(p.criado_em)}<div style="white-space:pre-wrap;margin-top:4px">${esc(p.resposta)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line)">') + `</div>`;
   }
-  h += `<div class="block"><h3>Conversa <span class="sub muted">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
-  h += S.thread ? `<div class="thread" id="thread">${threadHtml()}</div>` : `<div class="muted small">Carregando…</div>`;
-  h += `</div>`;
+  h += `</details>`;
   el.innerHTML = h;
   ligarDetalhe(j);
   const t = $('#thread'); if (t) t.scrollTop = t.scrollHeight;
@@ -744,6 +858,9 @@ function ligarDetalhe(j) {
   const s = S.sel, f = S.ficha;
   const b = $('#voltar'); if (b) b.onclick = () => { S.mobileDetalhe = false; renderLista(); renderDetalhe(); window.scrollTo(0, 0); };
   document.querySelectorAll('#detalhe .copy').forEach(e => e.onclick = () => copiar(e.dataset.copy));
+  const fechaMenus = () => document.querySelectorAll('#detalhe .ddm').forEach(m => m.classList.add('hide'));
+  document.querySelectorAll('#detalhe .dd > button').forEach(b => b.onclick = ev => { ev.stopPropagation(); const m = b.nextElementSibling; const aberto = !m.classList.contains('hide'); fechaMenus(); if (!aberto) { m.classList.remove('hide'); setTimeout(() => document.addEventListener('click', fechaMenus, { once: true }), 0); } });
+  const fd = $('#fichaDet'); if (fd) fd.ontoggle = () => { S.fichaAberta = fd.open; try { localStorage.setItem('fila.fichaAberta', fd.open ? '1' : '0'); } catch {} };
   $('#btResponder').onclick = () => { S.comp = S.comp ? null : novoCompositor(); S.reemb = null; S.env = null; renderDetalhe(); };
   $('#btReembolso').onclick = () => { S.reemb = S.reemb ? null : { motivo: '', origem: 'perguntado', transacoes: (f?.compras || []).filter(c => c.pago).map(c => c.transacao), orientado: true }; S.comp = null; S.env = null; renderDetalhe(); };
   const bi = $('#btIgnorar'); if (bi) bi.onclick = async () => {
