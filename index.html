@@ -127,6 +127,9 @@
   .msg.out{align-self:flex-end;background:#dce7ff;color:#0f1f3d;border-bottom-right-radius:4px}
   .msg .m{display:block;font-size:11px;opacity:.65;margin-top:4px}
   .msg.midia{border:1px dashed var(--danger);background:#fff5f5;color:var(--danger);font-weight:600}
+  .msg.apagada{opacity:.55;text-decoration:line-through;border:1px dashed var(--danger)}
+  .msg .apagar{display:inline-block;margin-left:8px;padding:0 7px;font-size:11px;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:8px;cursor:pointer}
+  .msg .apagar:hover{color:var(--danger);border-color:var(--danger)}
   .msg.fila{border:1px solid var(--ok)} .msg.pend{border:1px dashed var(--ok);background:#f2fbf6}
   .day{align-self:center;font-size:11.5px;color:var(--muted);margin:8px 0 2px}
   details summary{cursor:pointer;color:var(--muted);font-size:13px}
@@ -511,7 +514,7 @@ async function recarregarFicha() {
   const alvo = S.sel.autor_id;
   const [fi, th] = await Promise.all([
     sb.rpc('ficha_cliente', { p_autor_id: alvo, p_marca: S.sel.marca || null }),
-    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
+    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor,apagado_em').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
   ]);
   if (!S.sel || S.sel.autor_id !== alvo) return;
   if (fi.error || th.error) S.fichaErro = (fi.error || th.error).message;
@@ -879,6 +882,17 @@ function ligarDetalhe(j) {
   const d = $('#btDespausar'); if (d) d.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado');
   const r = $('#btResolver'); if (r) r.onclick = async () => { if (confirm('Marcar como resolvido? Sai da lista de travados.')) await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'resolvido', p_autor: s.autor }, 'Marcado como resolvido'); };
   const ra = $('#btReabrir'); if (ra) ra.onclick = () => acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'aguardando_gabriel', p_autor: s.autor }, 'Reaberto');
+  document.querySelectorAll('[data-apagar]').forEach(b => b.onclick = async ev => {
+    ev.stopPropagation();
+    const msg = (S.thread || []).find(m => m.mensagem_id === b.dataset.apagar);
+    const txt = (msg?.texto || '').slice(0, 160);
+    if (!confirm(`Apagar este comentário na ${b.dataset.canal === 'comentario_fb' ? 'Página do Facebook' : 'Instagram'}? Some para todo mundo e NÃO dá para desfazer.\n\n"${txt}"`)) return;
+    b.disabled = true; b.textContent = 'apagando…';
+    const r = await chamarFn('apagar-comentario', { mensagem_id: b.dataset.apagar, marca: b.dataset.marca || s.marca, canal: b.dataset.canal, autor_id: s.autor_id, autor: s.autor || null });
+    if (r.erro) { toast(r.erro, true); b.disabled = false; b.textContent = '🗑 apagar'; return; }
+    toast(r.ja_apagado ? 'Esse comentário já tinha sido apagado' : 'Comentário apagado na Meta');
+    await recarregarFicha(); carregar();
+  });
   document.querySelectorAll('[data-cancelar]').forEach(e => e.onclick = async () => { if (confirm('Cancelar esta resposta antes de sair?')) await acao('cancelar_resposta', { p_id: Number(e.dataset.cancelar) }, 'Cancelada'); });
   if (S.comp) ligarCompositor(j);
   if (S.reemb) ligarReembolso();
@@ -1145,7 +1159,8 @@ function renderModal() {
 
 /* ---------- conversa ---------- */
 function threadHtml() {
-  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, cat: m.categoria }));
+  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em }));
+  const ehComentarioApagavel = m => m.dir === 'entrada' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && m.id && (/^[0-9]{15,20}$/.test(m.id) || /^[0-9]+_[0-9]+$/.test(m.id));
   (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, fila: fr }));
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
   let dia = '', h = '';
@@ -1155,9 +1170,11 @@ function threadHtml() {
     const cls = m.dir === 'entrada' ? 'in' : 'out';
     const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
     let meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}`;
+    if (m.apagado) meta += ` · <b style="color:var(--danger)">🗑 apagado ${fmtDataHora(m.apagado)}</b>`;
+    else if (ehComentarioApagavel(m)) meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
     if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
     if (vazio && m.dir === 'entrada') h += `<div class="msg in midia">📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
-    else h += `<div class="msg ${cls} ${extra}">${esc(m.texto)}<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${esc(m.texto)}<span class="m">${meta}</span></div>`;
   }
   return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
 }
