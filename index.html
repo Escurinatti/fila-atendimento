@@ -126,6 +126,9 @@
   .msg.in{align-self:flex-start;background:var(--soft);border-bottom-left-radius:4px}
   .msg.out{align-self:flex-end;background:#dce7ff;color:#0f1f3d;border-bottom-right-radius:4px}
   .msg .m{display:block;font-size:11px;opacity:.65;margin-top:4px}
+  /* tradução para PT do que o cliente escreveu: abaixo do original, separada por um fio */
+  .msg .pt{display:block;margin-top:7px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.18);font-size:13px;color:#2f3a55}
+  .card .txt.pt{margin-top:3px;color:#2f3a55;font-size:12.5px;padding-left:8px;border-left:2px solid #c9d6f2}
   .msg.midia{border:1px dashed var(--danger);background:#fff5f5;color:var(--danger);font-weight:600}
   .msg.apagada{opacity:.55;text-decoration:line-through;border:1px dashed var(--danger)}
   .msg .apagar{display:inline-block;margin-left:8px;padding:1px 9px;font-size:11.5px;font-weight:600;border:1px solid #f3c2c2;background:#fff;color:var(--danger);border-radius:8px;cursor:pointer;opacity:1}
@@ -273,6 +276,9 @@ const MARCA = {
   atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: 'atlantedellecarte.com/thank-you-x7f3q9/', venda: 'atlantedellecarte.com' },
 };
 const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
+const IDIOMA_FLAG = { es: '🇪🇸', en: '🇬🇧', pt: '🇧🇷', it: '🇮🇹', de: '🇩🇪' };
+// idiomas que o Gabriel lê sem tradução; o resto (italiano, alemão…) ganha a versão em PT sozinho
+const LE_SEM_TRADUZIR = ['es', 'en', 'pt'];
 const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 6:'var(--u5)', 7:'var(--u7)', 8:'var(--u8)', 9:'var(--u9)' };
 
 const S = {
@@ -285,7 +291,8 @@ const S = {
   situacao: 'todas',
   busca: '', fpanel: false,
   fichaAberta: (() => { try { return localStorage.getItem('fila.fichaAberta') === '1'; } catch { return false; } })(),
-  ordem: (() => { try { return localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
+  // a ordem (urgência / recentes) é lembrada POR ABA de idioma — chave fila.ordem.<aba>
+  ordem: (() => { try { return localStorage.getItem('fila.ordem.todos') || localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } })(),
   dias: CONFIG.diasPadrao,
   sel: null, ficha: null, thread: null, fichaErro: null,
   comp: null, reemb: null, env: null,
@@ -315,7 +322,7 @@ const fmtDataHora = ts => ts ? `${fmtData(ts)} ${fmtHora(ts)}` : '—';
 const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : '';
 const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
 const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
-const langChip = l => l ? `<span class="chip lang" title="${esc(IDIOMA_NOME[l] || l)}">${esc(l.toUpperCase())}</span>` : '';
+const langChip = l => l ? `<span class="chip lang" title="idioma em que a pessoa escreve">${IDIOMA_FLAG[l] || '🏳️'} ${esc(IDIOMA_NOME[l] || l.toUpperCase())}</span>` : '';
 const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_fb' ? 'Comentário FB' : c === 'dm_fb' ? 'Messenger' : c === 'fb_dm' ? 'Messenger (Facebook)' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : c === 'fb_comentario_publico' ? 'Comentário público FB' : c === 'fb_comentario_privado' ? 'Resposta privada FB' : esc(c || '?');
 const ehFb = c => c === 'comentario_fb' || c === 'dm_fb' || (c || '').startsWith('fb_');
 const ehDireta = c => c === 'dm' || c === 'dm_fb' || c === 'fb_dm';
@@ -495,6 +502,57 @@ async function carregar() {
   if (S.sel) { const novo = S.fila.find(x => x.autor_id === S.sel.autor_id && x.marca === S.sel.marca && x.canal === S.sel.canal); if (novo) S.sel.item = novo; }
   renderTabs(); renderLista(); renderStatus();
   if (S.sel && !S.comp) renderDetalhe();
+  traduzirCards();
+}
+
+/* ---------- tradução para PT (do que o CLIENTE escreveu) ----------
+   Regra: quem escreve em idioma que o Gabriel não lê (tudo fora de ES/EN/PT)
+   ganha a versão em português sozinho, na lista e na conversa. Para ES/EN há o
+   botão 🇧🇷 na conversa. Cada mensagem é traduzida UMA vez: a função de borda
+   "traduzir" grava em conversas.texto_pt e a tela só lê de lá depois. */
+const cacheTrad = new Map();          // conversas.id -> pt (sessão)
+let traduzindoIds = new Set();
+async function traduzirIds(ids) {
+  ids = [...new Set(ids)].filter(id => id && !cacheTrad.has(id) && !traduzindoIds.has(id)).slice(0, 40);
+  if (!ids.length) return {};
+  ids.forEach(id => traduzindoIds.add(id));
+  try {
+    const r = await chamarFn('traduzir', { ids });
+    if (r.erro) { console.warn('traduzir:', r.erro); return {}; }
+    const t = r.traducoes || {};
+    Object.entries(t).forEach(([id, pt]) => cacheTrad.set(Number(id), pt));
+    return t;
+  } finally { ids.forEach(id => traduzindoIds.delete(id)); }
+}
+// Lista: acha o id da última mensagem de cada card que precisa de PT, pega o que já existe
+// no banco, manda traduzir só o que falta, e repinta.
+async function traduzirCards() {
+  const alvo = S.fila.filter(it => it.ultima_mensagem_id && it.ultimo_texto && it.ultimo_texto.trim() && !it.ultimo_texto_pt && !LE_SEM_TRADUZIR.includes(it.idioma));
+  if (!alvo.length) return;
+  const { data, error } = await sb.from('conversas').select('id,mensagem_id,texto_pt').in('mensagem_id', alvo.map(it => it.ultima_mensagem_id)).eq('direcao', 'entrada');
+  if (error) { console.warn('traduzirCards:', error.message); return; }
+  const porMsg = new Map((data || []).map(r => [r.mensagem_id, r]));
+  const faltam = [];
+  alvo.forEach(it => { const r = porMsg.get(it.ultima_mensagem_id); if (!r) return; if (r.texto_pt) it.ultimo_texto_pt = r.texto_pt; else { it.traduzindo = true; faltam.push({ it, id: r.id }); } });
+  renderLista();
+  if (!faltam.length) return;
+  const t = await traduzirIds(faltam.map(f => f.id));
+  faltam.forEach(f => { f.it.traduzindo = false; if (t[f.id]) f.it.ultimo_texto_pt = t[f.id]; });
+  renderLista();
+}
+// Conversa: traduz as entradas sem texto_pt (automático fora de ES/EN/PT; manual pelo botão 🇧🇷)
+async function traduzirConversa(forcar) {
+  if (!S.thread || !S.sel) return;
+  if (!forcar && LE_SEM_TRADUZIR.includes(S.sel.idioma)) return;
+  const alvo = S.thread.filter(m => m.direcao === 'entrada' && m.texto && m.texto.trim() && !m.texto_pt).slice(-30);
+  if (!alvo.length) return;
+  const quem = S.sel.autor_id;
+  S.traduzindoConversa = true; renderDetalhe();
+  const t = await traduzirIds(alvo.map(m => m.id));
+  S.traduzindoConversa = false;
+  if (!S.sel || S.sel.autor_id !== quem) return;
+  S.thread.forEach(m => { if (t[m.id]) m.texto_pt = t[m.id]; });
+  renderDetalhe();
 }
 async function abrir(item) {
   S.sel = { autor_id: item.autor_id || item.conversa_id, marca: item.marca, autor: item.autor, canal: item.canal || 'dm', idioma: item.idioma, item };
@@ -514,7 +572,7 @@ async function recarregarFicha() {
   const alvo = S.sel.autor_id;
   const [fi, th] = await Promise.all([
     sb.rpc('ficha_cliente', { p_autor_id: alvo, p_marca: S.sel.marca || null }),
-    sb.from('conversas').select('id,marca,canal,direcao,texto,categoria,mensagem_id,criado_em,autor,apagado_em').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
+    sb.from('conversas').select('id,marca,canal,direcao,texto,texto_pt,categoria,mensagem_id,criado_em,autor,apagado_em').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
   ]);
   if (!S.sel || S.sel.autor_id !== alvo) return;
   if (fi.error || th.error) S.fichaErro = (fi.error || th.error).message;
@@ -522,6 +580,7 @@ async function recarregarFicha() {
   if (!S.sel.autor) S.sel.autor = S.thread.find(m => m.autor)?.autor || null;
   if (!S.sel.idioma) S.sel.idioma = (MARCA[S.sel.marca] || {}).idioma || 'es';
   renderDetalhe();
+  traduzirConversa(false);
 }
 async function acao(fn, args, okMsg) {
   const { data, error } = await sb.rpc(fn, args);
@@ -632,7 +691,8 @@ function renderApp() {
   const setVisao = v => { S.visao = v; try { localStorage.setItem('fila.visao', v); } catch {} $('#visFila').className = v === 'fila' ? 'on' : ''; $('#visTudo').className = v === 'tudo' ? 'on' : ''; $('#wrapSit').classList.toggle('hide', v !== 'tudo'); $('#segOrdem').classList.toggle('hide', v === 'tudo'); renderChips(); carregar(); };
   $('#visFila').onclick = () => setVisao('fila'); $('#visTudo').onclick = () => setVisao('tudo');
   $('#fSit').value = S.situacao; $('#fSit').onchange = e => { S.situacao = e.target.value; renderChips(); renderTabs(); renderLista(); };
-  const setOrdem = o => { S.ordem = o; try { localStorage.setItem('fila.ordem', o); } catch {} $('#ordUrg').className = o === 'urgencia' ? 'on' : ''; $('#ordRec').className = o === 'recentes' ? 'on' : ''; renderLista(); };
+  // cada aba de idioma lembra a própria ordem (Todos em urgência, Italiano em recentes, etc.)
+  const setOrdem = o => { S.ordem = o; try { localStorage.setItem('fila.ordem.' + (S.filtro.idioma || 'todos'), o); } catch {} pintarOrdem(); renderLista(); };
   $('#ordUrg').onclick = () => setOrdem('urgencia'); $('#ordRec').onclick = () => setOrdem('recentes');
   const bu = $('#busca'); let debB;
   bu.oninput = () => { S.busca = bu.value; $('#buscaX').classList.toggle('hide', !S.busca); clearTimeout(debB); debB = setTimeout(() => { renderTabs(); renderLista(); }, 200); };
@@ -670,7 +730,11 @@ function renderStatus() {
 }
 
 /* ---------- lista ---------- */
-const grupoIdioma = l => l === 'es' || l === 'en' ? l : 'outros';
+// abas de idioma: ES, EN e IT têm aba própria; o resto (de, pt, ?) cai em "outros"
+const grupoIdioma = l => l === 'es' || l === 'en' || l === 'it' ? l : 'outros';
+// a ordem é por aba: lê a da aba atual (cai para "todos", depois para o padrão antigo)
+const lerOrdemDaAba = () => { try { return localStorage.getItem('fila.ordem.' + (S.filtro.idioma || 'todos')) || localStorage.getItem('fila.ordem.todos') || localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } };
+const pintarOrdem = () => { const u = $('#ordUrg'), r = $('#ordRec'); if (u) u.className = S.ordem === 'urgencia' ? 'on' : ''; if (r) r.className = S.ordem === 'recentes' ? 'on' : ''; };
 function baseFiltrada() {
   return S.fila.filter(it => (S.visao !== 'tudo' || S.situacao === 'todas' || it.situacao === S.situacao) && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
 }
@@ -680,16 +744,19 @@ function casaBusca(it) {
 }
 function visiveis() {
   return baseFiltrada().filter(it => (S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma) && casaBusca(it))
-    .sort((a, b) => (S.visao === 'tudo' || S.ordem === 'recentes') ? (Math.max(+new Date(b.ultima_entrada), +new Date(b.ultima_resposta_em || 0)) - Math.max(+new Date(a.ultima_entrada), +new Date(a.ultima_resposta_em || 0))) : (a.urgencia - b.urgencia || horasDesde(b.espera_desde) - horasDesde(a.espera_desde)));
+    // Urgência: primeiro o grau (1 antes de 2…); empatou, o MAIS NOVO primeiro (pedido do Gabriel em 16/09 —
+    // o mais novo ainda está na janela de 24h e dá para salvar; o mais velho já perdeu a janela)
+    .sort((a, b) => (S.visao === 'tudo' || S.ordem === 'recentes') ? (Math.max(+new Date(b.ultima_entrada), +new Date(b.ultima_resposta_em || 0)) - Math.max(+new Date(a.ultima_entrada), +new Date(a.ultima_resposta_em || 0))) : (a.urgencia - b.urgencia || (+new Date(b.ultima_entrada) - +new Date(a.ultima_entrada))));
 }
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
   const base = (S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5)).filter(casaBusca);
-  const n = { todos: base.length, es: 0, en: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
+  const n = { todos: base.length, es: 0, en: 0, it: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
   const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
-  el.innerHTML = tab('todos', 'Todos') + tab('es', '🇪🇸 Español') + tab('en', '🇬🇧 English') + tab('outros', 'Outros idiomas');
-  el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; renderTabs(); renderLista(); });
+  el.innerHTML = tab('todos', 'Todos') + tab('es', '🇪🇸 Español') + tab('en', '🇬🇧 English') + tab('it', '🇮🇹 Italiano') + tab('outros', 'Outros');
+  // ao trocar de aba, a ordem (urgência/recentes) vira a que essa aba lembra
+  el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; S.ordem = lerOrdemDaAba(); pintarOrdem(); renderTabs(); renderLista(); });
 }
 function renderLista() {
   const el = $('#lista'); if (!el) return;
@@ -738,6 +805,7 @@ function cardHtml(it) {
       <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${quando}</span></div>
     <div class="motivo">${esc(it.motivo_urgencia)}</div>
     <div class="txt">${txt}</div>
+    ${it.ultimo_texto_pt ? `<div class="txt pt">🇧🇷 ${esc(it.ultimo_texto_pt)}</div>` : (it.traduzindo ? `<div class="txt pt muted">🇧🇷 traduzindo…</div>` : '')}
     ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:4px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600;margin-top:4px">sem nenhuma resposta</div>`) : ''}
     <div class="chips">
       ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
@@ -774,7 +842,7 @@ function renderDetalhe() {
   const emailResumo = est?.email_informado || (f?.emails || [])[0] || '';
   const ignorada = it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '');
   let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
-    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${ehFb(s.canal) ? '📘' : '📷'} ${canalTxt(s.canal)}</span>${linkIg(s.autor)}
+    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${ehFb(s.canal) ? '📘' : '📷'} ${canalTxt(s.canal)}</span>${linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>🇧🇷 ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
     <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
   h += `<div class="resumo">
     <div class="rs sit ${it.urgencia <= 2 ? 'alerta' : ''}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}" style="color:${URG_COR[it.urgencia] || 'inherit'}">${esc(it.motivo_urgencia || (it.travado ? 'Travado no fluxo' : '—'))}</b>${it.espera_desde ? `<span class="tiny muted">esperando ${dur(horasDesde(it.espera_desde))}</span>` : ''}</div>
@@ -877,6 +945,7 @@ function ligarDetalhe(j) {
   const br = $('#btReativar'); if (br) br.onclick = () => acao('ignorar_conversa', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: s.canal, p_horas: null, p_motivo: null }, 'De volta à fila');
   $('#btArqPriv').onclick = () => abrirEnvio('privado');
   $('#btArqEmail').onclick = () => abrirEnvio('email');
+  const bt = $('#btTraduzir'); if (bt) bt.onclick = () => traduzirConversa(true);
   if (S.env) ligarEnvio();
   $('#btFora').onclick = async () => { const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)'); if (nota === null) return; await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: ['comentario', 'comentario_fb', 'dm_fb'].includes(s.canal) ? s.canal : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora'); };
   const p = $('#btPausar'); if (p) p.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa');
@@ -1161,7 +1230,7 @@ function renderModal() {
 
 /* ---------- conversa ---------- */
 function threadHtml() {
-  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em }));
+  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, pt: m.texto_pt, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em }));
   const ehComentarioApagavel = m => m.dir === 'entrada' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && m.id && (/^[0-9]{15,20}$/.test(m.id) || /^[0-9]+_[0-9]+$/.test(m.id));
   (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, fila: fr }));
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
@@ -1172,11 +1241,12 @@ function threadHtml() {
     const cls = m.dir === 'entrada' ? 'in' : 'out';
     const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
     let meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}`;
+    if (m.dir === 'saida' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && /^(Ecco tutto quello che ti serve|Aquí va todo lo que necesitas|Here is everything you need|Vi tu comentario y prefiero|I saw your comment and I would rather|Ho visto il tuo commento e preferisco)/.test(String(m.texto || ''))) meta += ` · <b>🔒 privada, foi para o DM</b>`;
     if (m.apagado) meta += ` · <b style="color:var(--danger)">🗑 apagado ${fmtDataHora(m.apagado)}</b>`;
     else if (ehComentarioApagavel(m)) meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
     if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
     if (vazio && m.dir === 'entrada') h += `<div class="msg in midia">📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
-    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${esc(m.texto)}<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${esc(m.texto)}${m.dir === 'entrada' && m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">🇧🇷 ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
   }
   return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
 }
