@@ -38,6 +38,7 @@
     --out:#fbf1e2; --out-ink:#4a3410;
     --mdt:#fbf1e2; --mdt-ink:#8f5a10; --cm:#e6f4ee; --cm-ink:#166b45; --it:#efe9fb; --it-ink:#5c3d9e;
     --ia:#1b1c21; --ia-ink:#f5f2ea; --ia-in:#2a2c35; --ia-line:#3a3d4a;
+    --com:#7c5cbf; --com-ink:#5c3d9e; --com-soft:#f1ecfa;
     --header:rgba(246,244,239,.86);
     --shadow:0 1px 2px rgba(20,20,30,.04), 0 8px 24px rgba(20,20,30,.06);
     --shadow-lg:0 14px 40px rgba(20,20,30,.16);
@@ -51,6 +52,7 @@
     --out:#2c2618; --out-ink:#f5e6c8;
     --mdt:#2c2618; --mdt-ink:#f0c884; --cm:#15281f; --cm-ink:#8fdbb5; --it:#251d3a; --it-ink:#c9b5f2;
     --ia:#0c0d13; --ia-ink:#eceef5; --ia-in:#1a1c26; --ia-line:#2a2e3c;
+    --com:#a88be6; --com-ink:#c9b5f2; --com-soft:#241d36;
     --header:rgba(17,18,25,.84);
     --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.40);
     --shadow-lg:0 18px 50px rgba(0,0,0,.6);
@@ -77,6 +79,10 @@
   input,select,textarea{border:1px solid var(--line);background:var(--card);border-radius:var(--r-sm);padding:9px 11px;width:100%}
   textarea{min-height:120px;resize:vertical;line-height:1.45}
   input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .ico{width:1.05em;height:1.05em;display:inline-block;vertical-align:-.2em;flex:none}
+  .ico.flag{width:1.3em;height:.9em;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.14);vertical-align:-.12em}
+  h3 .ico,.tab .ico{width:1.15em;height:1.15em}
+  .msg .ch .ico{width:1.2em;height:1.2em;vertical-align:-.3em;margin-right:1px}
   .muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:12px}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
   .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -143,6 +149,7 @@
   .card.dim{opacity:.6}
   .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
   .chip{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+  .chip.lang{display:inline-flex;align-items:center;gap:5px}
   .chip.mdt{background:var(--mdt);color:var(--mdt-ink)} .chip.cm{background:var(--cm);color:var(--cm-ink)} .chip.it{background:var(--it);color:var(--it-ink)}
   .chip.lang{background:var(--ink);color:var(--bg);font-weight:600;letter-spacing:.02em}
   :root[data-theme="dark"] .chip.lang{background:var(--soft2);color:var(--ink)}
@@ -226,6 +233,21 @@
   .ptbox .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block;margin-bottom:4px}
   .notas{font-size:12.5px;color:var(--warn);margin-top:6px}
 
+  /* ---------- inbox × comentários ---------- */
+  .conv2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+  .conv2 .block{margin:0}
+  .conv h3 .n{display:inline-block;background:var(--soft2);color:var(--ink);border-radius:999px;padding:0 7px;font-size:11px;letter-spacing:0;margin-left:2px}
+  .conv-dm{border-top:3px solid var(--accent)}
+  .conv-com{border-top:3px solid var(--com)}
+  .conv-tudo{border-top:3px solid var(--u5)}
+  .conv .thread{max-height:440px}
+  .conv-tudo .thread{max-height:560px}
+  .msg.com.in{background:var(--com-soft);border-left:3px solid var(--com)}
+  .msg.com.out{border-right:3px solid var(--com)}
+  .msg .ch{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:3px}
+  .msg.com .ch{color:var(--com-ink)}
+  @media (max-width: 880px){ .conv2{grid-template-columns:1fr} }
+
   /* ---------- modal ---------- */
   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:40;display:grid;place-items:center;padding:16px}
   .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;padding:18px 20px;box-shadow:var(--shadow-lg)}
@@ -260,7 +282,9 @@
   .card .av.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .av.cm{background:var(--cm);color:var(--cm-ink)} .card .av.it{background:var(--it);color:var(--it-ink)}
   .card .nm{font-weight:650;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
   .card .who{flex-wrap:nowrap}
-  .card .chip.canal{background:transparent;border:1px solid var(--line);padding:1px 7px}
+  .chip.canal{background:transparent;border:1px solid var(--line);padding:1px 7px;display:inline-flex;align-items:center;gap:4px}
+  .chip.canal.com{border-color:var(--com);color:var(--com-ink);background:var(--com-soft)}
+  .chip.canal.dm{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
   .card .motivo{margin-top:4px}
   .card .txt{margin:4px 0 0}
   .card .chips{margin-top:6px} .card .chips:empty{display:none}
@@ -333,7 +357,25 @@ const MARCA = {
   atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: 'atlantedellecarte.com/thank-you-x7f3q9/', venda: 'atlantedellecarte.com' },
 };
 const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
-const IDIOMA_FLAG = { es: '🇪🇸', en: '🇬🇧', pt: '🇧🇷', it: '🇮🇹', de: '🇩🇪' };
+// Ícones desenhados em SVG, dentro do HTML: nada para baixar e o Windows mostra
+// bandeira de verdade (em emoji ele desenha só as letras "ES", "GB"...).
+const ICO = {
+  ig: '<svg class="ico" viewBox="0 0 24 24" aria-label="Instagram"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a63a"/><stop offset=".5" stop-color="#e1306c"/><stop offset="1" stop-color="#7b3fe4"/></linearGradient></defs><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#igg)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="3.8" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.3" cy="7.7" r="1.1" fill="#fff"/></svg>',
+  fb: '<svg class="ico" viewBox="0 0 24 24" aria-label="Facebook"><circle cx="12" cy="12" r="11" fill="#1877f2"/><path d="M13.4 20.5v-6.6h2.2l.4-2.7h-2.6V9.5c0-.8.4-1.4 1.5-1.4h1.2V5.8c-.3 0-1-.1-2-.1-2 0-3.3 1.2-3.3 3.4v2.1H8.5v2.7h2.3v6.6z" fill="#fff"/></svg>',
+  dm: '<svg class="ico" viewBox="0 0 24 24" aria-label="Inbox"><path d="M3 5h18v11H9l-4 4v-4H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+  com: '<svg class="ico" viewBox="0 0 24 24" aria-label="Comentário"><path d="M4 4h16v10H12l-5 4v-4H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 8h8M8 11h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+};
+const BANDEIRA = {
+  es: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="Español"><rect width="24" height="16" fill="#c60b1e"/><rect y="4" width="24" height="8" fill="#ffc400"/></svg>',
+  en: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="English"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#fff" stroke-width="3"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.1"/><path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="4.6"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="2.6"/></svg>',
+  it: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="Italiano"><rect width="8" height="16" fill="#009246"/><rect x="8" width="8" height="16" fill="#fff"/><rect x="16" width="8" height="16" fill="#ce2b37"/></svg>',
+  pt: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="Português"><rect width="24" height="16" fill="#009c3b"/><path d="M12 1.8L21.5 8 12 14.2 2.5 8z" fill="#ffdf00"/><circle cx="12" cy="8" r="3.4" fill="#002776"/></svg>',
+  de: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="Deutsch"><rect width="24" height="5.4" fill="#000"/><rect y="5.3" width="24" height="5.4" fill="#dd0000"/><rect y="10.6" width="24" height="5.4" fill="#ffce00"/></svg>',
+  fr: '<svg class="ico flag" viewBox="0 0 24 16" aria-label="Français"><rect width="8" height="16" fill="#0055a4"/><rect x="8" width="8" height="16" fill="#fff"/><rect x="16" width="8" height="16" fill="#ef4135"/></svg>',
+};
+const bandeira = l => BANDEIRA[l] || '<svg class="ico flag" viewBox="0 0 24 16"><rect width="24" height="16" fill="#9aa0ad"/></svg>';
+const logoCanal = c => ehFb(c) ? ICO.fb : ICO.ig;
+const BR = BANDEIRA.pt;
 // idiomas que o Gabriel lê sem tradução; o resto (italiano, alemão…) ganha a versão em PT sozinho
 const LE_SEM_TRADUZIR = ['es', 'en', 'pt'];
 const URG_COR = { 1:'var(--u1)', 2:'var(--u2)', 3:'var(--u3)', 4:'var(--u4)', 5:'var(--u5)', 6:'var(--u5)', 7:'var(--u7)', 8:'var(--u8)', 9:'var(--u9)' };
@@ -379,12 +421,12 @@ const fmtDataHora = ts => ts ? `${fmtData(ts)} ${fmtHora(ts)}` : '—';
 const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : '';
 const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
 const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
-const langChip = l => l ? `<span class="chip lang" title="idioma em que a pessoa escreve">${IDIOMA_FLAG[l] || '🏳️'} ${esc(IDIOMA_NOME[l] || l.toUpperCase())}</span>` : '';
+const langChip = l => l ? `<span class="chip lang" title="idioma em que a pessoa escreve">${bandeira(l)} ${esc(IDIOMA_NOME[l] || l.toUpperCase())}</span>` : '';
 const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_fb' ? 'Comentário FB' : c === 'dm_fb' ? 'Messenger' : c === 'fb_dm' ? 'Messenger (Facebook)' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : c === 'fb_comentario_publico' ? 'Comentário público FB' : c === 'fb_comentario_privado' ? 'Resposta privada FB' : esc(c || '?');
 const ehFb = c => c === 'comentario_fb' || c === 'dm_fb' || (c || '').startsWith('fb_');
 const ehDireta = c => c === 'dm' || c === 'dm_fb' || c === 'fb_dm';
 const nomeAutor = it => it.autor ? '@' + it.autor : `id ${it.autor_id || it.conversa_id}`;
-const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">abrir no Instagram ↗</a>` : '';
+const linkIg = autor => autor ? `<a class="small" href="https://www.instagram.com/${encodeURIComponent(autor)}/" target="_blank" rel="noopener">${ICO.ig} abrir no Instagram ↗</a>` : '';
 const mascararEmail = e => { if (!e || !e.includes('@')) return e || ''; const [u, d] = e.split('@'); return (u.length <= 2 ? u[0] + '*' : u[0] + '***' + u[u.length - 1]) + '@' + d; };
 function toast(msg, err = false) { const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), err ? 7000 : 3200); }
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado'); } catch { toast('Não consegui copiar', true); } }
@@ -813,7 +855,7 @@ function renderTabs() {
   const n = { todos: base.length, es: 0, en: 0, it: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
   const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
-  el.innerHTML = tab('todos', 'Todos') + tab('es', '🇪🇸 Español') + tab('en', '🇬🇧 English') + tab('it', '🇮🇹 Italiano') + tab('outros', 'Outros');
+  el.innerHTML = tab('todos', 'Todos') + tab('es', BANDEIRA.es + ' Español') + tab('en', BANDEIRA.en + ' English') + tab('it', BANDEIRA.it + ' Italiano') + tab('outros', 'Outros');
   // ao trocar de aba, a ordem (urgência/recentes) vira a que essa aba lembra
   el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; S.ordem = lerOrdemDaAba(); pintarOrdem(); renderTabs(); renderLista(); });
 }
@@ -860,11 +902,11 @@ function cardHtml(it) {
   const ini = (it.autor || '?').replace(/^@/, '').charAt(0).toUpperCase();
   const fecha24 = ehDireta(it.canal) && it.janela_24h_h != null && it.janela_24h_h > 0 && it.janela_24h_h <= 6;
   return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
-    <div class="who"><span class="av ${mk.cls}" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm" title="${esc(mk.nome)}">${esc(nomeAutor(it))}</span>${langChip(it.idioma)}<span class="chip canal" title="${esc(mk.nome)} · ${ehFb(it.canal) ? 'Facebook' : 'Instagram'}">${ehFb(it.canal) ? '📘' : '📷'} ${canalCurto(it.canal)}</span>
+    <div class="who"><span class="av ${mk.cls}" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm" title="${esc(mk.nome)}">${esc(nomeAutor(it))}</span>${langChip(it.idioma)}<span class="chip canal ${ehComentario(it.canal) ? 'com' : 'dm'}" title="${esc(mk.nome)} · ${ehFb(it.canal) ? 'Facebook' : 'Instagram'}">${logoCanal(it.canal)} ${canalCurto(it.canal)}</span>
       <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${quando}</span></div>
     <div class="motivo">${esc(it.motivo_urgencia)}</div>
     <div class="txt">${txt}</div>
-    ${it.ultimo_texto_pt ? `<div class="txt pt">🇧🇷 ${esc(it.ultimo_texto_pt)}</div>` : (it.traduzindo ? `<div class="txt pt muted">🇧🇷 traduzindo…</div>` : '')}
+    ${it.ultimo_texto_pt ? `<div class="txt pt">${BR} ${esc(it.ultimo_texto_pt)}</div>` : (it.traduzindo ? `<div class="txt pt muted">${BR} traduzindo…</div>` : '')}
     ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:4px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600;margin-top:4px">sem nenhuma resposta</div>`) : ''}
     <div class="chips">
       ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
@@ -901,7 +943,7 @@ function renderDetalhe() {
   const emailResumo = est?.email_informado || (f?.emails || [])[0] || '';
   const ignorada = it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '');
   let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
-    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip">${ehFb(s.canal) ? '📘' : '📷'} ${canalTxt(s.canal)}</span>${linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>🇧🇷 ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
+    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip canal ${ehComentario(s.canal) ? 'com' : 'dm'}">${logoCanal(s.canal)} ${canalTxt(s.canal)}</span>${ehFb(s.canal) ? '' : linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>${BR} ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
     <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
   h += `<div class="resumo">
     <div class="rs sit ${it.urgencia <= 2 ? 'alerta' : ''}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}" style="color:${URG_COR[it.urgencia] || 'inherit'}">${esc(it.motivo_urgencia || (it.travado ? 'Travado no fluxo' : '—'))}</b>${it.espera_desde ? `<span class="tiny muted">esperando ${dur(horasDesde(it.espera_desde))}</span>` : ''}</div>
@@ -936,9 +978,7 @@ function renderDetalhe() {
   if (S.comp) h += compositorHtml(j);
   if (S.reemb) h += reembolsoHtml();
 
-  h += `<div class="block"><h3>Conversa <span class="sub muted">· todas as marcas e canais deste autor_id · últimas ${S.thread ? S.thread.length : '…'} mensagens</span></h3>`;
-  h += S.thread ? `<div class="thread" id="thread">${threadHtml()}</div>` : `<div class="muted small">Carregando…</div>`;
-  h += `</div>`;
+  h += conversaHtml();
   h += `<details class="ficha" id="fichaDet" ${S.fichaAberta ? 'open' : ''}><summary>📇 Ficha do cliente <span class="sub">· compras na Hotmart, arquivos, e-mails, estado no fluxo, prazos</span></summary>`;
   h += `<div class="block"><h3>Prazos da Meta</h3>${janelaHtml(j)}<div class="tiny muted" style="margin-top:6px">Contado a partir da última mensagem do cliente (${fmtDataHora(ultimaEntrada)}), com o relógio do servidor.</div></div>`;
   h += `<div class="block"><h3>Estado no fluxo automático</h3><div class="kv">
@@ -983,7 +1023,7 @@ function renderDetalhe() {
   h += `</details>`;
   el.innerHTML = h;
   ligarDetalhe(j);
-  const t = $('#thread'); if (t) t.scrollTop = t.scrollHeight;
+  document.querySelectorAll('.thread').forEach(t => { t.scrollTop = t.scrollHeight; });
 }
 function ligarDetalhe(j) {
   const s = S.sel, f = S.ficha;
@@ -1288,26 +1328,51 @@ function renderModal() {
 }
 
 /* ---------- conversa ---------- */
-function threadHtml() {
+// Inbox e comentário são conversas diferentes: a pessoa escreveu em público (comentário)
+// ou em privado (DM/Messenger). A tela mostra os dois separados e, embaixo, tudo junto
+// na ordem em que aconteceu — para ver o caminho inteiro da pessoa.
+const ehComentario = c => /coment/.test(String(c || ''));
+function msgsThread() {
   const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, pt: m.texto_pt, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em }));
-  const ehComentarioApagavel = m => m.dir === 'entrada' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && m.id && (/^[0-9]{15,20}$/.test(m.id) || /^[0-9]+_[0-9]+$/.test(m.id));
   (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, fila: fr }));
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
+  return msgs;
+}
+function bolhasHtml(msgs, comTag) {
+  const ehComentarioApagavel = m => m.dir === 'entrada' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && m.id && (/^[0-9]{15,20}$/.test(m.id) || /^[0-9]+_[0-9]+$/.test(m.id));
   let dia = '', h = '';
   for (const m of msgs) {
     const d = fmtDataLonga(m.t); if (d !== dia) { dia = d; h += `<div class="day">${esc(d)}</div>`; }
     const vazio = !m.texto || !String(m.texto).trim();
     const cls = m.dir === 'entrada' ? 'in' : 'out';
-    const extra = m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '';
+    const extra = (m.fila ? (m.fila.enviado_em ? 'fila' : 'pend') : '') + (ehComentario(m.canal) ? ' com' : '');
+    const tag = comTag ? `<span class="ch">${logoCanal(m.canal)} ${ehComentario(m.canal) ? ICO.com + ' comentário' : ICO.dm + ' inbox'}</span>` : '';
     let meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}`;
     if (m.dir === 'saida' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && /^(Ecco tutto quello che ti serve|Aquí va todo lo que necesitas|Here is everything you need|Vi tu comentario y prefiero|I saw your comment and I would rather|Ho visto il tuo commento e preferisco)/.test(String(m.texto || ''))) meta += ` · <b>🔒 privada, foi para o DM</b>`;
     if (m.apagado) meta += ` · <b style="color:var(--danger)">🗑 apagado ${fmtDataHora(m.apagado)}</b>`;
     else if (ehComentarioApagavel(m)) meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
     if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
-    if (vazio && m.dir === 'entrada') h += `<div class="msg in midia">📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
-    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${esc(m.texto)}${m.dir === 'entrada' && m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">🇧🇷 ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
+    if (vazio && m.dir === 'entrada') h += `<div class="msg in midia${ehComentario(m.canal) ? ' com' : ''}">${tag}📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${tag}${esc(m.texto)}${m.dir === 'entrada' && m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">${BR} ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
   }
   return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
+}
+function threadHtml() { return bolhasHtml(msgsThread(), false); }
+function conversaHtml() {
+  if (!S.thread) return `<div class="block"><h3>Conversa</h3><div class="muted small">Carregando…</div></div>`;
+  const msgs = msgsThread();
+  const dm = msgs.filter(m => !ehComentario(m.canal)), com = msgs.filter(m => ehComentario(m.canal));
+  // só um canal: uma conversa só, sem coluna vazia nem linha do tempo repetida
+  if (!dm.length || !com.length) {
+    const soCom = !dm.length && com.length;
+    return `<div class="block conv ${soCom ? 'conv-com' : 'conv-dm'}"><h3>${soCom ? ICO.com + ' Comentários' : ICO.dm + ' Inbox'} <span class="n">${msgs.length}</span> <span class="sub muted">· ${soCom ? 'em público, nos posts' : 'DM e Messenger, em privado'} · todas as marcas deste autor_id</span></h3><div class="thread">${bolhasHtml(msgs, false)}</div></div>`;
+  }
+  let h = `<div class="conv2">`;
+  h += `<div class="block conv conv-dm"><h3>${ICO.dm} Inbox <span class="n">${dm.length}</span> <span class="sub muted">· DM e Messenger, em privado</span></h3><div class="thread">${bolhasHtml(dm, false)}</div></div>`;
+  h += `<div class="block conv conv-com"><h3>${ICO.com} Comentários <span class="n">${com.length}</span> <span class="sub muted">· em público, nos posts</span></h3><div class="thread">${bolhasHtml(com, false)}</div></div>`;
+  h += `</div>`;
+  h += `<div class="block conv conv-tudo"><h3>🕒 Tudo junto <span class="n">${msgs.length}</span> <span class="sub muted">· inbox e comentários na ordem em que aconteceram — o caminho inteiro da pessoa</span></h3><div class="thread">${bolhasHtml(msgs, true)}</div></div>`;
+  return h;
 }
 
 iniciar();
