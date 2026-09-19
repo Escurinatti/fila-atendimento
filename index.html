@@ -1257,7 +1257,7 @@ function envioHtml() {
     }
   } else {
     h += `<div class="form-grid" style="margin-top:8px">
-      <div><label class="lbl">Para (e-mail)</label><input id="envPara" value="${esc(e.para)}" inputmode="email" placeholder="e-mail da compra">${(f.emails || []).length > 1 ? `<div class="tiny muted">Achados: ${(f.emails || []).map(x => `<span class="copy" data-para="${esc(x)}">${esc(x)}</span>`).join(' · ')}</div>` : ''}</div>
+      <div><label class="lbl">Para (e-mail)</label><input id="envPara" value="${esc(e.para)}" inputmode="email" autocomplete="off" name="cliente-email-${Date.now()}" placeholder="e-mail da compra">${(f.emails || []).length > 1 ? `<div class="tiny muted">Achados: ${(f.emails || []).map(x => `<span class="copy" data-para="${esc(x)}">${esc(x)}</span>`).join(' · ')}</div>` : ''}</div>
       <div><label class="lbl">Idioma do e-mail</label><select id="envIdioma">${['es', 'en', 'pt', 'it'].map(k => `<option value="${k}" ${e.idioma === k ? 'selected' : ''}>${IDIOMA_NOME[k]}</option>`).join('')}</select></div>
       <div style="grid-column:1/-1"><label class="lbl">Frase extra no e-mail (opcional)</label><input id="envMsg" value="${esc(e.mensagem)}" placeholder="Ex.: Esta versión ya incluye el Caballero de Copas."></div></div>
       <div class="small muted" style="margin-top:6px">Vão todos os arquivos a que a pessoa tem direito, com links de 30 dias, de acceso@mapadeltarot.com, resposta para gabecarto@gmail.com.</div>
