@@ -1240,7 +1240,7 @@ function envioHtml() {
   if (e.precisaConf) {
     h += `<div class="notice ${e.links ? 'ok' : 'bad'}">${e.links ? 'Liberado por sua confirmação (registrado em verificacoes_compra).' : 'Não achei compra paga para esta pessoa. Se você tem certeza de que comprou (ex.: falou de algo que só quem tem o material sabe), escreva o motivo. Fica registrado com seu nome.'}</div>`;
     if (!e.links) h += `<label class="lbl">Por que tenho certeza</label><input id="envJust" value="${esc(e.justificativa)}" placeholder="Ex.: falou do Caballero de Copas na página 101, só quem tem o PDF sabe">
-      <div class="row" style="margin-top:8px"><button class="primary" id="envConfirmar" ${e.justificativa.trim().length < 8 || e.carregando ? 'disabled' : ''}>Tenho certeza que comprou: liberar</button></div>`;
+      <div class="row" style="margin-top:8px"><button class="primary" id="envConfirmar" ${e.justificativa.trim().length < 8 || e.carregando ? 'disabled' : ''}>Tenho certeza que comprou: liberar</button>${e.justificativa.trim().length < 8 ? `<span class="tiny muted">escreva pelo menos 8 letras — ex.: o e-mail ou a transação da compra</span>` : ''}</div>`;
   }
   if (e.carregando) h += `<div class="notice">Gerando links assinados…</div>`;
   if (e.erro && !(e.precisaConf && !e.links)) h += `<div class="notice bad">${esc(e.erro)}</div>`;
