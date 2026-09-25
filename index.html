@@ -644,7 +644,8 @@ async function traduzirCards() {
 async function traduzirConversa(forcar) {
   if (!S.thread || !S.sel) return;
   if (!forcar && LE_SEM_TRADUZIR.includes(S.sel.idioma)) return;
-  const alvo = S.thread.filter(m => m.direcao === 'entrada' && m.texto && m.texto.trim() && !m.texto_pt).slice(-30);
+  // os dois lados: o que ela escreveu e o que a gente respondeu
+  const alvo = S.thread.filter(m => m.texto && m.texto.trim() && !m.texto_pt).slice(-30);
   if (!alvo.length) return;
   const quem = S.sel.autor_id;
   S.traduzindoConversa = true; renderDetalhe();
@@ -1358,7 +1359,7 @@ function bolhasHtml(msgs, comTag) {
     else if (ehComentarioApagavel(m)) meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
     if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
     if (vazio && m.dir === 'entrada') h += `<div class="msg in midia${ehComentario(m.canal) ? ' com' : ''}">${tag}📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
-    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${tag}${esc(m.texto)}${m.dir === 'entrada' && m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">${BR} ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${tag}${esc(m.texto)}${m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">${BR} ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
   }
   return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
 }

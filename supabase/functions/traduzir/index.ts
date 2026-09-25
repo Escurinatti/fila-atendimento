@@ -3,7 +3,7 @@
 // Guarda: só quem está em public.admins (eh_admin()) passa.
 // Segredo: ANTHROPIC_API_KEY em Supabase → Edge Functions → Secrets (o mesmo da sugerir-resposta).
 //
-// Recebe ids de linhas de public.conversas (só entradas), traduz o campo texto,
+// Recebe ids de linhas de public.conversas (entradas e saidas), traduz o campo texto,
 // grava em conversas.texto_pt e devolve { traducoes: { id: pt } }.
 // Cada mensagem é traduzida UMA vez: quem já tem texto_pt não volta para a IA.
 // Modelo: Haiku 4.5 — tradução é tarefa simples; sai ~10x mais barato que o Opus.
@@ -77,7 +77,9 @@ Deno.serve(async (req) => {
     // o que já tem tradução volta direto, sem custo
     for (const l of todas) if (l.texto_pt) traducoes[l.id] = l.texto_pt;
 
-    const pendentes = todas.filter((l) => !l.texto_pt && l.direcao === "entrada" && l.texto && l.texto.trim());
+    // 25/09/2026: traduz os dois lados. O Gabriel quer conferir em portugues tambem
+    // o que a marca respondeu, nao so o que o cliente escreveu.
+    const pendentes = todas.filter((l) => !l.texto_pt && l.texto && l.texto.trim());
     if (!pendentes.length) return json({ traducoes, novas: 0, modelo: null });
 
     // 4) Traduz em lote
