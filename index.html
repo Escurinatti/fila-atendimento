@@ -8,6 +8,14 @@
 <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111219" media="(prefers-color-scheme: dark)">
 <title>Fila — Atendimento</title>
+<!-- 29/09/2026: instalável no iPhone (Safari → Compartilhar → Adicionar à Tela de Início) e no Android -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fila">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +44,7 @@
     --ok:#1f8a5b; --ok-soft:#e8f6ee; --warn:#b8780a; --warn-soft:#fff6e3; --danger:#d1413f; --danger-soft:#fdeeee;
     --u1:#d1413f; --u2:#e8801e; --u3:#c8811f; --u4:#8a7fb3; --u5:#8f96a6; --u7:#c3c7cf; --u8:#1f8a5b; --u9:#c3c7cf;
     --out:#fbf1e2; --out-ink:#4a3410;
-    --mdt:#fbf1e2; --mdt-ink:#8f5a10; --cm:#e6f4ee; --cm-ink:#166b45; --it:#efe9fb; --it-ink:#5c3d9e;
+    --mdt:#fbf1e2; --mdt-ink:#8f5a10; --cm:#e6f4ee; --cm-ink:#166b45; --it:#efe9fb; --it-ink:#5c3d9e; --de:#fdeaea; --de-ink:#a32020;
     --ia:#1b1c21; --ia-ink:#f5f2ea; --ia-in:#2a2c35; --ia-line:#3a3d4a;
     --com:#7c5cbf; --com-ink:#5c3d9e; --com-soft:#f1ecfa;
     --header:rgba(246,244,239,.86);
@@ -50,7 +58,7 @@
     --ok:#4cc38a; --ok-soft:#15281f; --warn:#e0b84a; --warn-soft:#2b2411; --danger:#f07070; --danger-soft:#2c1a1a;
     --u1:#f07070; --u2:#f5a054; --u3:#e0a54a; --u4:#a89cd6; --u5:#8b93a7; --u7:#4a5062; --u8:#4cc38a; --u9:#4a5062;
     --out:#2c2618; --out-ink:#f5e6c8;
-    --mdt:#2c2618; --mdt-ink:#f0c884; --cm:#15281f; --cm-ink:#8fdbb5; --it:#251d3a; --it-ink:#c9b5f2;
+    --mdt:#2c2618; --mdt-ink:#f0c884; --cm:#15281f; --cm-ink:#8fdbb5; --it:#251d3a; --it-ink:#c9b5f2; --de:#301a1a; --de-ink:#f3a3a3;
     --ia:#0c0d13; --ia-ink:#eceef5; --ia-in:#1a1c26; --ia-line:#2a2e3c;
     --com:#a88be6; --com-ink:#c9b5f2; --com-soft:#241d36;
     --header:rgba(17,18,25,.84);
@@ -146,12 +154,26 @@
   .card .espera .esp{font-style:normal;font-weight:500;font-size:11.5px;opacity:.7}
   .card.red .espera{color:var(--danger)}
   .card .motivo{font-size:12.5px;font-weight:600;color:var(--ub);margin-top:2px}
+  /* 29/09/2026: uma pessoa por card. Cor própria da pessoa (--pc) no avatar e no nome;
+     status em pílula forte (.stt) em vez da frase vermelha longa. */
+  .card .who .av{background:var(--pc,var(--soft2));color:#fff;box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--pc,transparent)}
+  .card .who .nm{color:var(--pc-ink,var(--ink));font-weight:750;font-size:14.5px}
+  .card .marca{font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:6px}
+  .card .marca.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .marca.cm{background:var(--cm);color:var(--cm-ink)} .card .marca.it{background:var(--it);color:var(--it-ink)} .card .marca.de{background:var(--de);color:var(--de-ink)}
+  .stts{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:7px}
+  .stt{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:750;padding:3px 9px;border-radius:8px;line-height:1.2;white-space:nowrap}
+  .stt.red{background:var(--danger);color:#fff} .stt.orange{background:#e8801e;color:#fff} .stt.blue{background:#2f6fed;color:#fff}
+  .stt.green{background:var(--ok);color:#fff} .stt.purple{background:#7c5cbf;color:#fff} .stt.amber{background:#c99a12;color:#fff} .stt.gray{background:var(--soft2);color:var(--muted)}
+  .stt.sub{font-weight:600;background:transparent;border:1px solid var(--line);color:var(--muted)}
+  .stt.sub.ok{border-color:var(--ok);color:var(--ok)} .stt.sub.warn{border-color:var(--warn);color:var(--warn)} .stt.sub.wait{border-color:#2f6fed;color:#2f6fed}
+  .card .txt{margin-top:7px}
+  .card.red{background:var(--card)}
   .card .txt{margin:6px 0;font-size:14px;color:var(--ink);opacity:.92;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
   .card.dim{opacity:.6}
   .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
   .chip{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
   .chip.lang{display:inline-flex;align-items:center;gap:5px}
-  .chip.mdt{background:var(--mdt);color:var(--mdt-ink)} .chip.cm{background:var(--cm);color:var(--cm-ink)} .chip.it{background:var(--it);color:var(--it-ink)}
+  .chip.mdt{background:var(--mdt);color:var(--mdt-ink)} .chip.cm{background:var(--cm);color:var(--cm-ink)} .chip.it{background:var(--it);color:var(--it-ink)} .chip.de{background:var(--de);color:var(--de-ink)}
   .chip.lang{background:var(--ink);color:var(--bg);font-weight:600;letter-spacing:.02em}
   :root[data-theme="dark"] .chip.lang{background:var(--soft2);color:var(--ink)}
   .chip.midia{background:var(--danger);color:#fff;font-weight:600}
@@ -159,6 +181,13 @@
   .chip.pausa{border:1px dashed var(--warn);background:transparent;color:var(--warn)}
   .chip.mail{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}
   .chip.compra{background:var(--ok);color:#fff}
+  .chip.envio{background:var(--ok-soft);color:var(--ok);font-weight:700;border:1px solid var(--ok)}
+  .block.resumoIA{border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent-soft) 55%,var(--card))}
+  .block.resumoIA h3{display:flex;align-items:center;gap:8px}
+  .txtResumo{white-space:pre-line;font-size:14px;line-height:1.5}
+  .linhaQ{font-size:13.5px;margin:2px 0 6px} .linhaQ b{color:var(--accent-ink)} .linhaQ.passo{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .card .quer{font-size:12.5px;color:var(--accent-ink);font-weight:600;margin-top:4px}
+  .rs.envio b{color:var(--ok)}
   .janelas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
   .jan{font-size:12px;color:var(--muted)} .jan b{color:var(--ink);font-weight:600}
   .bar{height:4px;background:var(--soft2);border-radius:2px;margin-top:3px;overflow:hidden}
@@ -195,6 +224,14 @@
   .card .txt.pt{margin-top:3px;color:var(--ink);opacity:.8;font-size:12.5px;padding-left:8px;border-left:2px solid var(--accent)}
   .msg.midia{border:1px dashed var(--danger);background:var(--danger-soft);color:var(--danger);font-weight:600}
   .msg.apagada{opacity:.55;text-decoration:line-through;border:1px dashed var(--danger)}
+  .msg.oculta{border:1px dashed var(--warn);opacity:.85}
+  .msg .ocultar{display:inline-block;margin-left:8px;padding:1px 9px;font-size:11.5px;font-weight:600;border:1px solid var(--warn);background:var(--card);color:var(--warn);border-radius:8px;cursor:pointer}
+  .msg .ocultar:hover{background:var(--warn);color:#fff}
+  /* aberto como app na tela inicial do iPhone: respeita o entalhe e a barra de gestos */
+  @media (display-mode: standalone){
+    body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+    .ddm{bottom:calc(12px + env(safe-area-inset-bottom))}
+  }
   .msg .apagar{display:inline-block;margin-left:8px;padding:1px 9px;font-size:11.5px;font-weight:600;border:1px solid var(--danger);background:var(--card);color:var(--danger);border-radius:8px;cursor:pointer;opacity:1}
   .msg .apagar:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
   .msg.fila{border:1px solid var(--ok)} .msg.pend{border:1px dashed var(--ok);background:var(--ok-soft)}
@@ -280,7 +317,7 @@
   .grp{position:sticky;top:0;z-index:2;background:var(--bg2);padding:6px 4px;margin:8px 0 6px}
   .card{padding:11px 14px 11px 16px}
   .card .av{width:32px;height:32px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:700;background:var(--soft2);color:var(--ink);flex:none}
-  .card .av.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .av.cm{background:var(--cm);color:var(--cm-ink)} .card .av.it{background:var(--it);color:var(--it-ink)}
+  .card .av.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .av.cm{background:var(--cm);color:var(--cm-ink)} .card .av.it{background:var(--it);color:var(--it-ink)} .card .av.de{background:var(--de);color:var(--de-ink)}
   .card .nm{font-weight:650;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
   .card .who{flex-wrap:nowrap}
   .chip.canal{background:transparent;border:1px solid var(--line);padding:1px 7px;display:inline-flex;align-items:center;gap:4px}
@@ -356,6 +393,7 @@ const MARCA = {
   mapa_del_tarot:      { nome: 'Mapa del Tarot', curto: 'MDT', cls: 'mdt', idioma: 'es', thankyou: 'mapadeltaro.online/thank-you/', venda: 'mapadeltaro.online' },
   cartomaps:           { nome: 'Carto Maps', curto: 'Carto', cls: 'cm', idioma: 'en', thankyou: 'cartomaps.online/thank-you', venda: 'cartomaps.online' },
   atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: 'atlantedellecarte.com/thank-you-x7f3q9/', venda: 'atlantedellecarte.com' },
+  der_kartenatlas:     { nome: 'Der Kartenatlas', curto: 'Atlas', cls: 'de', idioma: 'de', thankyou: 'derkartenatlas.de/thank-you/', venda: 'derkartenatlas.de' },
 };
 const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
 // Ícones desenhados em SVG, dentro do HTML: nada para baixar e o Windows mostra
@@ -450,31 +488,44 @@ function janelaTexto(j) { if (!j) return 'comentário, sem prazo'; return j.h24 
 
 /* ---------- modelos ES/EN (fallback sem IA) ---------- */
 const MODELOS = [
-  { id: 'pedir_email', nome: 'Já comprou: pedir o e-mail da compra', canais: ['dm', 'comentario_privado'],
-    es: c => `Vamos a resolverlo ahora. Dime el correo que usaste en la compra y lo busco de mi lado.\nEn cuanto lo encuentre, te reenvío todos los archivos directo a ese correo, sin plataforma ni contraseña.`,
-    en: c => `Let's sort this out now. Tell me the email you used at checkout and I'll look it up.\nAs soon as I find it, I'll resend all the files straight to that inbox. No platform, no password.` },
+  { id: 'email_ja_enviado', nome: 'E-mail já enviado: dizer o dia, a hora e para onde foi', canais: ['dm', 'comentario_privado'],
+    es: c => c.envio ? `Te ${c.envio.n > 1 ? 'los' : 'lo'} envié el ${c.envio.dia} a las ${c.envio.hora} a ${c.envio.para} ✅\nRevisa también spam y promociones, y busca "Hotmart" en el buscador del correo. Si no aparece, dime y te ${c.envio.n > 1 ? 'los' : 'lo'} reenvío ahora mismo.` : `Todavía no tengo un envío registrado para tu correo. Dime el correo que usaste en la compra o el número de transacción HP y te reenvío todo ahora.`,
+    en: c => c.envio ? `I sent ${c.envio.n > 1 ? 'them' : 'it'} on ${c.envio.dia} at ${c.envio.hora} to ${c.envio.para} ✅\nPlease check spam and promotions too, and search your inbox for "Hotmart". If it's not there, tell me and I'll resend right away.` : `I don't have a delivery on record for your email yet. Send me the email you used at checkout or the HP transaction number and I'll resend everything now.`,
+    it: c => c.envio ? `Te ${c.envio.n > 1 ? 'li' : 'l\''}ho inviat${c.envio.n > 1 ? 'i' : 'o'} il ${c.envio.dia} alle ${c.envio.hora} a ${c.envio.para} ✅\nControlla anche spam e promozioni, e cerca "Hotmart" nella casella di posta. Se non lo trovi, dimmelo e te lo rimando subito.` : `Non ho ancora un invio registrato per la tua e-mail. Scrivimi l'e-mail usata per l'acquisto o il numero di transazione HP e ti rimando tutto adesso.` },
+  { id: 'pedir_email', nome: 'Já comprou: pedir o e-mail da compra (por escrito, não print)', canais: ['dm', 'comentario_privado'],
+    it: c => `Risolviamo subito. Scrivimi (in testo, non screenshot) l'e-mail che hai usato per l'acquisto oppure il numero di transazione che inizia con HP, e lo cerco io.\nAppena lo trovo, ti rimando tutti i file direttamente a quell'e-mail, senza piattaforma né password.`,
+    es: c => `Vamos a resolverlo ahora. Escríbeme (en texto, no en captura) el correo que usaste en la compra o el número de transacción que empieza con HP, y lo busco de mi lado.\nEn cuanto lo encuentre, te reenvío todos los archivos directo a ese correo, sin plataforma ni contraseña.`,
+    en: c => `Let's sort this out now. Type (as text, not a screenshot) the email you used at checkout or the transaction number starting with HP, and I'll look it up.\nAs soon as I find it, I'll resend all the files straight to that inbox. No platform, no password.` },
   { id: 'acesso_reenviado', nome: 'Compra achada: arquivos reenviados por e-mail', canais: ['dm', 'comentario_privado'],
+    it: c => `Ho trovato il tuo acquisto! ✅ Ti ho appena inviato tutti i file a ${c.email || 'la tua e-mail'}, da scaricare direttamente, senza piattaforma.\nSe non arriva entro qualche minuto, controlla spam o promozioni e avvisami qui.`,
     es: c => `¡Encontré tu compra! ✅ Acabo de enviarte todos los archivos a ${c.email || 'tu correo'}, para descargar directo, sin plataforma.\nSi no aparece en unos minutos, revisa spam o promociones y avísame por aquí.`,
     en: c => `Found your purchase ✅ I've just emailed all the files to ${c.email || 'your inbox'} as direct downloads, no platform needed.\nIf it doesn't show up in a few minutes, check spam or promotions and tell me here.` },
   { id: 'email_errado', nome: 'E-mail digitado errado na compra', canais: ['dm', 'comentario_privado'],
+    it: c => `Ho trovato il tuo acquisto! L'e-mail era registrata come ${c.email || '(e-mail con errore)'}, con una lettera diversa, e per questo non ti è mai arrivato nulla.\nHo appena rimandato tutto all'indirizzo giusto. Controlla e fammi sapere.`,
     es: c => `¡Encontré tu compra! El correo quedó registrado como ${c.email || '(correo con error)'}, con una letra distinta, y por eso nunca te llegó.\nAcabo de reenviar todo al correo correcto. Revisa y me avisas.`,
     en: c => `Found your purchase! The email was saved as ${c.email || '(email with a typo)'}, one letter off, which is why nothing ever arrived.\nI've just resent everything to the right address. Check and let me know.` },
   { id: 'estafa_publico', nome: 'Comentário "estafa": responder em público (3 linhas, sem link)', canais: ['comentario_publico'],
+    it: c => `${c.nome ? c.nome + ', hai' : 'Hai'} tutte le ragioni, e non è una truffa: il tuo acquisto risulta confermato da parte nostra.\nL'errore è stato nostro, non tuo.\nTi ho appena scritto in privato con la soluzione.`,
     es: c => `${c.nome ? c.nome + ', tienes' : 'Tienes'} toda la razón, y no es una estafa: tu compra está confirmada de nuestro lado.\nEl fallo fue nuestro, no tuyo.\nTe acabo de escribir por privado con la solución.`,
     en: c => `${c.nome ? c.nome + ', you' : 'You'}'re right to be upset, and this is not a scam: your purchase is confirmed on our side.\nThe failure was ours, not yours.\nI've just messaged you privately with the fix.` },
   { id: 'coment_para_dm', nome: 'Comentário: "te respondo por privado"', canais: ['comentario_publico'],
+    it: c => `Ciao! 😊 Grazie per averci scritto, ti rispondo in privato.`,
     es: c => `¡Hola! 😊 Gracias por escribir, ya te respondo por privado.`,
     en: c => `Just sent you all the details in a DM! 🎴✨` },
   { id: 'reembolso', nome: 'Reembolso: passo a passo da Hotmart com o código', canais: ['dm', 'comentario_privado'],
+    it: c => `Certo, ti aiuto con il rimborso. Lo elabora Hotmart, ed è veloce:\n1) Vai su refund.hotmart.com\n2) Inserisci il codice della transazione e l'e-mail dell'acquisto. ${c.codigos.length > 1 ? 'I tuoi codici: ' : 'Il tuo codice: '}${c.codigos.join(', ') || 'HP__________'}\n3) Ricevi un token via e-mail (vale 15 minuti): incollalo, scegli il motivo e premi Concludi\n4) Hotmart ti chiede i dati bancari e i soldi tornano entro 7 giorni\nSe mi racconti cosa è successo, mi aiuta a migliorare il materiale. E se preferisci tenerlo, posso rimandarti i file adesso.`,
     es: c => `Claro, te ayudo con el reembolso. Quien lo procesa es Hotmart, y es rápido:\n1) Entra en refund.hotmart.com\n2) Escribe el código de la transacción y el correo de la compra. ${c.codigos.length > 1 ? 'Tus códigos: ' : 'Tu código: '}${c.codigos.join(', ') || 'HP__________'}\n3) Te llega un token por correo (vale 15 minutos): pégalo, elige el motivo y pulsa Finalizar\n4) Hotmart te pide los datos bancarios y el dinero vuelve en hasta 7 días\nSi me cuentas qué pasó, me ayuda a mejorar el material. Y si prefieres quedarte con él, también puedo reenviarte los archivos ahora mismo.`,
     en: c => `Of course, I'll help with the refund. Hotmart processes it, and it's quick:\n1) Go to refund.hotmart.com\n2) Enter the transaction code and the email you used at checkout. ${c.codigos.length > 1 ? 'Your codes: ' : 'Your code: '}${c.codigos.join(', ') || 'HP__________'}\n3) You'll get a token by email (valid 15 minutes): paste it, pick a reason and click Finish\n4) Hotmart asks for your bank details and the money is back within 7 days\nIf you tell me what went wrong, it helps me improve the material. And if you'd rather keep it, I can resend the files right now.` },
   { id: 'menu', nome: 'Não entendi: menu de 3 caminhos', canais: ['dm', 'comentario_privado'],
+    it: c => `Ciao! Dimmi qual è il tuo caso e lo risolvo subito:\n👉 Ho già comprato e non riesco ad accedere\n👉 Voglio comprare e non me lo permette\n👉 Ho un dubbio sul materiale`,
     es: c => `¡Hola! Dime cuál es tu caso y lo resuelvo ahora:\n👉 Ya compré y no puedo entrar\n👉 Quiero comprar y no me deja\n👉 Tengo una duda sobre el material`,
     en: c => `Hi! Tell me which one you are and I'll sort it out now:\n👉 I bought it and can't get in\n👉 I want to buy and it won't let me\n👉 I have a question about the material` },
   { id: 'digital', nome: 'É físico ou digital?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    it: c => `È 100% digitale. Ricevi un PDF di 163 pagine appena il pagamento viene confermato, e lo apri sul telefono, sul tablet o sul computer.\nSe ami la carta, puoi stampare solo le pagine che stai usando. Niente spedizione, niente attesa.`,
     es: c => `Es 100% digital. Recibes un PDF de 163 páginas apenas se confirma el pago, y lo abres en el celular, la tablet o la computadora.\nSi te gusta el papel, puedes imprimir solo las páginas que estés usando. Sin envío, sin espera.`,
     en: c => `It's 100% digital. You get a 163-page PDF the moment your payment goes through, and you can open it on your phone, tablet or computer.\nIf you prefer paper, print only the pages you're working on. No shipping, no waiting.` },
   { id: 'cartas', nome: 'Vem com as cartas?', canais: ['dm', 'comentario_privado', 'comentario_publico'],
+    it: c => `L'Atlante è la guida, non il mazzo. Ti insegna a leggere le 78 carte del Rider Waite, il mazzo più comune e il più facile da trovare.\nSe ne hai già uno, va bene da oggi. Se ancora no, qualsiasi Rider Waite funziona.`,
     es: c => `El Mapa es la guía, no el mazo. Te enseña a leer las 78 cartas del Rider Waite, el mazo más común y el más fácil de conseguir.\nSi ya tienes uno, sirve desde hoy. Si todavía no, cualquier Rider Waite funciona.`,
     en: c => `The Map is the guide, not the deck. It teaches you to read all 78 Rider Waite cards, the most common deck and the easiest to find.\nIf you already own one, you can start today. If not, any Rider Waite works.` },
   { id: 'planes', nome: 'Planos / é assinatura?', canais: ['dm', 'comentario_privado'],
@@ -543,7 +594,7 @@ function renderLogin(msg, cls = 'err') {
   $('#app').innerHTML = `
   <div class="login"><div class="box">
     <h1><span class="logo">✦</span>Fila de atendimento</h1>
-    <div class="muted small">Mapa del Tarot · Carto Maps</div>
+    <div class="muted small">Mapa del Tarot · Carto Maps · Atlante delle Carte · Der Kartenatlas</div>
     <form id="f">
       <label>E-mail</label><input id="email" type="email" autocomplete="username" required inputmode="email">
       <label>Senha</label><input id="senha" type="password" autocomplete="current-password" required>
@@ -596,6 +647,7 @@ async function carregar() {
   const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: S.verBot, p_tudo: S.visao === 'tudo' }), sb.rpc('atendimento_travados')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
   S.erro = null; S.fila = f.data || []; S.travados = t.data || [];
+  carregarEnvios();
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
   S.agoraMs = agora ? new Date(agora).getTime() : Date.now();
   S.agoraLocalAt = Date.now(); S.carregadoEm = Date.now();
@@ -604,6 +656,24 @@ async function carregar() {
   if (S.sel && !S.comp) renderDetalhe();
   traduzirCards();
 }
+
+// Último e-mail com arquivos enviado para cada pessoa da lista (emails_tela guarda autor_id).
+// Vira o chip "✉️ enviado dd/mm hh:mm" no card, para você saber sem abrir.
+S.envios = S.envios || new Map();
+async function carregarEnvios() {
+  const ids = [...new Set(S.fila.map(it => it.autor_id).filter(Boolean))].slice(0, 200);
+  if (!ids.length) return;
+  const { data, error } = await sb.from('emails_tela').select('autor_id,criado_em,para,arquivos,resultado,por').in('autor_id', ids).eq('resultado', 'ok').order('criado_em', { ascending: false }).limit(500);
+  if (error) { console.warn('envios:', error.message); return; }
+  const m = new Map();
+  (data || []).forEach(r => { const g = m.get(r.autor_id) || { n: 0, ultimo: r }; g.n++; if (+new Date(r.criado_em) > +new Date(g.ultimo.criado_em)) g.ultimo = r; m.set(r.autor_id, g); });
+  S.envios = m;
+  // "o que a pessoa quer", dos resumos já gerados (uma linha no card)
+  const { data: rs } = await sb.from('conversa_resumos').select('autor_id,quer').in('autor_id', ids);
+  S.quer = new Map((rs || []).filter(r => r.quer).map(r => [r.autor_id, r.quer]));
+  renderLista();
+}
+const fmtDiaHora = ts => { const d = new Date(ts); return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
 
 /* ---------- tradução para PT (do que o CLIENTE escreveu) ----------
    Regra: quem escreve em idioma que o Gabriel não lê (tudo fora de ES/EN/PT)
@@ -673,7 +743,7 @@ async function recarregarFicha() {
   const alvo = S.sel.autor_id;
   const [fi, th] = await Promise.all([
     sb.rpc('ficha_cliente', { p_autor_id: alvo, p_marca: S.sel.marca || null }),
-    sb.from('conversas').select('id,marca,canal,direcao,texto,texto_pt,categoria,mensagem_id,criado_em,autor,apagado_em').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
+    sb.from('conversas').select('id,marca,canal,direcao,texto,texto_pt,categoria,mensagem_id,criado_em,autor,apagado_em,oculto_em').eq('autor_id', alvo).order('criado_em', { ascending: false }).limit(120),
   ]);
   if (!S.sel || S.sel.autor_id !== alvo) return;
   if (fi.error || th.error) S.fichaErro = (fi.error || th.error).message;
@@ -682,6 +752,20 @@ async function recarregarFicha() {
   if (!S.sel.idioma) S.sel.idioma = (MARCA[S.sel.marca] || {}).idioma || 'es';
   renderDetalhe();
   traduzirConversa(false);
+  carregarResumo(false);
+}
+// Resumo da conversa por IA (função resumir-conversa). Guardado no banco; só gera de novo
+// quando chegou mensagem nova. `forcar` = botão ↻.
+async function carregarResumo(forcar) {
+  const s = S.sel; if (!s) return;
+  const alvo = s.autor_id;
+  S.resumo = { autor_id: alvo, carregando: true, dados: (S.resumo && S.resumo.autor_id === alvo) ? S.resumo.dados : null, erro: null };
+  renderDetalhe();
+  const r = await chamarFn('resumir-conversa', { autor_id: alvo, marca: s.marca, forcar: !!forcar });
+  if (!S.sel || S.sel.autor_id !== alvo) return;
+  S.resumo = { autor_id: alvo, carregando: false, dados: r.erro ? null : r, erro: r.erro || null };
+  if (!r.erro && r.quer) { S.quer = S.quer || new Map(); S.quer.set(alvo, r.quer); renderLista(); }
+  renderDetalhe();
 }
 async function acao(fn, args, okMsg) {
   const { data, error } = await sb.rpc(fn, args);
@@ -769,7 +853,7 @@ function renderApp() {
     </div>
     <div id="fpanel" class="fpanel ${S.fpanel ? '' : 'hide'}">
       <div class="${S.visao === 'tudo' ? '' : 'hide'}" id="wrapSit"><label class="lbl">Situação</label><select id="fSit"><option value="todas">Todas</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select></div>
-      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option></select></div>
+      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option><option value="der_kartenatlas">Der Kartenatlas (DE)</option></select></div>
       <div><label class="lbl">Rede</label><select id="fOrigem"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select></div>
       <div><label class="lbl">Canal</label><select id="fCanal"><option value="todos">DM + comentários</option><option value="dm">Só mensagens diretas</option><option value="comentario">Só comentários</option></select></div>
       <div><label class="lbl">Período</label><select id="fDias"><option value="3">Últimos 3 dias</option><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></div>
@@ -833,8 +917,8 @@ function renderStatus() {
 }
 
 /* ---------- lista ---------- */
-// abas de idioma: ES, EN e IT têm aba própria; o resto (de, pt, ?) cai em "outros"
-const grupoIdioma = l => l === 'es' || l === 'en' || l === 'it' ? l : 'outros';
+// abas de idioma: ES, EN, IT e DE têm aba própria; o resto (pt, ?) cai em "outros"
+const grupoIdioma = l => ['es', 'en', 'it', 'de'].includes(l) ? l : 'outros';
 // a ordem é por aba: lê a da aba atual (cai para "todos", depois para o padrão antigo)
 const lerOrdemDaAba = () => { try { return localStorage.getItem('fila.ordem.' + (S.filtro.idioma || 'todos')) || localStorage.getItem('fila.ordem.todos') || localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } };
 const pintarOrdem = () => { const u = $('#ordUrg'), r = $('#ordRec'); if (u) u.className = S.ordem === 'urgencia' ? 'on' : ''; if (r) r.className = S.ordem === 'recentes' ? 'on' : ''; };
@@ -853,18 +937,18 @@ function visiveis() {
 }
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
-  const base = (S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5)).filter(casaBusca);
-  const n = { todos: base.length, es: 0, en: 0, it: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
+  const base = agruparPorPessoa((S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5)).filter(casaBusca));
+  const n = { todos: base.length, es: 0, en: 0, it: 0, de: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
   const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
   const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
-  el.innerHTML = tab('todos', 'Todos') + tab('es', BANDEIRA.es + ' Español') + tab('en', BANDEIRA.en + ' English') + tab('it', BANDEIRA.it + ' Italiano') + tab('outros', 'Outros');
+  el.innerHTML = tab('todos', 'Todos') + tab('es', BANDEIRA.es + ' Español') + tab('en', BANDEIRA.en + ' English') + tab('it', BANDEIRA.it + ' Italiano') + tab('de', BANDEIRA.de + ' Deutsch') + tab('outros', 'Outros');
   // ao trocar de aba, a ordem (urgência/recentes) vira a que essa aba lembra
   el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; S.ordem = lerOrdemDaAba(); pintarOrdem(); renderTabs(); renderLista(); });
 }
 function renderLista() {
   const el = $('#lista'); if (!el) return;
   el.classList.toggle('hide-m', S.mobileDetalhe);
-  const itens = visiveis();
+  const itens = agruparPorPessoa(visiveis());
   const g1 = itens.filter(i => i.urgencia <= 2), g2 = itens.filter(i => i.urgencia >= 3 && i.urgencia <= 5), gb = itens.filter(i => i.urgencia === 6), g3 = itens.filter(i => i.urgencia >= 7);
   const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
   let h = '';
@@ -894,8 +978,71 @@ function renderLista() {
   el.querySelectorAll('.trav').forEach(c => c.onclick = () => { const t = S.travados.find(x => String(x.id) === c.dataset.trav); if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t }); });
 }
 const canalCurto = c => c === 'dm' ? 'DM' : c === 'dm_fb' ? 'Messenger' : 'Comentário';
+// Cor fixa por pessoa: mesmo id → mesma cor, na lista e no detalhe.
+function corPessoa(id) {
+  let h = 0; const s = String(id || ''); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  const hue = h % 360; const dark = document.documentElement.dataset.theme === 'dark';
+  return { pc: `hsl(${hue} 65% ${dark ? 46 : 42}%)`, ink: `hsl(${hue} 90% ${dark ? 74 : 32}%)` };
+}
+// Status principal em uma palavra, com cor forte. A frase completa do banco fica no title.
+function statusDe(it) {
+  const cats = String(it.categorias || ''), mot = String(it.motivo_urgencia || '');
+  const has = k => cats.includes(k) || mot.includes(k);
+  const deuDado = /informou e-mail/.test(mot) || cats.includes('VERIFICACAO') || !!it.email_informado;
+  const pausado = it.pausado_ate && new Date(it.pausado_ate) > agoraServidor();
+  let p;
+  if (/Bot travou|pediu (falar|humano)|HUMANO/.test(mot) || cats.includes('HUMANO')) p = { cls: 'purple', t: '🙋 Quer uma pessoa' };
+  else if (has('FRAUDE')) p = { cls: 'red', t: '🚨 Acusa golpe' };
+  else if (has('SEM_RESPOSTA')) p = { cls: 'red', t: '⏳ Cobrando resposta' };
+  else if (has('CRITICA')) p = { cls: 'red', t: '⭐ Crítica pública' };
+  else if (it.estado === 'resolvido' && deuDado) p = { cls: 'green', t: '✅ Arquivos enviados' };
+  else if (has('SEM_ACESSO')) p = { cls: 'orange', t: '📭 Não recebeu' };
+  else if (deuDado) p = { cls: 'blue', t: '📧 Deu e-mail/HP' };
+  else if (has('MIDIA') || /print\/m[ií]dia/.test(mot)) p = { cls: 'amber', t: '📎 Mandou print' };
+  else if (has('ENTRE_USUARIOS')) p = { cls: 'gray', t: '👥 Entre usuários' };
+  else if (has('SPAM')) p = { cls: 'gray', t: '🚫 Spam' };
+  else if (has('PAGAMENTO')) p = { cls: 'amber', t: '💳 Pagamento' };
+  else if (has('PRECO')) p = { cls: 'blue', t: '💲 Preço' };
+  else if (has('FISICO')) p = { cls: 'blue', t: '📦 Perguntou se é físico' };
+  else if (has('INTERESSE')) p = { cls: 'green', t: '🛒 Interesse' };
+  else if (has('ELOGIO')) p = { cls: 'green', t: '💛 Elogio' };
+  else if (it.situacao === 'bot' || /Bot respondeu/.test(mot)) p = { cls: 'gray', t: '🤖 Bot respondeu' };
+  else p = { cls: 'gray', t: '💬 Conversa' };
+  const subs = [];
+  if (it.estado === 'aguardando_email') subs.push({ cls: 'wait', t: 'aguardando e-mail' });
+  else if (it.estado === 'aguardando_gabriel') subs.push({ cls: 'warn', t: 'esperando você' });
+  else if (it.estado === 'resolvido' && p.cls !== 'green') subs.push({ cls: 'ok', t: 'acesso já entregue' });
+  if (/bot respondeu sozinho, confira/i.test(mot) && p.cls !== 'gray') subs.push({ cls: '', t: '🤖 bot já respondeu' });
+  if (pausado) subs.push({ cls: 'warn', t: '⏸ bot pausado' });
+  if (it.resposta_na_fila) subs.push({ cls: 'ok', t: '📤 resposta na fila' });
+  return { p, subs };
+}
+// Uma pessoa por card: junta DM + comentário da mesma pessoa e marca. O card usa a linha
+// mais urgente (empate: a mais recente) e guarda as outras em `canais`.
+function agruparPorPessoa(itens) {
+  const mapa = new Map();
+  for (const it of itens) {
+    const k = (it.autor_id || it.conversa_id) + '|' + it.marca;
+    const g = mapa.get(k);
+    if (!g) { mapa.set(k, Object.assign({}, it, { canais: [it] })); continue; }
+    g.canais.push(it);
+    const maisUrgente = it.urgencia < g.urgencia || (it.urgencia === g.urgencia && +new Date(it.ultima_entrada) > +new Date(g.ultima_entrada));
+    if (maisUrgente) { const canais = g.canais; Object.assign(g, it); g.canais = canais; }
+    // texto mais recente de qualquer canal; contagens somadas; categorias unidas
+    const maisNovo = g.canais.reduce((a, b) => +new Date(b.ultima_entrada) > +new Date(a.ultima_entrada) ? b : a);
+    g.ultimo_texto = maisNovo.ultimo_texto; g.ultimo_texto_pt = maisNovo.ultimo_texto_pt; g.ultima_mensagem_id = maisNovo.ultima_mensagem_id; g.ultima_entrada = maisNovo.ultima_entrada;
+    g.n_sem_resposta = g.canais.reduce((s, x) => s + (x.n_sem_resposta || 0), 0);
+    g.n_midia = g.canais.reduce((s, x) => s + (x.n_midia || 0), 0);
+    g.categorias = [...new Set(g.canais.flatMap(x => String(x.categorias || '').split(/,\s*/).filter(Boolean)))].join(', ');
+    g.email_informado = g.canais.map(x => x.email_informado).find(Boolean) || null;
+    g.estado = g.canais.map(x => x.estado).find(Boolean) || null;
+    g.resposta_na_fila = g.canais.some(x => x.resposta_na_fila);
+    g.pausado_ate = g.canais.map(x => x.pausado_ate).filter(Boolean).sort().pop() || null;
+  }
+  return [...mapa.values()];
+}
 function cardHtml(it) {
-  const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca && S.sel.canal === it.canal;
+  const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca;
   const cor = S.visao === 'tudo' ? ({ precisa: 'var(--u1)', sem_resposta: 'var(--u2)', bot: 'var(--u5)', voce: 'var(--ok)', ignorado: 'var(--u9)' }[it.situacao] || 'var(--u5)') : (URG_COR[it.urgencia] || 'var(--u5)');
   const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
   // O numero grande e SEMPRE o que ordena a lista: quanto tempo faz desde a ultima
@@ -907,20 +1054,23 @@ function cardHtml(it) {
   const mk = MARCA[it.marca] || { cls: '', nome: it.marca };
   const ini = (it.autor || '?').replace(/^@/, '').charAt(0).toUpperCase();
   const fecha24 = ehDireta(it.canal) && it.janela_24h_h != null && it.janela_24h_h > 0 && it.janela_24h_h <= 6;
-  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
-    <div class="who"><span class="av ${mk.cls}" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm" title="${esc(mk.nome)}">${esc(nomeAutor(it))}</span>${langChip(it.idioma)}<span class="chip canal ${ehComentario(it.canal) ? 'com' : 'dm'}" title="${esc(mk.nome)} · ${ehFb(it.canal) ? 'Facebook' : 'Instagram'}">${logoCanal(it.canal)} ${canalCurto(it.canal)}</span>
+  const cp = corPessoa(it.autor_id || it.conversa_id);
+  const st = statusDe(it);
+  const canais = (it.canais || [it]).slice().sort((a, b) => a.urgencia - b.urgencia);
+  const chipsCanal = canais.map(cn => `<span class="chip canal ${ehComentario(cn.canal) ? 'com' : 'dm'}" title="${esc(mk.nome)} · ${ehFb(cn.canal) ? 'Facebook' : 'Instagram'} · ${esc(cn.motivo_urgencia || '')}">${logoCanal(cn.canal)} ${canalCurto(cn.canal)}${cn.n_sem_resposta > 1 ? ' <b>' + cn.n_sem_resposta + '</b>' : ''}</span>`).join('');
+  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor};--pc:${cp.pc};--pc-ink:${cp.ink}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}" title="${esc(it.motivo_urgencia || '')}">
+    <div class="who"><span class="av" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm">${esc(nomeAutor(it))}</span><span class="marca ${mk.cls}" title="${esc(mk.nome)}">${esc(mk.curto || mk.nome)}</span>${it.idioma ? `<span title="${esc(IDIOMA_NOME[it.idioma] || it.idioma)}">${bandeira(it.idioma)}</span>` : ''}
       <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${quando}</span></div>
-    <div class="motivo">${esc(it.motivo_urgencia)}</div>
+    <div class="stts"><span class="stt ${st.p.cls}">${st.p.t}</span>${chipsCanal}${st.subs.map(s => `<span class="stt sub ${s.cls}">${s.t}</span>`).join('')}</div>
+    ${(() => { const q = S.quer && S.quer.get(it.autor_id); return q ? `<div class="quer">💬 ${esc(q)}</div>` : ''; })()}
     <div class="txt">${txt}</div>
     ${it.ultimo_texto_pt ? `<div class="txt pt">${BR} ${esc(it.ultimo_texto_pt)}</div>` : (it.traduzindo ? `<div class="txt pt muted">${BR} traduzindo…</div>` : '')}
     ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:4px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600;margin-top:4px">sem nenhuma resposta</div>`) : ''}
     <div class="chips">
       ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
-      ${it.n_sem_resposta > 1 ? `<span class="chip">${it.n_sem_resposta} msgs sem resposta</span>` : ''}
       ${fecha24 ? `<span class="chip" style="background:var(--warn-soft);color:var(--warn);font-weight:600">⏳ 24h fecha em ${dur(it.janela_24h_h, false)}</span>` : ''}
+      ${(() => { const e = S.envios && S.envios.get(it.autor_id); return e ? `<span class="chip envio" title="${e.n} envio(s) · último para ${esc(e.ultimo.para)} · ${(e.ultimo.arquivos || []).length} arquivo(s)">✉️ enviado ${fmtDiaHora(e.ultimo.criado_em)}${e.n > 1 ? ' ×' + e.n : ''}</span>` : ''; })()}
       ${it.email_informado ? `<span class="chip mail">${esc(it.email_informado)}</span>` : ''}
-      ${it.pausado_ate && new Date(it.pausado_ate) > agoraServidor() ? `<span class="chip pausa">bot pausado</span>` : ''}
-      ${it.resposta_na_fila ? `<span class="chip fila">resposta na fila</span>` : ''}
     </div></div>`;
 }
 
@@ -930,7 +1080,9 @@ function ctxModelo() {
   const pagas = (f.compras || []).filter(c => c.pago);
   const nomeCompleto = pagas[0]?.nome || (f.compras || [])[0]?.nome || '';
   const email = (f.estado?.email_informado) || (f.emails || [])[0] || '';
+  const envio = ((f.envios || []).filter(e => e.resultado === 'ok'))[0] || null;
   return { nome: nomeCompleto ? nomeCompleto.trim().split(/\s+/)[0] : '', email: mascararEmail(email), emailCompleto: email,
+    envio: envio ? { dia: fmtDiaHora(envio.criado_em).slice(0, 5), hora: fmtDiaHora(envio.criado_em).slice(6), para: mascararEmail(envio.para), n: (envio.arquivos || []).length } : null,
     codigos: pagas.map(c => c.transacao), venda: (MARCA[s.marca] || MARCA.mapa_del_tarot).venda, thankyou: (MARCA[s.marca] || MARCA.mapa_del_tarot).thankyou, idiomaDetectado: s.idioma };
 }
 function renderDetalhe() {
@@ -949,14 +1101,26 @@ function renderDetalhe() {
   const emailResumo = est?.email_informado || (f?.emails || [])[0] || '';
   const ignorada = it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '');
   let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
-    <h2>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip canal ${ehComentario(s.canal) ? 'com' : 'dm'}">${logoCanal(s.canal)} ${canalTxt(s.canal)}</span>${ehFb(s.canal) ? '' : linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>${BR} ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
+    <h2 style="color:${corPessoa(s.autor_id).ink}"><span class="av" style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:${corPessoa(s.autor_id).pc};color:#fff;font-size:13px;vertical-align:-7px;margin-right:6px">${esc((s.autor || '?').replace(/^@/, '').charAt(0).toUpperCase())}</span>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${s.item ? `<span class="stt ${statusDe(s.item).p.cls}">${statusDe(s.item).p.t}</span>` : ''}${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip canal ${ehComentario(s.canal) ? 'com' : 'dm'}">${logoCanal(s.canal)} ${canalTxt(s.canal)}</span>${ehFb(s.canal) ? '' : linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>${BR} ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
     <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
   h += `<div class="resumo">
     <div class="rs sit ${it.urgencia <= 2 ? 'alerta' : ''}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}" style="color:${URG_COR[it.urgencia] || 'inherit'}">${esc(it.motivo_urgencia || (it.travado ? 'Travado no fluxo' : '—'))}</b>${it.espera_desde ? `<span class="tiny muted">esperando ${dur(horasDesde(it.espera_desde))}</span>` : ''}</div>
     <div class="rs ${f ? (pagas.length ? 'ok' : (f.compras.length ? 'alerta' : '')) : ''}"><span class="k">Compra</span><b>${!f ? '…' : pagas.length ? '✓ ' + pagas.length + ' paga(s)' : f.compras.length ? f.compras.length + ' registro(s), nenhuma paga' : 'nenhuma achada'}</b>${f && pagas.length ? `<span class="tiny muted">${esc((pagas[0].produto_nome || '').replace(/&amp;/g, '&').slice(0, 40))}</span>` : ''}</div>
     <div class="rs"><span class="k">E-mail</span><b class="${emailResumo ? 'copy mono' : 'muted'}" ${emailResumo ? `data-copy="${esc(emailResumo)}" title="copiar"` : ''}>${emailResumo ? esc(emailResumo) : 'nenhum'}</b>${f && f.emails.length > 1 ? `<span class="tiny muted">+${f.emails.length - 1} outro(s) na ficha</span>` : ''}</div>
+    <div class="rs envio"><span class="k">Arquivos por e-mail</span>${(() => { const ev = (f && f.envios) || []; const ok = ev.filter(e => e.resultado === 'ok'); if (!f) return '<b>…</b>'; if (!ok.length) return '<b class="muted">nunca enviados por aqui</b><span class="tiny muted">só o e-mail automático da Hotmart</span>'; const u = ok[0]; return `<b>✉️ ${fmtDiaHora(u.criado_em)} → ${esc(mascararEmail(u.para))}</b><span class="tiny muted">${ok.length} envio(s) · ${(u.arquivos || []).length} arquivo(s) · ${u.por === 'bot' ? 'pelo bot' : 'por você'}</span>`; })()}</div>
     <div class="rs ${j && j.h24 <= 0 ? 'alerta' : ''}"><span class="k">Prazo da Meta</span><b>${j ? (j.h24 > 0 ? '24h: ' + dur(j.h24, false) + ' restantes' : j.h7d > 0 ? 'só human_agent (' + dur(j.h7d, false) + ')' : 'janelas fechadas') : 'comentário público'}</b><span class="tiny muted">${estadoAtual ? 'fluxo: ' + esc(estadoAtual) : (pausaAtiva ? 'bot pausado' : 'bot ativo')}</span></div>
   </div>`;
+  // Resumo da conversa por IA: sempre visível, antes de qualquer botão.
+  {
+    const R = (S.resumo && S.resumo.autor_id === s.autor_id) ? S.resumo : null;
+    const d = R && R.dados;
+    h += `<div class="block resumoIA"><h3>📝 Resumo da conversa <span class="sub muted">· IA · ${d ? (d.cache ? 'já estava pronto' : 'gerado agora') + (d.n_msgs ? ' · ' + d.n_msgs + ' msgs' : '') : ''}</span><button class="small ghost" id="btResumo" style="margin-left:auto" title="Gerar de novo" ${R && R.carregando ? 'disabled' : ''}>${R && R.carregando ? '…' : '↻'}</button></h3>`;
+    if (d) {
+      h += `${d.quer ? `<div class="linhaQ"><b>Quer:</b> ${esc(d.quer)}</div>` : ''}<div class="txtResumo">${esc(d.resumo)}</div>${d.proximo_passo && d.proximo_passo.toLowerCase() !== 'nada' ? `<div class="linhaQ passo"><b>Próximo passo:</b> ${esc(d.proximo_passo)}</div>` : ''}`;
+    } else if (R && R.erro) h += `<div class="muted small">Não consegui resumir: ${esc(R.erro)}</div>`;
+    else h += `<div class="muted small">Resumindo a conversa…</div>`;
+    h += `</div>`;
+  }
   if (it.n_midia) h += `<div class="notice bad">📎 ${it.n_midia} mensagem(ns) sem texto no trecho sem resposta: provavelmente imagem ou print (comprovante). O banco não guarda a mídia. Abra a conversa no Instagram antes de responder.</div>`;
   if (pendentesFila.length) h += `<div class="notice ok">✅ ${pendentesFila.length} resposta(s) já na fila, sai(em) em até 5 min. Dá para cancelar na conversa, logo abaixo.</div>`;
 
@@ -975,7 +1139,7 @@ function renderDetalhe() {
         <button id="btReembolso">${S.reemb ? 'Fechar reembolso' : 'Registrar reembolso'}</button>
         <div class="sep"></div>
         ${ignorada ? `<button id="btReativar">Voltar para a fila</button>` : `<button id="btIgnorar">Ignorar por enquanto… <span class="muted small">· volta se a pessoa escrever</span></button>`}
-        ${!ehDireta(s.canal) ? `<div class="sep"></div><button id="btApagarUlt" style="color:var(--danger)">🗑 Apagar o último comentário <span class="muted small">· some da Meta, não dá para desfazer</span></button>` : ''}
+        ${!ehDireta(s.canal) ? `<div class="sep"></div><button id="btOcultarUlt" style="color:var(--warn)">🙈 Ocultar o último comentário <span class="muted small">· some para os outros, dá para desfazer</span></button><button id="btApagarUlt" style="color:var(--danger)">🗑 Apagar o último comentário <span class="muted small">· some da Meta, não dá para desfazer</span></button>` : ''}
       </div></div>
     <span class="tiny muted" style="margin-left:auto">Responder e arquivos por privado entram na fila; o n8n envia em até 5 min.</span>
   </div>`;
@@ -1002,6 +1166,12 @@ function renderDetalhe() {
     h += f.emails.length ? f.emails.map(e => `<span class="chip mail copy" style="font-size:13px" data-copy="${esc(e)}" title="copiar">${esc(e)}</span> `).join('')
                          : `<div class="muted small">Nenhum e-mail no estado, nos reembolsos nem escrito nas mensagens. Sem e-mail não dá para cruzar com a Hotmart.</div>`;
     h += `<div class="tiny muted" style="margin-top:6px">Inclui e-mails escritos nas mensagens, mesmo os que o bot não capturou. Toque para copiar.</div></div>`;
+    const envios = f.envios || [];
+    h += `<div class="block"><h3>Arquivos enviados por e-mail <span class="sub muted">· ${envios.filter(e => e.resultado === 'ok').length} entregue(s)${envios.length !== envios.filter(e => e.resultado === 'ok').length ? ', ' + (envios.length - envios.filter(e => e.resultado === 'ok').length) + ' falhou' : ''}</span></h3>`;
+    h += envios.length ? `<div class="tablewrap"><table><thead><tr><th>Quando</th><th>Para</th><th>Arquivos</th><th>Quem</th><th>Status</th></tr></thead><tbody>` +
+      envios.map(e => `<tr><td><b>${fmtDataHora(e.criado_em)}</b></td><td class="mono copy" data-copy="${esc(e.para)}" title="copiar">${esc(e.para)}</td><td>${(e.arquivos || []).map(a => `<span class="chip">${esc(a)}</span>`).join(' ')}</td><td>${e.por === 'bot' ? '🤖 bot' : '👤 ' + esc(String(e.por || '').split('@')[0])}</td><td>${e.resultado === 'ok' ? '<span class="st pago">entregue à Resend</span>' : '<span class="st neg">' + esc(e.resultado || 'falhou') + '</span>'}</td></tr>`).join('') + `</tbody></table></div>`
+      : `<div class="muted small">Nenhum envio por aqui ainda. Se ela diz que não recebeu, use "Arquivos" acima para reenviar — fica registrado aqui com dia e hora.</div>`;
+    h += `</div>`;
     const pagas = f.compras.filter(c => c.pago); const totais = {}; pagas.forEach(c => { totais[c.moeda] = (totais[c.moeda] || 0) + Number(c.valor || 0); });
     h += `<div class="block"><h3>Compras na Hotmart <span class="sub muted">· ${f.compras.length} registro(s), ${pagas.length} paga(s)${pagas.length ? ' · ' + Object.entries(totais).map(([m, v]) => fmtValor(v, m)).join(' + ') : ''}</span></h3>`;
     if (!f.compras.length) h += `<div class="muted small">Nada encontrado para ${f.emails.length ? 'esses e-mails' : 'este cliente'}.</div>`;
@@ -1055,8 +1225,10 @@ function ligarDetalhe(j) {
   $('#btFora').onclick = async () => { const nota = prompt('Respondi pelo app do Instagram. Anotar algo? (opcional)'); if (nota === null) return; await acao('marcar_respondido_fora', { p_autor_id: s.autor_id, p_marca: s.marca, p_canal: ['comentario', 'comentario_fb', 'dm_fb'].includes(s.canal) ? s.canal : 'dm', p_nota: nota || null }, 'Marcado como respondido por fora'); };
   const p = $('#btPausar'); if (p) p.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 24 }, 'Bot pausado por 24h nesta conversa');
   const d = $('#btDespausar'); if (d) d.onclick = () => acao('pausar_bot', { p_conversa_id: s.autor_id, p_marca: s.marca, p_autor: s.autor, p_horas: 0 }, 'Bot despausado');
+  const bRes = $('#btResumo'); if (bRes) bRes.onclick = () => carregarResumo(true);
   const r = $('#btResolver'); if (r) r.onclick = async () => { if (confirm('Marcar como resolvido? Sai da lista de travados.')) await acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'resolvido', p_autor: s.autor }, 'Marcado como resolvido'); };
   const ra = $('#btReabrir'); if (ra) ra.onclick = () => acao('marcar_estado', { p_conversa_id: s.autor_id, p_marca: s.marca, p_estado: 'aguardando_gabriel', p_autor: s.autor }, 'Reaberto');
+  const bou = $('#btOcultarUlt'); if (bou) bou.onclick = () => { const bs = [...document.querySelectorAll('[data-ocultar]')].filter(x => x.dataset.acao === 'ocultar'); if (!bs.length) return toast('Nenhum comentário visível para ocultar nesta conversa.', true); bs[bs.length - 1].click(); };
   const bau = $('#btApagarUlt'); if (bau) bau.onclick = () => { const bs = document.querySelectorAll('[data-apagar]'); if (!bs.length) return toast('Nenhum comentário para apagar nesta conversa (ou já foi apagado).', true); bs[bs.length - 1].click(); };
   document.querySelectorAll('[data-apagar]').forEach(b => b.onclick = async ev => {
     ev.stopPropagation();
@@ -1067,6 +1239,15 @@ function ligarDetalhe(j) {
     const r = await chamarFn('apagar-comentario', { mensagem_id: b.dataset.apagar, marca: b.dataset.marca || s.marca, canal: b.dataset.canal, autor_id: s.autor_id, autor: s.autor || null });
     if (r.erro) { toast(r.erro, true); b.disabled = false; b.textContent = '🗑 apagar'; return; }
     toast(r.ja_apagado ? 'Esse comentário já tinha sido apagado' : 'Comentário apagado na Meta');
+    await recarregarFicha(); carregar();
+  });
+  document.querySelectorAll('[data-ocultar]').forEach(b => b.onclick = async ev => {
+    ev.stopPropagation();
+    const acaoOc = b.dataset.acao || 'ocultar';
+    b.disabled = true; b.textContent = acaoOc === 'ocultar' ? 'ocultando…' : 'reexibindo…';
+    const r = await chamarFn('ocultar-comentario', { mensagem_id: b.dataset.ocultar, marca: b.dataset.marca || s.marca, canal: b.dataset.canal, autor_id: s.autor_id, autor: s.autor || null, acao: acaoOc });
+    if (r.erro) { toast(r.erro, true); b.disabled = false; b.textContent = acaoOc === 'ocultar' ? '🙈 ocultar' : '👁 reexibir'; return; }
+    toast(acaoOc === 'ocultar' ? 'Comentário oculto: só quem escreveu ainda vê' : 'Comentário visível de novo');
     await recarregarFicha(); carregar();
   });
   document.querySelectorAll('[data-cancelar]').forEach(e => e.onclick = async () => { if (confirm('Cancelar esta resposta antes de sair?')) await acao('cancelar_resposta', { p_id: Number(e.dataset.cancelar) }, 'Cancelada'); });
@@ -1081,7 +1262,7 @@ function comentariosSemResposta() {
 function novoCompositor() {
   const s = S.sel, coms = comentariosSemResposta();
   const canal = s.canal === 'dm_fb' ? 'fb_dm' : (s.canal === 'comentario_fb' && coms.length ? 'fb_comentario_publico' : (s.canal === 'comentario' && coms.length ? 'comentario_publico' : 'dm'));
-  return { canal, ref: ehDireta(canal) ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
+  return { canal, ref: ehDireta(canal) ? s.autor_id : coms[0].mensagem_id, idioma: ['es', 'en', 'it', 'de', 'pt'].includes(s.idioma) ? s.idioma : (MARCA[s.marca] || {}).idioma || 'es', texto: '', modelo: '' };
 }
 function compositorHtml(j) {
   const c = S.comp, s = S.sel, coms = comentariosSemResposta();
@@ -1198,7 +1379,7 @@ function abrirEnvio(modo) {
   if (S.env && S.env.modo === modo) { S.env = null; renderDetalhe(); return; }
   const pagas = (f.compras || []).filter(c => c.pago);
   S.env = { modo, carregando: false, erro: null, precisaConf: !pagas.length, justificativa: '', links: null, sel: [], resultado: null,
-    para: (f.estado?.email_informado) || (f.emails || [])[0] || '', idioma: ['es', 'en', 'pt', 'it'].includes(s.idioma) ? s.idioma : ((MARCA[s.marca] || {}).idioma || 'es'),
+    para: (f.estado?.email_informado) || (f.emails || [])[0] || '', idioma: ['es', 'en', 'pt', 'it', 'de'].includes(s.idioma) ? s.idioma : ((MARCA[s.marca] || {}).idioma || 'es'),
     mensagem: '' };
   S.comp = null; S.reemb = null;
   renderDetalhe();
@@ -1339,7 +1520,7 @@ function renderModal() {
 // na ordem em que aconteceu — para ver o caminho inteiro da pessoa.
 const ehComentario = c => /coment/.test(String(c || ''));
 function msgsThread() {
-  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, pt: m.texto_pt, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em }));
+  const msgs = (S.thread || []).map(m => ({ t: m.criado_em, dir: m.direcao, texto: m.texto, pt: m.texto_pt, canal: m.canal, cat: m.categoria, id: m.mensagem_id, marca: m.marca, apagado: m.apagado_em, oculto: m.oculto_em }));
   (S.ficha?.fila || []).forEach(fr => msgs.push({ t: fr.enviado_em || fr.criado_em, dir: 'saida', texto: fr.texto, canal: fr.canal, fila: fr }));
   msgs.sort((a, b) => new Date(a.t) - new Date(b.t));
   return msgs;
@@ -1356,10 +1537,16 @@ function bolhasHtml(msgs, comTag) {
     let meta = `${fmtHora(m.t)} · ${canalTxt(m.canal)}${m.cat ? ' · ' + esc(m.cat) : ''}`;
     if (m.dir === 'saida' && (m.canal === 'comentario' || m.canal === 'comentario_fb') && /^(Ecco tutto quello che ti serve|Aquí va todo lo que necesitas|Here is everything you need|Vi tu comentario y prefiero|I saw your comment and I would rather|Ho visto il tuo commento e preferisco)/.test(String(m.texto || ''))) meta += ` · <b>🔒 privada, foi para o DM</b>`;
     if (m.apagado) meta += ` · <b style="color:var(--danger)">🗑 apagado ${fmtDataHora(m.apagado)}</b>`;
-    else if (ehComentarioApagavel(m)) meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
+    else if (ehComentarioApagavel(m)) {
+      if (m.oculto) meta += ` · <b style="color:var(--warn)">🙈 oculto desde ${fmtDataHora(m.oculto)}</b>`;
+      meta += ` <button class="ocultar" data-ocultar="${esc(m.id)}" data-acao="${m.oculto ? 'reexibir' : 'ocultar'}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="${m.oculto ? 'Voltar a mostrar este comentário para todo mundo' : 'Esconder dos outros; quem escreveu continua vendo. Dá para desfazer.'}">${m.oculto ? '👁 reexibir' : '🙈 ocultar'}</button>`;
+      meta += ` <button class="apagar" data-apagar="${esc(m.id)}" data-canal="${esc(m.canal)}" data-marca="${esc(m.marca || '')}" title="Apagar este comentário na Meta (não dá para desfazer)">🗑 apagar</button>`;
+    }
     if (m.fila) meta += ` · fila #${esc(m.fila.id)}${m.fila.origem ? ' · ' + esc(m.fila.origem) : ''}` + (m.fila.enviado_em ? ` · enviada${m.fila.resultado && m.fila.resultado !== 'ok' ? ' · <b style="color:var(--danger)">FALHOU: ' + esc(m.fila.resultado) + '</b>' : ''}` : ` · <b>ainda não enviada</b> <button class="small danger" data-cancelar="${esc(m.fila.id)}">cancelar</button>`);
+    // registro interno da tela (apagar/ocultar/reexibir à mão): nunca foi para a Meta. Mostra como nota, sem bolha e sem tradução.
+    if (m.dir === 'saida' && /^\[(respondido |)à mão/.test(String(m.texto || ''))) { h += `<div class="day" title="Registro interno: não foi enviado a ninguém">📝 ${esc(String(m.texto).replace(/^\[[^\]]*\]\s*/, ''))} · ${fmtHora(m.t)} · só você vê</div>`; continue; }
     if (vazio && m.dir === 'entrada') h += `<div class="msg in midia${ehComentario(m.canal) ? ' com' : ''}">${tag}📎 Mídia sem texto (imagem, print ou áudio). Só dá para ver no Instagram.<span class="m">${meta}</span></div>`;
-    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : ''}">${tag}${esc(m.texto)}${m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">${BR} ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
+    else h += `<div class="msg ${cls} ${extra} ${m.apagado ? 'apagada' : (m.oculto ? 'oculta' : '')}">${tag}${esc(m.texto)}${m.pt && m.pt.trim() !== String(m.texto).trim() ? `<span class="pt">${BR} ${esc(m.pt)}</span>` : ''}<span class="m">${meta}</span></div>`;
   }
   return h || `<div class="muted small">Nenhuma mensagem gravada.</div>`;
 }

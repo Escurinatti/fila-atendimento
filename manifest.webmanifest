@@ -1,0 +1,17 @@
+{
+  "name": "Fila — Atendimento",
+  "short_name": "Fila",
+  "description": "Atendimento do Mapa del Tarot, Carto Maps e Atlante delle Carte",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111219",
+  "theme_color": "#111219",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

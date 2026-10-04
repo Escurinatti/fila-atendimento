@@ -14,17 +14,23 @@ const json = (obj: unknown, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
 const esc = (s: string) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 
-const VALIDADE_SEG = 60 * 60 * 24 * 30;
-const REMETENTE = { mapa_del_tarot: "Mapa del Tarot <acceso@mapadeltarot.com>", cartomaps: "Carto Maps <acceso@mapadeltarot.com>", atlante_delle_carte: "Atlante delle Carte <acceso@mapadeltarot.com>" } as Record<string, string>;
-const REPLY_TO = "gabecarto@gmail.com";
+const VALIDADE_SEG = 60 * 60 * 24 * 30;   // so usado quando o bucket e privado
+// Bucket publico: a URL publica nao vence. Era o prazo de 30 dias da URL
+// assinada que fazia o cliente voltar dizendo "o link expirou".
+const publica = (base: string, bucket: string, arquivo: string) =>
+  base.replace(/\/+$/, "") + "/storage/v1/object/public/" + encodeURIComponent(bucket) + "/" +
+  arquivo.split("/").map(encodeURIComponent).join("/");
+const REMETENTE = { mapa_del_tarot: "Mapa del Tarot <acceso@mapadeltarot.com>", cartomaps: "Carto Maps <acceso@mapadeltarot.com>", atlante_delle_carte: "Atlante delle Carte <acceso@mapadeltarot.com>", der_kartenatlas: "Der Kartenatlas <acceso@mapadeltarot.com>" } as Record<string, string>;
+const REPLY_TO = "support@mapadeltarot.com";   // caixa que o robo de e-mail le
 
 const TEXTOS: Record<string, { assunto: string; ola: string; intro: string; nota: string; fim: string; botao: string }> = {
-  es: { assunto: "Tus archivos de {marca}", ola: "Hola{nome}", intro: "Aquí están tus archivos, para descargar directo. No hace falta plataforma ni contraseña.", nota: "Los enlaces funcionan por 30 días. Guarda los PDF en tu celular o computadora.", fim: "Si algo no abre, responde este correo y lo resuelvo.", botao: "Descargar" },
-  en: { assunto: "Your {marca} files", ola: "Hi{nome}", intro: "Here are your files, as direct downloads. No platform, no password needed.", nota: "The links work for 30 days. Save the PDFs to your phone or computer.", fim: "If anything does not open, reply to this email and I will sort it out.", botao: "Download" },
-  pt: { assunto: "Seus arquivos de {marca}", ola: "Olá{nome}", intro: "Aqui estão seus arquivos, para baixar direto. Sem plataforma nem senha.", nota: "Os links funcionam por 30 dias. Salve os PDFs no celular ou no computador.", fim: "Se algo não abrir, responda este e-mail e eu resolvo.", botao: "Baixar" },
-  it: { assunto: "I tuoi file di {marca}", ola: "Ciao{nome}", intro: "Ecco i tuoi file, da scaricare direttamente. Nessuna piattaforma, nessuna password.", nota: "I link funzionano per 30 giorni. Salva i PDF sul telefono o sul computer.", fim: "Se qualcosa non si apre, rispondi a questa email e lo risolvo.", botao: "Scarica" },
+  es: { assunto: "Tus archivos de {marca}", ola: "Hola{nome}", intro: "Aquí están tus archivos, para descargar directo. No hace falta plataforma ni contraseña.", nota: "Estos enlaces no vencen: puedes volver a este correo cuando quieras. Aun así, guarda los PDF en tu celular o computadora.", fim: "Si algo no abre, responde este correo y lo resuelvo.", botao: "Descargar" },
+  en: { assunto: "Your {marca} files", ola: "Hi{nome}", intro: "Here are your files, as direct downloads. No platform, no password needed.", nota: "These links do not expire — you can come back to this email any time. Still, save the PDFs to your phone or computer.", fim: "If anything does not open, reply to this email and I will sort it out.", botao: "Download" },
+  pt: { assunto: "Seus arquivos de {marca}", ola: "Olá{nome}", intro: "Aqui estão seus arquivos, para baixar direto. Sem plataforma nem senha.", nota: "Os links não vencem: pode voltar a este e-mail quando quiser. Mesmo assim, salve os PDFs no celular ou no computador.", fim: "Se algo não abrir, responda este e-mail e eu resolvo.", botao: "Baixar" },
+  de: { assunto: "Deine Dateien von {marca}", ola: "Hallo{nome}", intro: "Hier sind deine Dateien, direkt zum Herunterladen. Keine Plattform, kein Passwort.", nota: "Diese Links laufen nicht ab — du kannst jederzeit zu dieser E-Mail zurückkommen. Speichere die PDFs trotzdem auf deinem Handy oder Computer.", fim: "Falls sich etwas nicht öffnet, antworte einfach auf diese E-Mail und ich kümmere mich darum.", botao: "Herunterladen" },
+  it: { assunto: "I tuoi file di {marca}", ola: "Ciao{nome}", intro: "Ecco i tuoi file, da scaricare direttamente. Nessuna piattaforma, nessuna password.", nota: "I link non scadono: puoi tornare a questa email quando vuoi. Comunque, salva i PDF sul telefono o sul computer.", fim: "Se qualcosa non si apre, rispondi a questa email e lo risolvo.", botao: "Scarica" },
 };
-const NOME_MARCA: Record<string, string> = { mapa_del_tarot: "Mapa del Tarot", cartomaps: "Carto Maps", atlante_delle_carte: "Atlante delle Carte" };
+const NOME_MARCA: Record<string, string> = { mapa_del_tarot: "Mapa del Tarot", cartomaps: "Carto Maps", atlante_delle_carte: "Atlante delle Carte", der_kartenatlas: "Der Kartenatlas" };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
@@ -35,6 +41,11 @@ Deno.serve(async (req) => {
     const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const auth = req.headers.get("Authorization") ?? "";
 
+    // O bot do n8n chama com a service role: nesse caso nao ha usuario logado.
+    // Ele so pode mandar quando a compra ja foi confirmada no banco (manda produtos[]).
+    const ehBot = auth === "Bearer " + service;
+    if (ehBot) { return await enviar(req, url, service, "bot"); }
+
     const comoUsuario = createClient(url, anon, { global: { headers: { Authorization: auth } } });
     const { data: u, error: uerr } = await comoUsuario.auth.getUser();
     if (uerr || !u?.user?.email) return json({ erro: "não logado" }, 401);
@@ -42,23 +53,45 @@ Deno.serve(async (req) => {
     if (!ehAdmin) return json({ erro: "sem permissão" }, 403);
     const por = u.user.email!;
 
+    return await enviar(req, url, service, por);
+  } catch (e) {
+    return json({ erro: "Erro: " + (e instanceof Error ? e.message : String(e)) }, 500);
+  }
+});
+
+async function enviar(req: Request, url: string, service: string, por: string): Promise<Response> {
+  try {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) return json({ erro: "O reenvio por e-mail ainda não está configurado: falta o segredo RESEND_API_KEY em Supabase → Edge Functions → Secrets." }, 503);
 
-    const corpo = await req.json() as { autor_id: string; marca: string; para: string; idioma?: string; nome?: string; confirmo?: boolean; justificativa?: string; mensagem?: string };
+    const corpo = await req.json() as { autor_id: string; marca: string; para: string; idioma?: string; nome?: string; confirmo?: boolean; justificativa?: string; mensagem?: string; produtos?: number[]; transacao?: string };
     if (!corpo?.autor_id || !corpo?.marca || !corpo?.para) return json({ erro: "faltam autor_id, marca e para (e-mail)" }, 400);
     const para = corpo.para.trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(para)) return json({ erro: "e-mail inválido: " + para }, 400);
 
     const admin = createClient(url, service);
-    const { data: ficha, error: ferr } = await admin.rpc("ficha_cliente", { p_autor_id: corpo.autor_id, p_marca: corpo.marca });
-    if (ferr) return json({ erro: "ficha: " + ferr.message }, 500);
-    const f = (ficha ?? {}) as Record<string, any>;
-    const pagas = ((f.compras ?? []) as any[]).filter((c) => c.pago);
+    let f: Record<string, any> = {};
+    let pagas: any[] = [];
+    if (!(corpo.produtos ?? []).length) {
+      const { data: ficha, error: ferr } = await admin.rpc("ficha_cliente", { p_autor_id: corpo.autor_id, p_marca: corpo.marca });
+      if (ferr) return json({ erro: "ficha: " + ferr.message }, 500);
+      f = (ficha ?? {}) as Record<string, any>;
+      pagas = ((f.compras ?? []) as any[]).filter((c) => c.pago);
+    }
 
     let itens: any[] = [];
     let base: "compra" | "confirmacao_manual";
-    if (pagas.length) {
+    const pedidos = (corpo.produtos ?? []).map(Number).filter((n) => Number.isInteger(n) && n > 0);
+    if (pedidos.length) {
+      // Compra ja confirmada (o bot achou no banco): manda exatamente o que ela comprou.
+      const { data: it } = await admin.from("itens_membros")
+        .select("id,marca,titulo,bucket,arquivo,produto_id,libera_por,secao,ordem")
+        .eq("ativo", true).eq("marca", corpo.marca).order("ordem");
+      itens = (it ?? []).filter((i: any) =>
+        pedidos.includes(Number(i.produto_id)) ||
+        (i.libera_por ?? []).some((p: any) => pedidos.includes(Number(p))));
+      base = "compra";
+    } else if (pagas.length) {
       itens = (f.itens ?? []) as any[];
       base = "compra";
     } else {
@@ -79,14 +112,20 @@ Deno.serve(async (req) => {
 
     const links: { titulo: string; url: string }[] = [];
     const falhas: string[] = [];
+    const publicos = new Set<string>();
+    for (const b of new Set(itens.map((i: any) => String(i.bucket)))) {
+      const { data } = await admin.storage.getBucket(b);
+      if (data?.public) publicos.add(b);
+    }
     for (const i of itens) {
+      if (publicos.has(String(i.bucket))) { links.push({ titulo: i.titulo, url: publica(url, i.bucket, i.arquivo) }); continue; }
       const { data, error } = await admin.storage.from(i.bucket).createSignedUrl(i.arquivo, VALIDADE_SEG);
       if (error || !data?.signedUrl) { falhas.push(`${i.titulo}: ${error?.message ?? "sem url"}`); continue; }
       links.push({ titulo: i.titulo, url: data.signedUrl });
     }
     if (!links.length) return json({ erro: "Não consegui gerar nenhum link: " + falhas.join("; ") }, 500);
 
-    const idioma = corpo.idioma && TEXTOS[corpo.idioma] ? corpo.idioma : (corpo.marca === "cartomaps" ? "en" : corpo.marca === "atlante_delle_carte" ? "it" : "es");
+    const idioma = corpo.idioma && TEXTOS[corpo.idioma] ? corpo.idioma : (corpo.marca === "cartomaps" ? "en" : corpo.marca === "atlante_delle_carte" ? "it" : corpo.marca === "der_kartenatlas" ? "de" : "es");
     const t = TEXTOS[idioma];
     const marcaNome = NOME_MARCA[corpo.marca] ?? corpo.marca;
     const nome = (corpo.nome ?? (pagas[0]?.nome ?? "")).trim().split(/\s+/)[0] ?? "";
@@ -127,4 +166,4 @@ Deno.serve(async (req) => {
   } catch (e) {
     return json({ erro: "Erro: " + (e instanceof Error ? e.message : String(e)) }, 500);
   }
-});
+}

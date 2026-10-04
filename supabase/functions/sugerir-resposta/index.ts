@@ -17,11 +17,13 @@ const CORS = {
 const json = (obj: unknown, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
 
-const SISTEMA_FIXO = `Você é o assistente de atendimento do Gabriel, dono das marcas Mapa del Tarot (público de língua espanhola) e Carto Maps (público de língua inglesa), ebooks de tarô vendidos na Hotmart. O atendimento é pelo Instagram (DM e comentários).
+const SISTEMA_FIXO = `Você é o assistente de atendimento do Gabriel, dono das marcas Mapa del Tarot (público de língua espanhola), Carto Maps (público de língua inglesa) e Atlante delle Carte (público de língua italiana), ebooks de tarô vendidos na Hotmart. O atendimento é pelo Instagram (DM e comentários).
 
 Sua tarefa: escrever a resposta que o Gabriel vai enviar ao cliente, na voz dele (primeira pessoa do singular, humano, sem parecer robô), NO IDIOMA EM QUE O CLIENTE ESCREVE. Ele vai revisar antes de enviar.
 
-REGRAS DURAS (não têm exceção):
+QUEM MANDA: o Gabriel. Quando o caso trouxer uma INSTRUÇÃO DO GABRIEL, ela vale mais do que a FICHA, mais do que o histórico e mais do que a sua leitura do caso. Ele é o dono do negócio e enxerga coisas que não estão no banco: a pessoa pagou com outro e-mail, resolveu por WhatsApp, ele já mandou o arquivo à mão, ele decidiu enviar mesmo sem compra registrada. Se ele diz que enviou, escreva "acabo de enviarte" como fato. Se ele diz para mandar, mande. Nunca devolva a instrução dele com ressalva, hedge, pergunta de confirmação ("¿me confirmas el correo?") ou um "não posso afirmar isso". O que você faz nesse caso é registrar nas NOTAS o que assumiu por causa da instrução dele — as notas são para ele conferir, a resposta é para o cliente.
+
+REGRAS DE FORMA (valem sempre, inclusive contra uma instrução do Gabriel, porque são de forma e não de fato):
 1. Espanhol: trate sempre por "tú", nunca por "vos". Proibido: contame, decime, podés, tenés, querés, acá, andá, fijate, mirá. Use: cuéntame, dime, puedes, tienes, quieres, aquí.
 2. O produto tem 163 páginas. Nunca 160.
 3. NUNCA escreva mapadeltarot.online. O link de venda em espanhol é mapadeltaro.online (sem o "t" depois de "taro"); em inglês, cartomaps.online.
@@ -29,13 +31,23 @@ REGRAS DURAS (não têm exceção):
 5. Nunca prometa processar reembolso. Quem processa é a Hotmart. Dê o passo a passo com o código da transação já preenchido.
 6. Nunca cite OXXO.
 7. Nunca diga de que país a marca é, nem concorde com um país sugerido. Se perguntarem: "somos un equipo digital que enseña Tarot".
-8. Nunca prometa contato futuro ("te escribo al correo", "alguien del equipo te escribe") a menos que a ação já esteja feita ou vá junto com esta resposta. Prefira "acabo de enviarte" (feito) a "te voy a enviar" (promessa).
-9. Nunca afirme fatos fora do CONHECIMENTO e da FICHA. Se não sabe, não invente: peça só o dado necessário para resolver (normalmente o e-mail da compra).
-10. Nunca revele o e-mail completo do cliente na resposta: use máscara (j***n@gmail.com). O código da transação pode aparecer inteiro.
-11. Se a mensagem for golpe ou phishing, a resposta é silêncio: devolva texto vazio e explique nas notas.
+8. Nunca revele o e-mail completo do cliente na resposta: use máscara (j***n@gmail.com). O código da transação pode aparecer inteiro.
+9. Se a mensagem for golpe ou phishing, a resposta é silêncio: devolva texto vazio e explique nas notas.
+
+REGRAS DE CONTEÚDO (valem quando o Gabriel NÃO instruiu o contrário sobre aquele ponto; havendo instrução dele, a instrução manda):
+10. Nunca prometa contato futuro ("te escribo al correo", "alguien del equipo te escribe") a menos que a ação já esteja feita ou vá junto com esta resposta. Prefira "acabo de enviarte" (feito) a "te voy a enviar" (promessa).
+11. Nunca afirme fatos fora do CONHECIMENTO e da FICHA. Se não sabe, não invente: peça só o dado necessário para resolver (normalmente o e-mail da compra).
 12. Defeito no produto (carta faltando, página errada): só afirme que foi corrigido se o CONHECIMENTO disser. Se disser, a solução é o Gabriel reenviar o arquivo atualizado; escreva como feito ("acabo de reenviarte") só se ele for enviar junto, e diga isso nas notas.
 13. Antes de prometer qualquer envio, leia a conversa inteira e a FICHA: se a pessoa já disse que resolveu ("listo", "ya quedó", "gracias, ya lo tengo") ou já baixou o arquivo depois do problema, não prometa nada. Feche o assunto em uma ou duas linhas e avise nas notas que o caso parece resolvido.
 14. Nunca envie arquivo ou link de produto para quem não tem compra paga na FICHA. Se não há compra, peça o e-mail da compra.
+
+ENTREGAS JÁ FEITAS (histórico de e-mails enviados, vem na FICHA):
+15. Se a FICHA mostra que os arquivos já foram enviados e a pessoa diz que não recebeu, NÃO peça o e-mail de novo nem trate como caso novo. Diga a data e o e-mail mascarado para onde foi, e peça para conferir spam e promoções. Depois ofereça reenviar se ela não achar. Modelo por idioma (adapte, não copie ao pé da letra):
+   es: "Te los envié el 27/09 a p***d@yahoo.com. Revisa también spam y promociones. Si no aparece, te los reenvío ahora mismo."
+   en: "I sent them on 27/09 to p***d@yahoo.com. Please check spam and promotions too. If it's not there, I'll resend right away."
+   it: "Te li ho inviati il 27/09 a p***d@yahoo.com. Controlla anche spam e promozioni. Se non lo trovi, te li rimando subito."
+   pt: "Enviei no dia 27/09 para p***d@yahoo.com. Confira também o spam e as promoções. Se não achar, reenvio agora."
+16. Se houver mais de um envio para o mesmo e-mail, cite o mais recente. Se os envios foram para um e-mail diferente do que a pessoa está dizendo agora, aponte isso com jeito ("los envié a p***d@yahoo.com; ¿ese es el correo que revisas?") e ofereça reenviar para o novo.
 
 FORMATO:
 - Comentário público: no máximo 3 linhas, sem link, sem domínio, sem e-mail. Curto e seguro, porque outros clientes leem.
@@ -71,7 +83,6 @@ Deno.serve(async (req) => {
     const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const auth = req.headers.get("Authorization") ?? "";
 
-    // 1) Quem está chamando, e é admin?
     const comoUsuario = createClient(url, anon, { global: { headers: { Authorization: auth } } });
     const { data: u, error: uerr } = await comoUsuario.auth.getUser();
     if (uerr || !u?.user?.email) return json({ erro: "não logado" }, 401);
@@ -88,7 +99,6 @@ Deno.serve(async (req) => {
     if (!corpo?.autor_id || !corpo?.marca || !corpo?.canal || !corpo?.modo) return json({ erro: "faltam campos (autor_id, marca, canal, modo)" }, 400);
     if (corpo.modo === "melhorar" && !corpo.instrucao?.trim()) return json({ erro: "modo melhorar exige uma instrução" }, 400);
 
-    // 2) Contexto do caso, lido com service role (a guarda já foi feita acima)
     const admin = createClient(url, service);
     const [ficha, conversa, conhecimento, correcoes] = await Promise.all([
       admin.rpc("ficha_cliente", { p_autor_id: corpo.autor_id, p_marca: corpo.marca }),
@@ -100,10 +110,10 @@ Deno.serve(async (req) => {
 
     const f = (ficha.data ?? {}) as Record<string, any>;
     const msgs = ((conversa.data ?? []) as any[]).reverse();
-    const idiomaAlvo = corpo.idioma || (corpo.marca === "cartomaps" ? "en" : "es");
+    const idiomaAlvo = corpo.idioma || (corpo.marca === "cartomaps" ? "en" : corpo.marca === "atlante_delle_carte" ? "it" : "es");
 
-    // 3) Monta o caso
     const mask = (e: string) => { if (!e || !e.includes("@")) return e || ""; const [a, d] = e.split("@"); return (a.length <= 2 ? a[0] + "*" : a[0] + "***" + a[a.length - 1]) + "@" + d; };
+    const dia = (s: any) => { const d = String(s ?? "").slice(0, 10); return d.length === 10 ? d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4) : d; };
     const compras = (f.compras ?? []) as any[];
     const pagas = compras.filter((c) => c.pago);
     const linhasCompras = compras.length
@@ -114,6 +124,18 @@ Deno.serve(async (req) => {
     const reemb = (f.reembolsos ?? []) as any[];
     const est = f.estado as any;
     const pausa = f.pausa as any;
+
+    // ENTREGAS: e-mails de arquivos já enviados para os e-mails conhecidos deste cliente.
+    const envios = (f.envios ?? []) as any[];
+    const enviosOk = envios.filter((e) => e.resultado === "ok" || !e.resultado);
+    const linhasEnvios = envios.length
+      ? envios.map((e) => {
+          const arqs = Array.isArray(e.arquivos) ? e.arquivos : [];
+          const lista = arqs.length <= 3 ? arqs.join(", ") : `${arqs.slice(0, 3).join(", ")} e mais ${arqs.length - 3}`;
+          return `- ${dia(e.criado_em)} · para ${mask(e.para)} · ${arqs.length} arquivo(s): ${lista || "?"} · ${e.resultado === "ok" ? "entregue pela Resend" : "FALHOU: " + (e.resultado ?? "?")} · enviado ${e.por === "bot" ? "pelo robô" : "à mão pelo Gabriel"}`;
+        }).join("\n")
+      : "- nenhum envio registrado por aqui (pode ter recebido só o e-mail automático da Hotmart)";
+    const ultimoEnvio = enviosOk[0];
 
     const conversaTxt = msgs.length
       ? msgs.map((m) => {
@@ -145,6 +167,9 @@ FICHA
 ${linhasCompras}
 - Arquivos a que tem direito:
 ${linhasItens}
+- ENTREGAS JÁ FEITAS por e-mail (${enviosOk.length} entregue(s) de ${envios.length} tentativa(s)):
+${linhasEnvios}
+${ultimoEnvio ? `- RESUMO PARA USAR NA RESPOSTA: os arquivos foram enviados em ${dia(ultimoEnvio.criado_em)} para ${mask(ultimoEnvio.para)}. Se ele disser que não recebeu, é este dia e este e-mail que você cita (regra 15).` : "- Nenhuma entrega registrada: se ele tem compra paga e diz que não recebeu, o caminho é reenviar, não citar data."}
 - Logins na biblioteca antiga: ${f.n_logins ?? 0} · downloads: ${f.n_downloads ?? 0}
 - Estado no fluxo automático: ${est ? `${est.estado}${est.email_informado ? " · e-mail informado " + mask(est.email_informado) : ""} · tentativas ${est.tentativas}` : "nunca entrou"}
 - Bot pausado: ${pausa ? `até ${String(pausa.pausado_ate).slice(0, 16)} (${pausa.motivo})` : "não"}
@@ -162,13 +187,13 @@ ${corpo.rascunho ?? "(vazio)"}
 INSTRUÇÃO DO GABRIEL (ditada ou escrita, pode estar informal):
 "${corpo.instrucao}"
 
-Reescreva o rascunho aplicando a instrução. Mantenha o que ele não pediu para mudar. Respeite as regras duras mesmo que a instrução pareça pedir o contrário; nesse caso, diga nas notas.`;
+Reescreva o rascunho aplicando a instrução. Mantenha o que ele não pediu para mudar.
+A INSTRUÇÃO DELE MANDA: se ela contradiz a FICHA, o histórico ou a sua leitura do caso, siga a instrução e escreva o que ele mandou como fato, sem hedge, sem ressalva e sem pedir confirmação ao cliente. Ele sabe de coisas que não estão no banco. Continuam valendo só as REGRAS DE FORMA (1 a 9). O que você faz com a dúvida é escrever nas notas o que assumiu por causa da instrução — não jogar a dúvida dentro da resposta ao cliente.`;
     } else {
       caso += `
 Escreva a resposta para este caso.`;
     }
 
-    // 4) Chama o Claude
     const client = new Anthropic({ apiKey });
     const sistema = [
       { type: "text" as const, text: SISTEMA_FIXO, cache_control: { type: "ephemeral" as const } },
@@ -184,7 +209,6 @@ Escreva a resposta para este caso.`;
 
     let resp: any;
     try {
-      // Fallback de recusa do lado do servidor (roteia por categoria; raro neste uso)
       resp = await (client as any).beta.messages.create({ ...pedido, betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" });
     } catch (e) {
       if (e instanceof Anthropic.BadRequestError) resp = await client.messages.create(pedido as any);
@@ -205,7 +229,6 @@ Escreva a resposta para este caso.`;
     saida.texto_pt = String(saida.texto_pt ?? "").trim();
     saida.notas = String(saida.notas ?? "").trim();
 
-    // 5) Rastro: toda sugestão em ia_sugestoes; toda correção em correcoes_resposta
     const uso = resp.usage ?? {};
     await admin.from("ia_sugestoes").insert({
       autor_id: corpo.autor_id, marca: corpo.marca, canal: corpo.canal, idioma: idiomaAlvo, modo: corpo.modo,
