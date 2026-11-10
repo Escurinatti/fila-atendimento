@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111219" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#161D31" media="(prefers-color-scheme: dark)">
 <title>Fila — Atendimento</title>
 <!-- 29/09/2026: instalável no iPhone (Safari → Compartilhar → Adicionar à Tela de Início) e no Android -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -28,7 +28,7 @@
   }
   (function () {
     let t = null; try { t = localStorage.getItem('fila.tema'); } catch {}
-    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (!t) t = 'dark';
     document.documentElement.dataset.theme = t;
   })();
 </script>
@@ -53,15 +53,15 @@
     --r:16px; --r-sm:10px;
   }
   :root[data-theme="dark"]{
-    --bg:#111219; --bg2:#0c0d13; --card:#1a1c26; --ink:#eceef5; --muted:#98a0b3; --line:#2a2e3c;
-    --accent:#e0a54a; --accent-ink:#f0c884; --accent-soft:#2c2618; --soft:#20232f; --soft2:#2a2e3d;
-    --ok:#4cc38a; --ok-soft:#15281f; --warn:#e0b84a; --warn-soft:#2b2411; --danger:#f07070; --danger-soft:#2c1a1a;
-    --u1:#f07070; --u2:#f5a054; --u3:#e0a54a; --u4:#a89cd6; --u5:#8b93a7; --u7:#4a5062; --u8:#4cc38a; --u9:#4a5062;
-    --out:#2c2618; --out-ink:#f5e6c8;
-    --mdt:#2c2618; --mdt-ink:#f0c884; --cm:#15281f; --cm-ink:#8fdbb5; --it:#251d3a; --it-ink:#c9b5f2; --de:#301a1a; --de-ink:#f3a3a3;
-    --ia:#0c0d13; --ia-ink:#eceef5; --ia-in:#1a1c26; --ia-line:#2a2e3c;
+    --bg:#161D31; --bg2:#10162a; --card:#283046; --ink:#D0D2D6; --muted:#7E8499; --line:#3B4253;
+    --accent:#3D84F0; --accent-ink:#9cc0f8; --accent-soft:#1d2c4d; --soft:#2c3550; --soft2:#343D55;
+    --ok:#28C76F; --ok-soft:#193a33; --warn:#FF9F43; --warn-soft:#3a2f2a; --danger:#EE4542; --danger-soft:#3c2230;
+    --u1:#EE4542; --u2:#FF9F43; --u3:#3D84F0; --u4:#a89cd6; --u5:#7E8499; --u7:#485A83; --u8:#28C76F; --u9:#485A83;
+    --out:#1d2c4d; --out-ink:#dbe7fb;
+    --mdt:#3a2f2a; --mdt-ink:#ffc78a; --cm:#15281f; --cm-ink:#8fdbb5; --it:#251d3a; --it-ink:#c9b5f2; --de:#301a1a; --de-ink:#f3a3a3;
+    --ia:#10162a; --ia-ink:#D0D2D6; --ia-in:#283046; --ia-line:#3B4253;
     --com:#a88be6; --com-ink:#c9b5f2; --com-soft:#241d36;
-    --header:rgba(17,18,25,.84);
+    --header:rgba(22,29,49,.88);
     --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.40);
     --shadow-lg:0 18px 50px rgba(0,0,0,.6);
     color-scheme:dark;
@@ -159,7 +159,7 @@
   .card .who .av{background:var(--pc,var(--soft2));color:#fff;box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--pc,transparent)}
   .card .who .nm{color:var(--pc-ink,var(--ink));font-weight:750;font-size:14.5px}
   .card .marca{font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:6px}
-  .card .marca.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .marca.cm{background:var(--cm);color:var(--cm-ink)} .card .marca.it{background:var(--it);color:var(--it-ink)} .card .marca.de{background:var(--de);color:var(--de-ink)}
+  .card .marca.mdt{background:var(--mdt);color:var(--mdt-ink)} .card .marca.cm{background:var(--cm);color:var(--cm-ink)} .card .marca.it{background:var(--it);color:var(--it-ink)} .card .marca.de{background:var(--de);color:var(--de-ink)} .card .marca.fav{background:#F2622E;color:#fff}
   .stts{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:7px}
   .stt{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:750;padding:3px 9px;border-radius:8px;line-height:1.2;white-space:nowrap}
   .stt.red{background:var(--danger);color:#fff} .stt.orange{background:#e8801e;color:#fff} .stt.blue{background:#2f6fed;color:#fff}
@@ -173,7 +173,7 @@
   .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
   .chip{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
   .chip.lang{display:inline-flex;align-items:center;gap:5px}
-  .chip.mdt{background:var(--mdt);color:var(--mdt-ink)} .chip.cm{background:var(--cm);color:var(--cm-ink)} .chip.it{background:var(--it);color:var(--it-ink)} .chip.de{background:var(--de);color:var(--de-ink)}
+  .chip.mdt{background:var(--mdt);color:var(--mdt-ink)} .chip.cm{background:var(--cm);color:var(--cm-ink)} .chip.it{background:var(--it);color:var(--it-ink)} .chip.de{background:var(--de);color:var(--de-ink)} .chip.fav{background:#F2622E;color:#fff}
   .chip.lang{background:var(--ink);color:var(--bg);font-weight:600;letter-spacing:.02em}
   :root[data-theme="dark"] .chip.lang{background:var(--soft2);color:var(--ink)}
   .chip.midia{background:var(--danger);color:#fff;font-weight:600}
@@ -394,6 +394,7 @@ const MARCA = {
   cartomaps:           { nome: 'Carto Maps', curto: 'Carto', cls: 'cm', idioma: 'en', thankyou: 'cartomaps.online/thank-you', venda: 'cartomaps.online' },
   atlante_delle_carte: { nome: 'Atlante delle Carte', curto: 'Atlante', cls: 'it', idioma: 'it', thankyou: 'atlantedellecarte.com/thank-you-x7f3q9/', venda: 'atlantedellecarte.com' },
   der_kartenatlas:     { nome: 'Der Kartenatlas', curto: 'Atlas', cls: 'de', idioma: 'de', thankyou: 'derkartenatlas.de/thank-you/', venda: 'derkartenatlas.de' },
+  favilla:             { nome: 'Edizioni Favilla', curto: 'Favilla', cls: 'fav', idioma: 'it', thankyou: 'edizionifavilla.com/area', venda: 'edizionifavilla.com' },
 };
 const IDIOMA_NOME = { es: 'Español', en: 'English', pt: 'Português', it: 'Italiano', de: 'Deutsch' };
 // Ícones desenhados em SVG, dentro do HTML: nada para baixar e o Windows mostra
@@ -853,7 +854,7 @@ function renderApp() {
     </div>
     <div id="fpanel" class="fpanel ${S.fpanel ? '' : 'hide'}">
       <div class="${S.visao === 'tudo' ? '' : 'hide'}" id="wrapSit"><label class="lbl">Situação</label><select id="fSit"><option value="todas">Todas</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select></div>
-      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option><option value="der_kartenatlas">Der Kartenatlas (DE)</option></select></div>
+      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option><option value="der_kartenatlas">Der Kartenatlas (DE)</option><option value="favilla">Edizioni Favilla (IT)</option></select></div>
       <div><label class="lbl">Rede</label><select id="fOrigem"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select></div>
       <div><label class="lbl">Canal</label><select id="fCanal"><option value="todos">DM + comentários</option><option value="dm">Só mensagens diretas</option><option value="comentario">Só comentários</option></select></div>
       <div><label class="lbl">Período</label><select id="fDias"><option value="3">Últimos 3 dias</option><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></div>
