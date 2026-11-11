@@ -366,6 +366,106 @@
     .hrow{padding:8px 10px}
     .tabs{padding:0 10px 8px}
   }
+
+  /* ===================================================================
+     10/11/2026 — casca nova: marcas em cima (com a foto de cada uma),
+     faixa de números, menu com caixas / rede / saúde, lista por pessoa.
+     Usa as mesmas variáveis de tema; funciona no claro e no escuro.
+     =================================================================== */
+  .tela{display:grid;grid-template-rows:auto auto minmax(0,1fr);height:100dvh;overflow:hidden}
+  .topoF{display:flex;align-items:stretch;background:var(--bg2);border-bottom:1px solid var(--line);min-width:0}
+  .logoF{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:6px 16px;border-right:1px solid var(--line);flex:none}
+  .logoF b{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1}
+  .logoF .pill{font-size:10.5px;padding:1px 7px}
+  .abasF{display:flex;gap:4px;padding:8px 10px;overflow-x:auto;min-width:0;flex:1;scrollbar-width:none} .abasF::-webkit-scrollbar{display:none}
+  .abaF{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 7px;border-radius:12px;flex:none;border:1px solid transparent;background:transparent;text-align:left;font-weight:500}
+  .abaF:hover{background:var(--soft);border-color:transparent;color:inherit}
+  .abaF.on,.abaF.on:hover{background:var(--card);border-color:var(--mc,var(--accent));box-shadow:var(--shadow)}
+  .logoM{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;background:var(--soft2);display:block}
+  .logoM.vazio{display:grid;place-items:center;color:var(--muted);font-weight:700;font-size:13px}
+  .abaF > span:not(.logoM){display:grid;line-height:1.2}
+  .abaF b{font-weight:650;font-size:13.5px;white-space:nowrap;color:var(--ink)}
+  .abaF small{color:var(--muted);font-size:11.5px;white-space:nowrap}
+  .abaF em{font-style:normal;background:var(--danger);color:#fff;border-radius:999px;font-size:11.5px;font-weight:700;padding:0 7px}
+  .topoAcoes{display:flex;align-items:center;gap:6px;padding:0 12px;border-left:1px solid var(--line);flex:none}
+
+  .kpisF{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .kpiF{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:0}
+  .kpiF span{display:block;font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpiF b{display:block;font-size:24px;line-height:1.15;font-weight:700;margin-top:2px;letter-spacing:-.02em}
+  .kpiF small{display:block;font-size:12px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpiF.alerta b{color:var(--danger)} .kpiF.bom b{color:var(--ok)}
+
+  .corpoF{display:grid;grid-template-columns:204px 380px minmax(0,1fr);min-height:0;overflow:hidden}
+  .navF{background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+  .navRol{overflow:auto;padding:4px 10px 10px;flex:1}
+  .navF h6{margin:14px 8px 6px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+  .itemF{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:9px;border:0;background:transparent;font-weight:500;text-align:left}
+  .itemF:hover{background:var(--soft);color:inherit}
+  .itemF.on{background:var(--accent-soft);color:var(--ink);font-weight:650}
+  .itemF .n{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted);min-width:20px;text-align:right}
+  .itemF .n.alerta{background:var(--danger);color:#fff;border-radius:999px;padding:0 7px;min-width:0}
+  .itemF .ico{width:17px;height:17px}
+  .icoEm{width:17px;height:17px;display:inline-grid;place-items:center;border-radius:5px;background:var(--soft2);color:var(--muted);font-size:10.5px;font-weight:700;flex:none;font-style:normal}
+  .navOp{border-top:1px solid var(--line);padding:10px 14px;display:grid;gap:6px;font-size:12.5px}
+  .navOp .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  .navOp select{padding:5px 8px;font-size:12.5px}
+  .navOp .chk{display:flex;gap:7px;align-items:center;color:var(--muted)} .navOp .chk input{width:auto}
+  .saudeF{border-top:1px solid var(--line);padding:10px 14px;font-size:12px;display:grid;gap:4px;color:var(--muted)}
+  .saudeF .ok{color:var(--ok)} .saudeF .ruim{color:var(--danger);font-weight:600}
+
+  .colLista{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0}
+  .listaTopo{padding:12px 14px 10px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+  .listaTopo h2{margin:0;font-size:15px;font-weight:700;display:flex;align-items:baseline;gap:8px}
+  .listaTopo h2 small{font-size:12.5px;color:var(--muted);font-weight:500}
+  .listaTopo .search{min-width:0;max-width:none;border-radius:9px}
+  .segF{display:flex;gap:4px;background:var(--bg2);border-radius:9px;padding:3px}
+  .segF button{flex:1;text-align:center;padding:4px 6px;border-radius:7px;border:0;background:transparent;font-size:12.5px;font-weight:600;color:var(--muted)}
+  .segF button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+  .corpoF .list{max-height:none;padding:0;border-right:0;background:transparent;overflow-y:auto;overflow-x:hidden;flex:1}
+  .corpoF .detail{max-height:none;height:100%;overflow-y:auto;padding:14px 20px 80px;min-width:0}
+  .grupoF{padding:10px 14px 4px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+  .grupoF span{background:var(--soft2);border-radius:999px;padding:0 7px;letter-spacing:0;color:var(--ink);margin-left:4px}
+  .linhaF{display:grid;grid-template-columns:40px minmax(0,1fr);gap:11px;width:100%;padding:10px 14px 10px 11px;border:0;border-left:3px solid transparent;border-bottom:1px solid var(--line);border-radius:0;background:transparent;text-align:left;font-weight:400}
+  .linhaF:hover{background:var(--soft);color:inherit}
+  .linhaF.on,.linhaF.on:hover{background:var(--card);border-left-color:var(--mc,var(--accent))}
+  .avF{width:40px;height:40px;border-radius:50%;display:inline-grid;place-items:center;font-weight:700;font-size:15px;color:#fff;background:var(--mc,var(--u5));position:relative;flex:none}
+  .avF img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+  .redeF{z-index:1;position:absolute;right:-4px;bottom:-4px;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--bg);font-style:normal}
+  .redeF .ico{width:15px;height:15px;vertical-align:0} .redeF .icoEm{width:15px;height:15px;font-size:9px}
+  .corpoL{min-width:0;display:block}
+  .l1F{display:flex;align-items:baseline;gap:8px;min-width:0}
+  .l1F b{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .l1F time{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}
+  .l2F{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;color:var(--ink);opacity:.9}
+  .l2F.pt,.l2F.quer{color:var(--muted);opacity:1;font-size:12.5px}
+  .l3F{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
+  .tg{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--soft2);color:var(--muted);white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+  .tg.red{background:var(--danger-soft);color:var(--danger)} .tg.orange,.tg.amber{background:var(--warn-soft);color:var(--warn)}
+  .tg.green{background:var(--ok-soft);color:var(--ok)} .tg.blue,.tg.purple{background:var(--accent-soft);color:var(--accent-ink)}
+  .tg.borda{background:transparent;border:1px solid var(--line)}
+  .tg.marcaT,.chip.marcaT{background:transparent;border:1px solid var(--line);color:var(--ink);padding:1px 8px 1px 2px;display:inline-flex;align-items:center;gap:5px}
+  .tg.marcaT img,.chip.marcaT img{width:16px;height:16px;border-radius:50%;object-fit:cover}
+  .vazioF{padding:46px 24px;text-align:center;color:var(--muted)} .vazioF b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+  .h2F{display:flex;align-items:center;gap:10px;margin:0}
+  .h2F > span:not(.avF){display:grid;line-height:1.15} .h2F small{font-size:12.5px;color:var(--muted);font-weight:500}
+  .dhead .avF{width:44px;height:44px}
+
+  @media (max-width: 1280px){ .corpoF{grid-template-columns:184px 330px minmax(0,1fr)} .kpisF{gap:8px;padding:10px 12px} .kpiF b{font-size:20px} }
+  @media (max-width: 880px){
+    .logoF{padding:6px 10px} .topoAcoes{padding:0 6px;gap:3px} .topoAcoes #btConhec,.topoAcoes #btTema{display:none}
+    .kpisF{display:flex;overflow-x:auto;scrollbar-width:none} .kpisF::-webkit-scrollbar{display:none} .kpiF{flex:none;width:150px}
+    .corpoF{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+    .navF{border-right:0;border-bottom:1px solid var(--line);min-width:0}
+    .navRol{display:flex;gap:6px;overflow-x:auto;padding:8px 10px;flex:none;scrollbar-width:none} .navRol::-webkit-scrollbar{display:none}
+    .navF h6,.navOp,.saudeF{display:none}
+    .itemF{width:auto;white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 11px;flex:none}
+    .itemF .n{margin-left:2px;min-width:0}
+    .colLista{border-right:0}
+    .tela.mDet .kpisF,.tela.mDet .navF,.tela.mDet .colLista{display:none}
+    .tela.mDet .corpoF{grid-template-rows:minmax(0,1fr)}
+    .corpoF .detail{padding:12px 12px 80px}
+  }
   </style>
 </head>
 <body>
@@ -426,7 +526,10 @@ const S = {
   agoraMs: null, agoraLocalAt: null, carregadoEm: null,
   filtro: { marca: 'todas', canal: 'todos', idioma: 'todos', origem: 'todas' },
   verBot: (() => { try { return localStorage.getItem('fila.verBot') === '1'; } catch { return false; } })(),
-  visao: (() => { try { return localStorage.getItem('fila.visao') || 'fila'; } catch { return 'fila'; } })(),
+  // 10/11/2026: a lista vem sempre inteira; quem separa é a caixa (Depende de você / Bot cuidando / Tudo)
+  visao: 'tudo',
+  caixa: (() => { try { const c = localStorage.getItem('fila.caixa'); return ['precisa', 'bot', 'tudo'].includes(c) ? c : 'precisa'; } catch { return 'precisa'; } })(),
+  pend: new Map(), painel: null, marcas: [], fotos: new Map(), perfis: new Map(),
   situacao: 'todas',
   busca: '', fpanel: false,
   fichaAberta: (() => { try { return localStorage.getItem('fila.fichaAberta') === '1'; } catch { return false; } })(),
@@ -460,7 +563,7 @@ const fmtData = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { day: '2-di
 const fmtDataHora = ts => ts ? `${fmtData(ts)} ${fmtHora(ts)}` : '—';
 const fmtDataLonga = ts => ts ? new Date(ts).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : '';
 const fmtValor = (v, m) => v == null ? '—' : `${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${esc(m || '')}`;
-const marcaChip = m => { const x = MARCA[m] || { curto: m || '?', cls: '' }; return `<span class="chip ${x.cls}">${esc(x.curto)}</span>`; };
+const marcaChip = m => { const x = MARCA[m] || { curto: m || '?' }; return `<span class="chip marcaT">${x.foto ? `<img src="${esc(x.foto)}" alt="">` : ''}${esc(x.curto || x.nome || m)}</span>`; };
 const langChip = l => l ? `<span class="chip lang" title="idioma em que a pessoa escreve">${bandeira(l)} ${esc(IDIOMA_NOME[l] || l.toUpperCase())}</span>` : '';
 const canalTxt = c => c === 'dm' ? 'DM' : c === 'comentario' ? 'Comentário' : c === 'comentario_fb' ? 'Comentário FB' : c === 'dm_fb' ? 'Messenger' : c === 'fb_dm' ? 'Messenger (Facebook)' : c === 'comentario_publico' ? 'Comentário público' : c === 'comentario_privado' ? 'Resposta privada' : c === 'fb_comentario_publico' ? 'Comentário público FB' : c === 'fb_comentario_privado' ? 'Resposta privada FB' : esc(c || '?');
 const ehFb = c => c === 'comentario_fb' || c === 'dm_fb' || (c || '').startsWith('fb_');
@@ -588,14 +691,14 @@ async function entrar() {
   const { data, error } = await sb.rpc('eh_admin');
   if (error) { renderLogin(`Não consegui verificar o acesso: ${error.message}`); return; }
   if (!data) { renderSemAcesso(); return; }
-  S.admin = true; renderApp(); await carregar(); iniciarTimers();
+  S.admin = true; await carregarMarcas(); renderApp(); await carregar(); iniciarTimers();
 }
 function renderLogin(msg, cls = 'err') {
   pararTimers();
   $('#app').innerHTML = `
   <div class="login"><div class="box">
     <h1><span class="logo">✦</span>Fila de atendimento</h1>
-    <div class="muted small">Mapa del Tarot · Carto Maps · Atlante delle Carte · Der Kartenatlas</div>
+    <div class="muted small">Mapa del Tarot · Carto Maps · Atlante delle Carte · Der Kartenatlas · Edizioni Favilla</div>
     <form id="f">
       <label>E-mail</label><input id="email" type="email" autocomplete="username" required inputmode="email">
       <label>Senha</label><input id="senha" type="password" autocomplete="current-password" required>
@@ -645,17 +748,46 @@ function renderSemAcesso() {
 
 /* ---------- dados ---------- */
 async function carregar() {
-  const [f, t] = await Promise.all([sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: S.verBot, p_tudo: S.visao === 'tudo' }), sb.rpc('atendimento_travados')]);
+  const [f, t, p, n] = await Promise.all([
+    sb.rpc('fila_atendimento', { p_dias: S.dias, p_incluir_bot: true, p_tudo: true }),
+    sb.rpc('atendimento_travados'),
+    sb.rpc('atendimento_pendencias', { p_dias: Math.max(S.dias, 30) }),
+    sb.rpc('painel_atendimento')]);
   if (f.error || t.error) { S.erro = (f.error || t.error).message; renderStatus(); return; }
   S.erro = null; S.fila = f.data || []; S.travados = t.data || [];
+  // pendência real (mesma regra do resumo diário); se a função falhar, a caixa fica vazia e avisa no console
+  if (p.error) console.warn('pendências:', p.error.message);
+  S.pend = new Map((p.data || []).map(x => [x.autor_id + '|' + x.marca, x.tipo]));
+  if (n.error) console.warn('painel:', n.error.message); else S.painel = n.data;
   carregarEnvios();
   const agora = S.fila[0]?.agora || S.travados[0]?.agora;
   S.agoraMs = agora ? new Date(agora).getTime() : Date.now();
   S.agoraLocalAt = Date.now(); S.carregadoEm = Date.now();
   if (S.sel) { const novo = S.fila.find(x => x.autor_id === S.sel.autor_id && x.marca === S.sel.marca && x.canal === S.sel.canal); if (novo) S.sel.item = novo; }
-  renderTabs(); renderLista(); renderStatus();
+  renderTudo(); renderStatus();
   if (S.sel && !S.comp) renderDetalhe();
   traduzirCards();
+}
+
+// Marcas: a tabela `marcas` do banco é a fonte única. Marca nova entra lá e aparece aqui sozinha.
+// Se a leitura falhar, vale a lista escrita acima.
+async function carregarMarcas() {
+  S.marcas = Object.keys(MARCA);
+  const { data, error } = await sb.from('marcas').select('chave,nome,curto,idioma,cor,ordem,modo,venda,thankyou,foto').eq('ativa', true).order('ordem');
+  if (error || !data || !data.length) { if (error) console.warn('marcas:', error.message); return; }
+  for (const m of data) MARCA[m.chave] = Object.assign({}, MARCA[m.chave] || {}, { nome: m.nome, curto: m.curto, idioma: m.idioma, cor: m.cor, modo: m.modo, venda: m.venda || (MARCA[m.chave] || {}).venda, thankyou: m.thankyou || (MARCA[m.chave] || {}).thankyou, foto: m.foto });
+  S.marcas = data.map(m => m.chave);
+}
+// Nome e foto de quem escreveu (perfis_clientes + Storage privado). O endereço assinado vale 6 h.
+async function carregarPerfis(ids) {
+  const { data, error } = await sb.from('perfis_clientes').select('autor_id,marca,nome,foto').in('autor_id', ids);
+  if (error) { console.warn('perfis:', error.message); return; }
+  const faltam = [];
+  (data || []).forEach(r => { const k = r.autor_id + '|' + r.marca; S.perfis.set(k, r); if (r.foto && !S.fotos.has(k)) faltam.push({ k, caminho: r.foto }); });
+  if (!faltam.length) return;
+  const { data: ass, error: e2 } = await sb.storage.from('fotos-atendimento').createSignedUrls(faltam.map(x => x.caminho), 21600);
+  if (e2) { console.warn('fotos:', e2.message); return; }
+  (ass || []).forEach((a, i) => { if (a && a.signedUrl) S.fotos.set(faltam[i].k, a.signedUrl); });
 }
 
 // Último e-mail com arquivos enviado para cada pessoa da lista (emails_tela guarda autor_id).
@@ -672,7 +804,9 @@ async function carregarEnvios() {
   // "o que a pessoa quer", dos resumos já gerados (uma linha no card)
   const { data: rs } = await sb.from('conversa_resumos').select('autor_id,quer').in('autor_id', ids);
   S.quer = new Map((rs || []).filter(r => r.quer).map(r => [r.autor_id, r.quer]));
+  await carregarPerfis(ids);
   renderLista();
+  if (S.sel && !S.comp) renderDetalhe();
 }
 const fmtDiaHora = ts => { const d = new Date(ts); return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
 
@@ -735,7 +869,7 @@ async function abrir(item) {
   await recarregarFicha();
   // Precisa de você e a IA automática está ligada: já abre a caixa com a sugestão
   const it = item;
-  if (S.autoIA && S.visao !== 'tudo' && it.urgencia != null && it.urgencia <= 5 && !it.resposta_na_fila && S.sel && S.sel.autor_id === (item.autor_id || item.conversa_id)) {
+  if (S.autoIA && S.pend.has((item.autor_id || item.conversa_id) + '|' + item.marca) && !it.resposta_na_fila && S.sel && S.sel.autor_id === (item.autor_id || item.conversa_id)) {
     S.comp = novoCompositor(); renderDetalhe(); sugerirIA('sugerir');
   }
 }
@@ -831,82 +965,98 @@ function ditar() {
 }
 
 /* ---------- shell ---------- */
+/* ---------- casca nova (10/11/2026): marcas em cima, números, caixas e rede no menu ----------
+   A lista vem sempre inteira do banco (fila_atendimento com tudo) e é a tela que separa em
+   caixas. "Depende de você" usa a função atendimento_pendencias, a mesma do resumo diário:
+   só entra quem de fato espera uma pessoa. Marcas vêm da tabela `marcas`. */
+const CAIXAS = { precisa: 'Depende de você', bot: 'Bot cuidando', tudo: 'Tudo' };
+const REDES = { todas: 'Todas as redes', ig: 'Instagram', fb: 'Facebook', em: 'E-mail' };
+const PEND_TXT = { reembolso: ['Pediu reembolso', 'red'], promessa: ['Prometemos uma pessoa', 'orange'], esperando: ['Sem resposta', 'red'] };
+const chaveDe = it => (it.autor_id || it.conversa_id) + '|' + it.marca;
+const pendDe = it => S.pend.get(chaveDe(it)) || null;
+const ultimaAtividade = it => Math.max(+new Date(it.ultima_entrada || 0), +new Date(it.ultima_resposta_em || 0));
+const redeDe = c => c === 'email' ? 'em' : (ehFb(c) ? 'fb' : 'ig');
+const icoRede = r => r === 'fb' ? ICO.fb : r === 'ig' ? ICO.ig : '<span class="icoEm">@</span>';
+const marcasOrdenadas = () => (S.marcas && S.marcas.length ? S.marcas : Object.keys(MARCA));
+const fotoMarca = k => (MARCA[k] && MARCA[k].foto) || null;
+const haTexto = ts => { const h = horasDesde(ts); if (h < 1) return 'agora'; if (h < 24) return 'há ' + Math.round(h) + ' h'; const d = Math.round(h / 24); return 'há ' + d + (d === 1 ? ' dia' : ' dias'); };
+function avatarHtml(it, comRede) {
+  const k = chaveDe(it), f = S.fotos.get(k), m = MARCA[it.marca] || {};
+  const ini = ((S.perfis.get(k) || {}).nome || it.autor || '?').replace(/^@/, '').charAt(0).toUpperCase();
+  return `<span class="avF" style="--mc:${esc(m.cor || 'var(--u5)')}">${esc(ini)}${f ? `<img src="${esc(f)}" alt="" loading="lazy" onerror="this.remove()">` : ''}${comRede ? `<i class="redeF">${icoRede(redeDe(it.canal))}</i>` : ''}</span>`;
+}
+const nomePessoa = it => (S.perfis.get(chaveDe(it)) || {}).nome || nomeAutor(it);
+
+function naCaixa(it, caixa) {
+  if (caixa === 'precisa') return !!pendDe(it);
+  if (caixa === 'bot') return !pendDe(it) && (agoraServidor() - ultimaAtividade(it)) < 7 * 864e5;
+  return true;
+}
+function baseFiltrada(caixa, semRede) {
+  const cx = caixa || S.caixa;
+  return S.fila.filter(it => naCaixa(it, cx)
+    && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca)
+    && (semRede || S.filtro.origem === 'todas' || redeDe(it.canal) === S.filtro.origem)
+    && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? !ehComentario(it.canal) : ehComentario(it.canal))));
+}
+function casaBusca(it) {
+  const q = (S.busca || '').trim().toLowerCase(); if (!q) return true;
+  return [it.autor, it.autor_id, it.ultimo_texto, it.ultima_resposta, it.email_informado, it.motivo_urgencia, it.categorias, (S.perfis.get(chaveDe(it)) || {}).nome].some(v => v && String(v).toLowerCase().includes(q));
+}
+function visiveis() {
+  return baseFiltrada().filter(casaBusca).sort((a, b) => ultimaAtividade(b) - ultimaAtividade(a));
+}
+
 function renderApp() {
   $('#app').innerHTML = `
-  <header>
-    <div class="hrow">
-      <h1><span class="logo">✦</span>Fila</h1>
-      <div class="seg" title="Fila: só o que espera resposta. Tudo: todas as conversas, com quem respondeu"><button id="visFila" class="${S.visao === 'fila' ? 'on' : ''}">Fila</button><button id="visTudo" class="${S.visao === 'tudo' ? 'on' : ''}">Tudo</button></div>
-      <span id="status" class="pill">…</span>
-      <div class="grow"></div>
-      <div class="search"><span class="muted">🔍</span><input id="busca" placeholder="Buscar por nome, texto ou e-mail…" value="${esc(S.busca)}" autocomplete="off"><button id="buscaX" class="${S.busca ? '' : 'hide'}" title="limpar">×</button></div>
-      <button class="small" id="recarregar" title="Recarregar agora">↻</button>
-      <button class="small ghost tema" id="btTema" title="Claro / escuro">${document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙'}</button>
-      <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
-    </div>
-    <div class="toolbar">
-      <div class="tabs" id="tabs"></div>
-      <div class="tools">
-        <div class="seg ${S.visao === 'tudo' ? 'hide' : ''}" id="segOrdem" title="Ordem da lista"><button id="ordUrg" class="${S.ordem === 'urgencia' ? 'on' : ''}">Urgência</button><button id="ordRec" class="${S.ordem === 'recentes' ? 'on' : ''}">Recentes</button></div>
-        <button class="small ${S.fpanel ? 'primary' : ''}" id="btFiltros" title="Marca, rede, canal, período e opções">Filtros<span class="n" id="nFiltros"></span></button>
+  <div class="tela" id="tela">
+    <div class="topoF">
+      <div class="logoF"><b>Fila</b><span id="status" class="pill">…</span></div>
+      <div class="abasF" id="tabs"></div>
+      <div class="topoAcoes">
+        <button class="small" id="recarregar" title="Recarregar agora">↻</button>
         <button class="small ghost" id="btConhec" title="O que a IA sabe sobre a empresa">✨ IA</button>
+        <button class="small ghost tema" id="btTema" title="Claro / escuro">${document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙'}</button>
+        <button class="small ghost" id="sair" title="${esc(S.sessao?.user?.email || '')}">Sair</button>
       </div>
     </div>
-    <div id="fpanel" class="fpanel ${S.fpanel ? '' : 'hide'}">
-      <div class="${S.visao === 'tudo' ? '' : 'hide'}" id="wrapSit"><label class="lbl">Situação</label><select id="fSit"><option value="todas">Todas</option><option value="precisa">Precisa de você</option><option value="sem_resposta">Sem resposta</option><option value="bot">Bot respondeu</option><option value="voce">Você respondeu</option><option value="ignorado">Ignorados</option></select></div>
-      <div><label class="lbl">Marca</label><select id="fMarca"><option value="todas">Todas as marcas</option><option value="mapa_del_tarot">Mapa del Tarot (ES)</option><option value="cartomaps">Carto Maps (EN)</option><option value="atlante_delle_carte">Atlante delle Carte (IT)</option><option value="der_kartenatlas">Der Kartenatlas (DE)</option><option value="favilla">Edizioni Favilla (IT)</option></select></div>
-      <div><label class="lbl">Rede</label><select id="fOrigem"><option value="todas">Instagram + Facebook</option><option value="ig">Só Instagram</option><option value="fb">Só Facebook</option></select></div>
-      <div><label class="lbl">Canal</label><select id="fCanal"><option value="todos">DM + comentários</option><option value="dm">Só mensagens diretas</option><option value="comentario">Só comentários</option></select></div>
-      <div><label class="lbl">Período</label><select id="fDias"><option value="3">Últimos 3 dias</option><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></div>
-      <div><label class="lbl">Opções</label>
-        <label class="chk" title="Mostra também as conversas das últimas 24h que o bot respondeu sozinho, para você conferir"><input type="checkbox" id="fVerBot"> ver o que o bot respondeu (24h)</label>
-        <label class="chk" title="Ao abrir alguém que precisa de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto"> IA sugere sozinha ao abrir</label>
-      </div>
+    <div class="kpisF" id="kpis"></div>
+    <div class="corpoF">
+      <aside class="navF">
+        <div class="navRol" id="nav"></div>
+        <div class="navOp">
+          <label class="lbl">Período</label>
+          <select id="fDias"><option value="7">Últimos 7 dias</option><option value="14">Últimos 14 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select>
+          <label class="chk" title="Ao abrir alguém que depende de você, a IA já escreve a sugestão"><input type="checkbox" id="fAuto"> IA sugere ao abrir</label>
+        </div>
+        <div class="saudeF" id="saude"></div>
+      </aside>
+      <section class="colLista">
+        <div class="listaTopo">
+          <h2 id="tituloLista"></h2>
+          <div class="search"><span class="muted">🔍</span><input id="busca" placeholder="Buscar por nome, texto ou e-mail…" value="${esc(S.busca)}" autocomplete="off"><button id="buscaX" class="${S.busca ? '' : 'hide'}" title="limpar">×</button></div>
+          <div class="segF" id="segTipo"></div>
+        </div>
+        <div class="list" id="lista"></div>
+      </section>
+      <div class="detail" id="detalhe"></div>
     </div>
-    <div id="fchips" class="fchips"></div>
-  </header>
-  <div class="layout"><div class="list" id="lista"></div><div class="detail" id="detalhe"></div></div>`;
-  $('#fMarca').value = S.filtro.marca; $('#fCanal').value = S.filtro.canal; $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA; $('#fVerBot').checked = S.verBot;
-  $('#fVerBot').onchange = e => { S.verBot = e.target.checked; try { localStorage.setItem('fila.verBot', S.verBot ? '1' : '0'); } catch {} renderChips(); carregar(); };
-  $('#fMarca').onchange = e => { S.filtro.marca = e.target.value; renderChips(); renderTabs(); renderLista(); };
-  $('#fCanal').onchange = e => { S.filtro.canal = e.target.value; renderChips(); renderTabs(); renderLista(); };
-  $('#fOrigem').value = S.filtro.origem; $('#fOrigem').onchange = e => { S.filtro.origem = e.target.value; renderChips(); renderTabs(); renderLista(); };
-  $('#fDias').onchange = e => { S.dias = Number(e.target.value); renderChips(); carregar(); };
+  </div>`;
+  $('#fDias').value = String(S.dias); $('#fAuto').checked = S.autoIA;
+  $('#fDias').onchange = e => { S.dias = Number(e.target.value); carregar(); };
   $('#fAuto').onchange = e => { S.autoIA = e.target.checked; try { localStorage.setItem('fila.autoIA', S.autoIA ? '1' : '0'); } catch {} };
   $('#btConhec').onclick = abrirConhecimento;
-  $('#btFiltros').onclick = () => { S.fpanel = !S.fpanel; $('#fpanel').classList.toggle('hide', !S.fpanel); $('#btFiltros').classList.toggle('primary', S.fpanel); };
-  const setVisao = v => { S.visao = v; try { localStorage.setItem('fila.visao', v); } catch {} $('#visFila').className = v === 'fila' ? 'on' : ''; $('#visTudo').className = v === 'tudo' ? 'on' : ''; $('#wrapSit').classList.toggle('hide', v !== 'tudo'); $('#segOrdem').classList.toggle('hide', v === 'tudo'); renderChips(); carregar(); };
-  $('#visFila').onclick = () => setVisao('fila'); $('#visTudo').onclick = () => setVisao('tudo');
-  $('#fSit').value = S.situacao; $('#fSit').onchange = e => { S.situacao = e.target.value; renderChips(); renderTabs(); renderLista(); };
-  // cada aba de idioma lembra a própria ordem (Todos em urgência, Italiano em recentes, etc.)
-  const setOrdem = o => { S.ordem = o; try { localStorage.setItem('fila.ordem.' + (S.filtro.idioma || 'todos'), o); } catch {} pintarOrdem(); renderLista(); };
-  $('#ordUrg').onclick = () => setOrdem('urgencia'); $('#ordRec').onclick = () => setOrdem('recentes');
   const bu = $('#busca'); let debB;
-  bu.oninput = () => { S.busca = bu.value; $('#buscaX').classList.toggle('hide', !S.busca); clearTimeout(debB); debB = setTimeout(() => { renderTabs(); renderLista(); }, 200); };
-  bu.onkeydown = e => { if (e.key === 'Escape') { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderTabs(); renderLista(); } };
-  $('#buscaX').onclick = () => { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderTabs(); renderLista(); bu.focus(); };
+  bu.oninput = () => { S.busca = bu.value; $('#buscaX').classList.toggle('hide', !S.busca); clearTimeout(debB); debB = setTimeout(renderLista, 200); };
+  bu.onkeydown = e => { if (e.key === 'Escape') { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderLista(); } };
+  $('#buscaX').onclick = () => { S.busca = ''; bu.value = ''; $('#buscaX').classList.add('hide'); renderLista(); bu.focus(); };
   $('#recarregar').onclick = carregar;
   $('#btTema').onclick = () => { const escuro = document.documentElement.dataset.theme !== 'dark'; aplicarTema(escuro ? 'dark' : 'light'); $('#btTema').textContent = escuro ? '☀️' : '🌙'; };
   $('#sair').onclick = () => sb.auth.signOut();
-  renderChips(); renderTabs(); renderDetalhe();
+  renderTudo(); renderDetalhe();
 }
-function filtrosAtivos() {
-  const a = [];
-  if (S.filtro.marca !== 'todas') a.push({ t: (MARCA[S.filtro.marca] || {}).nome || S.filtro.marca, off: () => { S.filtro.marca = 'todas'; $('#fMarca').value = 'todas'; } });
-  if (S.filtro.origem !== 'todas') a.push({ t: S.filtro.origem === 'fb' ? 'Só Facebook' : 'Só Instagram', off: () => { S.filtro.origem = 'todas'; $('#fOrigem').value = 'todas'; } });
-  if (S.filtro.canal !== 'todos') a.push({ t: S.filtro.canal === 'dm' ? 'Só mensagens diretas' : 'Só comentários', off: () => { S.filtro.canal = 'todos'; $('#fCanal').value = 'todos'; } });
-  if (S.dias !== CONFIG.diasPadrao) a.push({ t: 'Últimos ' + S.dias + ' dias', off: () => { S.dias = CONFIG.diasPadrao; $('#fDias').value = String(S.dias); carregar(); } });
-  if (S.visao === 'tudo' && S.situacao !== 'todas') a.push({ t: $('#fSit') ? $('#fSit').selectedOptions[0].textContent : S.situacao, off: () => { S.situacao = 'todas'; $('#fSit').value = 'todas'; } });
-  if (S.verBot && S.visao !== 'tudo') a.push({ t: 'vendo o que o bot respondeu', off: () => { S.verBot = false; $('#fVerBot').checked = false; try { localStorage.setItem('fila.verBot', '0'); } catch {} carregar(); } });
-  return a;
-}
-function renderChips() {
-  const el = $('#fchips'), nb = $('#nFiltros'); if (!el) return;
-  const a = filtrosAtivos();
-  nb.textContent = a.length ? String(a.length) : '';
-  el.innerHTML = a.map((f, i) => `<button class="fchip" data-i="${i}" title="tirar este filtro">${esc(f.t)} ×</button>`).join('');
-  el.querySelectorAll('.fchip').forEach(b => b.onclick = () => { a[Number(b.dataset.i)].off(); renderChips(); renderTabs(); renderLista(); });
-}
+function renderTudo() { renderTabs(); renderKpis(); renderNav(); renderLista(); }
+function renderChips() {}
 function renderStatus() {
   const el = $('#status'); if (!el) return;
   if (S.erro) { el.className = 'pill err'; el.textContent = 'erro: ' + S.erro; return; }
@@ -917,66 +1067,102 @@ function renderStatus() {
   el.title = 'Relógio do servidor: ' + agoraServidor().toLocaleString('pt-BR');
 }
 
-/* ---------- lista ---------- */
-// abas de idioma: ES, EN, IT e DE têm aba própria; o resto (pt, ?) cai em "outros"
-const grupoIdioma = l => ['es', 'en', 'it', 'de'].includes(l) ? l : 'outros';
-// a ordem é por aba: lê a da aba atual (cai para "todos", depois para o padrão antigo)
-const lerOrdemDaAba = () => { try { return localStorage.getItem('fila.ordem.' + (S.filtro.idioma || 'todos')) || localStorage.getItem('fila.ordem.todos') || localStorage.getItem('fila.ordem') || 'urgencia'; } catch { return 'urgencia'; } };
-const pintarOrdem = () => { const u = $('#ordUrg'), r = $('#ordRec'); if (u) u.className = S.ordem === 'urgencia' ? 'on' : ''; if (r) r.className = S.ordem === 'recentes' ? 'on' : ''; };
-function baseFiltrada() {
-  return S.fila.filter(it => (S.visao !== 'tudo' || S.situacao === 'todas' || it.situacao === S.situacao) && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca) && (S.filtro.origem === 'todas' || (S.filtro.origem === 'fb') === ehFb(it.canal)) && (S.filtro.canal === 'todos' || (S.filtro.canal === 'dm' ? ehDireta(it.canal) : !ehDireta(it.canal))));
-}
-function casaBusca(it) {
-  const q = (S.busca || '').trim().toLowerCase(); if (!q) return true;
-  return [it.autor, it.autor_id, it.ultimo_texto, it.ultima_resposta, it.email_informado, it.motivo_urgencia, it.categorias].some(v => v && String(v).toLowerCase().includes(q));
-}
-function visiveis() {
-  return baseFiltrada().filter(it => (S.filtro.idioma === 'todos' || grupoIdioma(it.idioma) === S.filtro.idioma) && casaBusca(it))
-    // Urgência: primeiro o grau (1 antes de 2…); empatou, o MAIS NOVO primeiro (pedido do Gabriel em 16/09 —
-    // o mais novo ainda está na janela de 24h e dá para salvar; o mais velho já perdeu a janela)
-    .sort((a, b) => (S.visao === 'tudo' || S.ordem === 'recentes') ? (Math.max(+new Date(b.ultima_entrada), +new Date(b.ultima_resposta_em || 0)) - Math.max(+new Date(a.ultima_entrada), +new Date(a.ultima_resposta_em || 0))) : (a.urgencia - b.urgencia || (+new Date(b.ultima_entrada) - +new Date(a.ultima_entrada))));
-}
+/* ---------- marcas em cima ---------- */
 function renderTabs() {
   const el = $('#tabs'); if (!el) return;
-  const base = agruparPorPessoa((S.visao === 'tudo' ? baseFiltrada() : baseFiltrada().filter(it => it.urgencia <= 5)).filter(casaBusca));
-  const n = { todos: base.length, es: 0, en: 0, it: 0, de: 0, outros: 0 }; base.forEach(it => n[grupoIdioma(it.idioma)]++);
-  const urg = k => base.filter(it => (k === 'todos' || grupoIdioma(it.idioma) === k) && it.urgencia <= 2).length;
-  const tab = (k, label) => `<button class="tab ${S.filtro.idioma === k ? 'on' : ''}" data-k="${k}">${label} <span class="n">${n[k]}</span>${urg(k) ? `<span class="n red" title="precisam de você agora">${urg(k)}</span>` : ''}</button>`;
-  el.innerHTML = tab('todos', 'Todos') + tab('es', BANDEIRA.es + ' Español') + tab('en', BANDEIRA.en + ' English') + tab('it', BANDEIRA.it + ' Italiano') + tab('de', BANDEIRA.de + ' Deutsch') + tab('outros', 'Outros');
-  // ao trocar de aba, a ordem (urgência/recentes) vira a que essa aba lembra
-  el.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.filtro.idioma = b.dataset.k; S.ordem = lerOrdemDaAba(); pintarOrdem(); renderTabs(); renderLista(); });
+  const pendPorMarca = {}; let pendTot = 0;
+  for (const k of S.pend.keys()) { const m = k.slice(k.lastIndexOf('|') + 1); pendPorMarca[m] = (pendPorMarca[m] || 0) + 1; pendTot++; }
+  const ks = marcasOrdenadas();
+  let h = `<button class="abaF ${S.filtro.marca === 'todas' ? 'on' : ''}" data-marca="todas"><span class="logoM vazio">∗</span><span><b>Todas as marcas</b><small>${ks.length} marcas</small></span>${pendTot ? `<em>${pendTot}</em>` : ''}</button>`;
+  for (const k of ks) {
+    const m = MARCA[k] || { nome: k }, f = fotoMarca(k);
+    h += `<button class="abaF ${S.filtro.marca === k ? 'on' : ''}" style="--mc:${esc(m.cor || 'var(--line)')}" data-marca="${esc(k)}">${f ? `<img class="logoM" src="${esc(f)}" alt="">` : `<span class="logoM vazio" style="background:${esc(m.cor || 'var(--soft2)')};color:#fff">${esc((m.nome || k).charAt(0))}</span>`}<span><b>${esc(m.nome || k)}</b><small>${esc(IDIOMA_NOME[m.idioma] || m.idioma || '')}${m.modo === 'seguro' ? ' · bot não responde' : ''}</small></span>${pendPorMarca[k] ? `<em>${pendPorMarca[k]}</em>` : ''}</button>`;
+  }
+  el.innerHTML = h;
+  el.querySelectorAll('.abaF').forEach(b => b.onclick = () => { S.filtro.marca = b.dataset.marca; renderTudo(); });
 }
+
+/* ---------- números da marca escolhida ---------- */
+function renderKpis() {
+  const el = $('#kpis'); if (!el) return;
+  const ks = S.filtro.marca === 'todas' ? marcasOrdenadas() : [S.filtro.marca];
+  const num = (S.painel && S.painel.numeros) || {};
+  const soma = c => ks.reduce((s, k) => s + (Number((num[k] || {})[c]) || 0), 0);
+  const pessoas = agruparPorPessoa(S.fila.filter(it => S.filtro.marca === 'todas' || it.marca === S.filtro.marca));
+  const agora = +agoraServidor();
+  const pend = pessoas.filter(p => pendDe(p)).length;
+  const h24 = pessoas.filter(p => agora - ultimaAtividade(p) < 864e5).length;
+  const d7 = pessoas.filter(p => agora - ultimaAtividade(p) < 7 * 864e5);
+  const bot7 = d7.filter(p => !pendDe(p)).length;
+  const cards = [
+    [pend ? 'alerta' : 'bom', 'Dependem de você', pend, pend ? 'esperando uma pessoa' : 'ninguém esperando'],
+    ['', 'Conversas nas últimas 24 h', h24, d7.length + ' nos últimos 7 dias'],
+    ['bom', 'Bot resolveu sozinho', d7.length ? Math.round(bot7 / d7.length * 100) + '%' : '—', bot7 + ' de ' + d7.length + ' conversas em 7 dias'],
+    ['', 'Vendas hoje', S.painel ? soma('vendas_hoje') : '…', S.painel ? soma('vendas_7d') + ' nos últimos 7 dias' : ''],
+    [S.painel && soma('reemb_analise') ? 'alerta' : '', 'Reembolsos em análise', S.painel ? soma('reemb_analise') : '…', S.painel ? soma('reemb_30d') + ' reembolsados em 60 dias' : '']
+  ];
+  el.innerHTML = cards.map(c => `<div class="kpiF ${c[0]}"><span>${c[1]}</span><b>${c[2]}</b><small>${c[3]}</small></div>`).join('');
+}
+
+/* ---------- menu: caixas, rede e saúde ---------- */
+function renderNav() {
+  const el = $('#nav'); if (!el) return;
+  const conta = itens => agruparPorPessoa(itens).length;
+  let h = '<h6>Caixas</h6>';
+  for (const k of Object.keys(CAIXAS)) {
+    const n = conta(S.fila.filter(it => naCaixa(it, k) && (S.filtro.marca === 'todas' || it.marca === S.filtro.marca)));
+    h += `<button class="itemF ${S.caixa === k ? 'on' : ''}" data-caixa="${k}">${CAIXAS[k]}<span class="n ${k === 'precisa' && n ? 'alerta' : ''}">${n}</span></button>`;
+  }
+  h += '<h6>Rede</h6>';
+  const base = baseFiltrada(S.caixa, true);
+  for (const k of Object.keys(REDES)) {
+    const n = conta(k === 'todas' ? base : base.filter(it => redeDe(it.canal) === k));
+    h += `<button class="itemF ${S.filtro.origem === k ? 'on' : ''}" data-rede="${k}">${k === 'todas' ? '<span class="icoEm">∗</span>' : icoRede(k)}${REDES[k]}<span class="n">${n || ''}</span></button>`;
+  }
+  el.innerHTML = h;
+  el.querySelectorAll('[data-caixa]').forEach(b => b.onclick = () => { S.caixa = b.dataset.caixa; try { localStorage.setItem('fila.caixa', S.caixa); } catch {} renderTudo(); });
+  el.querySelectorAll('[data-rede]').forEach(b => b.onclick = () => { S.filtro.origem = b.dataset.rede; renderTudo(); });
+  const sa = $('#saude'); if (!sa) return;
+  const s = S.painel && S.painel.saude;
+  if (!s) { sa.innerHTML = '<span class="muted">Saúde: carregando…</span>'; return; }
+  const dias = ts => ts ? Math.floor((new Date(ts) - agoraServidor()) / 864e5) : null;
+  const tk = dias(s.token_vence_em);
+  const linhas = [
+    [s.ultima_resposta && horasDesde(s.ultima_resposta) < 72, 'Bot respondeu ' + (s.ultima_resposta ? haTexto(s.ultima_resposta) : 'nunca')],
+    [!Number(s.entregas_falhas_24h), Number(s.entregas_falhas_24h) ? s.entregas_falhas_24h + ' entrega(s) de arquivo falharam em 24 h' : 'Entrega de arquivos sem falha'],
+    [!Number(s.envios_fila_falhas_24h), Number(s.envios_fila_falhas_24h) ? s.envios_fila_falhas_24h + ' resposta(s) não saíram em 24 h' : 'Envio de respostas sem falha'],
+    [tk == null || tk > 10, tk == null ? 'Token do Instagram: sem data' : 'Token do Instagram vence em ' + tk + ' dias' + (tk <= 10 && s.token_vence_marca ? ' (' + ((MARCA[s.token_vence_marca] || {}).curto || s.token_vence_marca) + ')' : '')],
+    [true, 'Última venda ' + (s.ultima_venda ? haTexto(s.ultima_venda) : '—')]
+  ];
+  sa.innerHTML = linhas.map(l => `<span class="${l[0] ? 'ok' : 'ruim'}">● ${esc(l[1])}</span>`).join('');
+}
+
+/* ---------- lista ---------- */
 function renderLista() {
   const el = $('#lista'); if (!el) return;
-  el.classList.toggle('hide-m', S.mobileDetalhe);
-  const itens = agruparPorPessoa(visiveis());
-  const g1 = itens.filter(i => i.urgencia <= 2), g2 = itens.filter(i => i.urgencia >= 3 && i.urgencia <= 5), gb = itens.filter(i => i.urgencia === 6), g3 = itens.filter(i => i.urgencia >= 7);
-  const trav = S.travados.filter(t => S.filtro.marca === 'todas' || t.marca === S.filtro.marca);
+  const tela = $('#tela'); if (tela) tela.classList.toggle('mDet', !!S.mobileDetalhe);
+  const itens = agruparPorPessoa(visiveis()).sort((a, b) => ultimaAtividade(b) - ultimaAtividade(a));
+  const tit = $('#tituloLista');
+  if (tit) tit.innerHTML = `${CAIXAS[S.caixa]} <small>${itens.length}${S.filtro.marca !== 'todas' ? ' · ' + esc((MARCA[S.filtro.marca] || {}).nome || S.filtro.marca) : ''}${S.filtro.origem !== 'todas' ? ' · ' + REDES[S.filtro.origem] : ''}</small>`;
+  const seg = $('#segTipo');
+  if (seg) {
+    seg.innerHTML = [['todos', 'Tudo'], ['dm', 'Mensagens'], ['comentario', 'Comentários']].map(([k, n]) => `<button class="${S.filtro.canal === k ? 'on' : ''}" data-tipo="${k}">${n}</button>`).join('');
+    seg.querySelectorAll('button').forEach(b => b.onclick = () => { S.filtro.canal = b.dataset.tipo; renderTudo(); });
+  }
   let h = '';
   if (!S.carregadoEm && !S.erro) h += `<div class="notice">Carregando…</div>`;
-  if (S.visao === 'tudo') {
-    const c = k => itens.filter(i => i.situacao === k).length;
-    h += `<div class="grp blue">Tudo <span class="n">${itens.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">${c('precisa')} precisam de você · ${c('sem_resposta')} sem resposta · ${c('bot')} bot · ${c('voce')} você · ${c('ignorado')} ignorados</span></div>`;
-    h += itens.length ? itens.map(cardHtml).join('') : `<div class="notice">Nenhuma conversa nos últimos ${S.dias} dias com esses filtros.</div>`;
-  } else if (S.ordem === 'recentes') {
-    const ativos = itens.filter(i => i.urgencia < 7);
-    h += `<div class="grp blue">Mais recentes primeiro <span class="n">${ativos.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">${g1.length} em vermelho</span></div>`;
-    h += ativos.length ? ativos.map(cardHtml).join('') : `<div class="notice">Ninguém nos últimos ${S.dias} dias com esses filtros.</div>`;
+  else if (!itens.length) {
+    h += `<div class="vazioF"><b>${S.caixa === 'precisa' ? 'Ninguém esperando você' : 'Nada aqui'}</b>${S.caixa === 'precisa' ? 'Quando alguém precisar de uma pessoa, aparece nesta caixa.' : 'Troque a marca, a rede ou o período.'}</div>`;
+  } else if (S.caixa === 'precisa') {
+    const nomes = { reembolso: 'Reembolso', esperando: 'Falaram por último', promessa: 'Prometemos que uma pessoa ia responder' };
+    for (const t of ['reembolso', 'esperando', 'promessa']) { const g = itens.filter(p => pendDe(p) === t); if (g.length) h += `<div class="grupoF">${nomes[t]} <span>${g.length}</span></div>` + g.map(cardHtml).join(''); }
   } else {
-  h += `<div class="grp red">🔴 Precisa de você agora <span class="n">${g1.length}</span></div>`;
-  h += g1.length ? g1.map(cardHtml).join('') : `<div class="notice ok">Nada urgente. 👍</div>`;
-  h += `<div class="grp blue">Pode esperar um pouco <span class="n">${g2.length}</span></div>`;
-  h += g2.length ? g2.map(cardHtml).join('') : `<div class="notice">Ninguém nos últimos ${S.dias} dias com esses filtros.</div>`;
-  if (gb.length && S.ordem !== 'recentes') h += `<div class="grp">Bot respondeu sozinho (24h) <span class="n">${gb.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">só para conferir</span></div>` + gb.map(cardHtml).join('');
+    const agora = +agoraServidor();
+    const faixa = p => { const d = agora - ultimaAtividade(p); return d < 864e5 ? 0 : (d < 7 * 864e5 ? 1 : 2); };
+    ['Últimas 24 horas', 'Esta semana', 'Mais antigas'].forEach((nome, i) => { const g = itens.filter(p => faixa(p) === i); if (g.length) h += `<div class="grupoF">${nome} <span>${g.length}</span></div>` + g.map(cardHtml).join(''); });
   }
-  h += `<details class="baixo"><summary><div class="grp">Não precisa de você <span class="n">${g3.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">agradecimento, spam, já na fila, ignorados</span></div></summary>${g3.map(cardHtml).join('')}</details>`;
-  h += `<details class="baixo"><summary><div class="grp" style="margin-top:18px">Travados no fluxo <span class="n">${trav.length}</span> <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">estado ≠ resolvido no fluxo de acesso</span></div></summary>` + trav.map(t => `<div class="trav ${S.sel && S.sel.autor_id === t.conversa_id ? 'sel' : ''}" data-trav="${esc(t.id)}">
-      ${marcaChip(t.marca)}<span><b>${esc(nomeAutor(t))}</b> <span class="muted small">· ${esc(t.estado || '?')}</span>
-        ${t.email_informado ? `<span class="chip mail">${esc(t.email_informado)}</span>` : ''}${t.tem_compra ? `<span class="chip compra">compra ✓</span>` : ''}${t.resposta_na_fila ? `<span class="chip fila">na fila</span>` : ''}</span>
-      <span class="d" title="parado desde ${fmtDataHora(t.atualizado_em)}">${dur(horasDesde(t.atualizado_em), false)}</span></div>`).join('') + '</details>';
   el.innerHTML = h;
-  el.querySelectorAll('.card').forEach(c => c.onclick = () => { const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal); if (it) abrir(it); });
-  el.querySelectorAll('.trav').forEach(c => c.onclick = () => { const t = S.travados.find(x => String(x.id) === c.dataset.trav); if (t) abrir({ autor_id: t.conversa_id, marca: t.marca, autor: t.autor, canal: 'dm', travado: t }); });
+  el.querySelectorAll('.linhaF').forEach(c => c.onclick = () => { const it = S.fila.find(x => x.autor_id === c.dataset.id && x.marca === c.dataset.marca && x.canal === c.dataset.canal); if (it) abrir(it); });
 }
 const canalCurto = c => c === 'dm' ? 'DM' : c === 'dm_fb' ? 'Messenger' : 'Comentário';
 // Cor fixa por pessoa: mesmo id → mesma cor, na lista e no detalhe.
@@ -1044,35 +1230,32 @@ function agruparPorPessoa(itens) {
 }
 function cardHtml(it) {
   const sel = S.sel && S.sel.autor_id === it.autor_id && S.sel.marca === it.marca;
-  const cor = S.visao === 'tudo' ? ({ precisa: 'var(--u1)', sem_resposta: 'var(--u2)', bot: 'var(--u5)', voce: 'var(--ok)', ignorado: 'var(--u9)' }[it.situacao] || 'var(--u5)') : (URG_COR[it.urgencia] || 'var(--u5)');
-  const txt = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : `<span class="muted">(sem texto: mídia)</span>`;
-  // O numero grande e SEMPRE o que ordena a lista: quanto tempo faz desde a ultima
-  // mensagem. 'espera' (desde quando esta sem resposta) vem ao lado, menor, quando e outro
-  // numero — antes so aparecia 'espera' e a ordem parecia bagunçada.
-  const hUlt = horasDesde(Math.max(+new Date(it.ultima_entrada), +new Date(it.ultima_resposta_em || 0)));
-  const hEsp = horasDesde(it.espera_desde);
-  const quando = 'há ' + dur(hUlt, false) + (hEsp - hUlt > 1 ? ' <i class="esp">espera ' + dur(hEsp, false) + '</i>' : '');
-  const mk = MARCA[it.marca] || { cls: '', nome: it.marca };
-  const ini = (it.autor || '?').replace(/^@/, '').charAt(0).toUpperCase();
-  const fecha24 = ehDireta(it.canal) && it.janela_24h_h != null && it.janela_24h_h > 0 && it.janela_24h_h <= 6;
-  const cp = corPessoa(it.autor_id || it.conversa_id);
+  const mk = MARCA[it.marca] || { nome: it.marca, cor: 'var(--u5)' };
   const st = statusDe(it);
-  const canais = (it.canais || [it]).slice().sort((a, b) => a.urgencia - b.urgencia);
-  const chipsCanal = canais.map(cn => `<span class="chip canal ${ehComentario(cn.canal) ? 'com' : 'dm'}" title="${esc(mk.nome)} · ${ehFb(cn.canal) ? 'Facebook' : 'Instagram'} · ${esc(cn.motivo_urgencia || '')}">${logoCanal(cn.canal)} ${canalCurto(cn.canal)}${cn.n_sem_resposta > 1 ? ' <b>' + cn.n_sem_resposta + '</b>' : ''}</span>`).join('');
-  return `<div class="card ${sel ? 'sel' : ''} ${it.urgencia >= 7 ? 'dim' : ''} ${it.urgencia <= 2 ? 'red' : ''}" style="--ub:${cor};--pc:${cp.pc};--pc-ink:${cp.ink}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}" title="${esc(it.motivo_urgencia || '')}">
-    <div class="who"><span class="av" title="${esc(mk.nome)}">${esc(ini)}</span><span class="nm">${esc(nomeAutor(it))}</span><span class="marca ${mk.cls}" title="${esc(mk.nome)}">${esc(mk.curto || mk.nome)}</span>${it.idioma ? `<span title="${esc(IDIOMA_NOME[it.idioma] || it.idioma)}">${bandeira(it.idioma)}</span>` : ''}
-      <span class="espera" title="primeira sem resposta: ${fmtDataHora(it.espera_desde)} · última: ${fmtDataHora(it.ultima_entrada)}">${quando}</span></div>
-    <div class="stts"><span class="stt ${st.p.cls}">${st.p.t}</span>${chipsCanal}${st.subs.map(s => `<span class="stt sub ${s.cls}">${s.t}</span>`).join('')}</div>
-    ${(() => { const q = S.quer && S.quer.get(it.autor_id); return q ? `<div class="quer">💬 ${esc(q)}</div>` : ''; })()}
-    <div class="txt">${txt}</div>
-    ${it.ultimo_texto_pt ? `<div class="txt pt">${BR} ${esc(it.ultimo_texto_pt)}</div>` : (it.traduzindo ? `<div class="txt pt muted">${BR} traduzindo…</div>` : '')}
-    ${S.visao === 'tudo' && it.ultima_resposta !== undefined ? (it.ultima_resposta ? `<div class="txt" style="margin-top:4px;padding-left:10px;border-left:3px solid ${it.ultima_resposta_por === 'você' ? 'var(--ok)' : it.ultima_resposta_por === 'bot' ? 'var(--u5)' : 'var(--accent)'}"><b style="font-size:11.5px;color:var(--muted)">${it.ultima_resposta_por === 'você' ? '👤 você' : it.ultima_resposta_por === 'bot' ? '🤖 bot' : '⚙️ rotina'}${it.ultima_resposta_em ? ' · ' + fmtDataHora(it.ultima_resposta_em) : ''}:</b> ${esc(it.ultima_resposta)}</div>` : `<div class="tiny" style="color:var(--danger);font-weight:600;margin-top:4px">sem nenhuma resposta</div>`) : ''}
-    <div class="chips">
-      ${it.n_midia ? `<span class="chip midia">📎 ${it.n_midia} mídia sem texto</span>` : ''}
-      ${fecha24 ? `<span class="chip" style="background:var(--warn-soft);color:var(--warn);font-weight:600">⏳ 24h fecha em ${dur(it.janela_24h_h, false)}</span>` : ''}
-      ${(() => { const e = S.envios && S.envios.get(it.autor_id); return e ? `<span class="chip envio" title="${e.n} envio(s) · último para ${esc(e.ultimo.para)} · ${(e.ultimo.arquivos || []).length} arquivo(s)">✉️ enviado ${fmtDiaHora(e.ultimo.criado_em)}${e.n > 1 ? ' ×' + e.n : ''}</span>` : ''; })()}
-      ${it.email_informado ? `<span class="chip mail">${esc(it.email_informado)}</span>` : ''}
-    </div></div>`;
+  const pend = pendDe(it);
+  const nosPorUltimo = it.ultima_resposta && +new Date(it.ultima_resposta_em || 0) > +new Date(it.ultima_entrada || 0);
+  const textoCli = it.ultimo_texto && it.ultimo_texto.trim() ? esc(it.ultimo_texto.trim()) : '<span class="muted">(imagem ou áudio, sem texto)</span>';
+  const previa = nosPorUltimo ? `<span class="muted">${it.ultima_resposta_por === 'você' ? 'Você' : 'Bot'}: </span>${esc(String(it.ultima_resposta).trim())}` : textoCli;
+  const tags = [];
+  if (pend) { const x = PEND_TXT[pend]; tags.push(`<span class="tg ${x[1]}">${x[0]}${pend !== 'reembolso' ? ' ' + haTexto(it.ultima_entrada) : ''}</span>`); }
+  if (st.p.cls !== 'gray' || !pend) tags.push(`<span class="tg ${pend && st.p.cls === 'red' ? 'gray' : st.p.cls}" title="${esc(it.motivo_urgencia || '')}">${st.p.t}</span>`);
+  if (it.n_midia) tags.push(`<span class="tg red">📎 ${it.n_midia} sem texto</span>`);
+  const e = S.envios && S.envios.get(it.autor_id);
+  if (e) tags.push(`<span class="tg green" title="${e.n} envio(s) · último para ${esc(e.ultimo.para)} · ${(e.ultimo.arquivos || []).length} arquivo(s)">Arquivos entregues ${fmtDiaHora(e.ultimo.criado_em).slice(0, 5)}</span>`);
+  st.subs.filter(s => /pausado|na fila/.test(s.t)).forEach(s => tags.push(`<span class="tg borda">${s.t}</span>`));
+  if (S.filtro.marca === 'todas') { const f = fotoMarca(it.marca); tags.push(`<span class="tg marcaT">${f ? `<img src="${esc(f)}" alt="">` : ''}${esc(mk.curto || mk.nome)}</span>`); }
+  const canais = it.canais || [it];
+  const comComentario = canais.some(c => ehComentario(c.canal)) && !canais.some(c => !ehComentario(c.canal));
+  const quer = S.quer && S.quer.get(it.autor_id);
+  return `<button class="linhaF ${sel ? 'on' : ''}" style="--mc:${esc(mk.cor || 'var(--accent)')}" data-id="${esc(it.autor_id)}" data-marca="${esc(it.marca)}" data-canal="${esc(it.canal)}">
+    ${avatarHtml(it, true)}
+    <span class="corpoL">
+      <span class="l1F"><b>${esc(nomePessoa(it))}</b><time title="última mensagem do cliente: ${fmtDataHora(it.ultima_entrada)}">${haTexto(ultimaAtividade(it))}</time></span>
+      <span class="l2F">${comComentario ? '<span class="muted">Comentário · </span>' : ''}${previa}</span>
+      ${it.ultimo_texto_pt && !nosPorUltimo ? `<span class="l2F pt">${BR} ${esc(it.ultimo_texto_pt)}</span>` : ''}
+      ${quer ? `<span class="l2F quer">Quer: ${esc(quer)}</span>` : ''}
+      <span class="l3F">${tags.join('')}</span>
+    </span></button>`;
 }
 
 /* ---------- detalhe ---------- */
@@ -1102,10 +1285,11 @@ function renderDetalhe() {
   const emailResumo = est?.email_informado || (f?.emails || [])[0] || '';
   const ignorada = it.ignorado_ate !== undefined && it.urgencia === 9 && /Ignorado por você/.test(it.motivo_urgencia || '');
   let h = `<div class="dhead"><button class="back small" id="voltar">← Fila</button>
-    <h2 style="color:${corPessoa(s.autor_id).ink}"><span class="av" style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:${corPessoa(s.autor_id).pc};color:#fff;font-size:13px;vertical-align:-7px;margin-right:6px">${esc((s.autor || '?').replace(/^@/, '').charAt(0).toUpperCase())}</span>${esc(s.autor ? '@' + s.autor : 'id ' + s.autor_id)}</h2>${s.item ? `<span class="stt ${statusDe(s.item).p.cls}">${statusDe(s.item).p.t}</span>` : ''}${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip canal ${ehComentario(s.canal) ? 'com' : 'dm'}">${logoCanal(s.canal)} ${canalTxt(s.canal)}</span>${ehFb(s.canal) ? '' : linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>${BR} ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
+    <h2 class="h2F">${avatarHtml({ autor_id: s.autor_id, marca: s.marca, autor: s.autor, canal: s.canal }, false)}<span>${esc(nomePessoa({ autor_id: s.autor_id, marca: s.marca, autor: s.autor }))}${(S.perfis.get(s.autor_id + '|' + s.marca) || {}).nome && s.autor ? `<small>@${esc(s.autor)}</small>` : ''}</span></h2>${s.item ? `<span class="stt ${statusDe(s.item).p.cls}">${statusDe(s.item).p.t}</span>` : ''}${langChip(s.idioma)} ${marcaChip(s.marca)} <span class="chip canal ${ehComentario(s.canal) ? 'com' : 'dm'}">${logoCanal(s.canal)} ${canalTxt(s.canal)}</span>${ehFb(s.canal) ? '' : linkIg(s.autor)} <button class="small ghost" id="btTraduzir" title="Traduzir para português o que a pessoa escreveu (grava uma vez, não custa de novo)" ${S.traduzindoConversa ? 'disabled' : ''}>${BR} ${S.traduzindoConversa ? 'traduzindo…' : 'Traduzir'}</button>
     <span class="mono muted copy" title="copiar autor_id" data-copy="${esc(s.autor_id)}">${esc(s.autor_id)}</span></div>`;
   h += `<div class="resumo">
-    <div class="rs sit ${it.urgencia <= 2 ? 'alerta' : ''}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}" style="color:${URG_COR[it.urgencia] || 'inherit'}">${esc(it.motivo_urgencia || (it.travado ? 'Travado no fluxo' : '—'))}</b>${it.espera_desde ? `<span class="tiny muted">esperando ${dur(horasDesde(it.espera_desde))}</span>` : ''}</div>
+    ${(() => { const pd = S.pend.get(s.autor_id + '|' + s.marca); const nosDepois = it.ultima_resposta_em && +new Date(it.ultima_resposta_em) > +new Date(it.ultima_entrada || 0);
+      return `<div class="rs sit ${pd ? 'alerta' : 'ok'}"><span class="k">Situação</span><b title="${esc(it.motivo_urgencia || '')}">${pd ? PEND_TXT[pd][0] : 'Não depende de você'}</b><span class="tiny muted">${pd ? (it.ultima_entrada ? 'desde ' + haTexto(it.ultima_entrada) : '') : (nosDepois ? (it.ultima_resposta_por === 'você' ? 'você respondeu por último' : 'o bot respondeu por último') : 'sem pendência registrada')}</span></div>`; })()}
     <div class="rs ${f ? (pagas.length ? 'ok' : (f.compras.length ? 'alerta' : '')) : ''}"><span class="k">Compra</span><b>${!f ? '…' : pagas.length ? '✓ ' + pagas.length + ' paga(s)' : f.compras.length ? f.compras.length + ' registro(s), nenhuma paga' : 'nenhuma achada'}</b>${f && pagas.length ? `<span class="tiny muted">${esc((pagas[0].produto_nome || '').replace(/&amp;/g, '&').slice(0, 40))}</span>` : ''}</div>
     <div class="rs"><span class="k">E-mail</span><b class="${emailResumo ? 'copy mono' : 'muted'}" ${emailResumo ? `data-copy="${esc(emailResumo)}" title="copiar"` : ''}>${emailResumo ? esc(emailResumo) : 'nenhum'}</b>${f && f.emails.length > 1 ? `<span class="tiny muted">+${f.emails.length - 1} outro(s) na ficha</span>` : ''}</div>
     <div class="rs envio"><span class="k">Arquivos por e-mail</span>${(() => { const ev = (f && f.envios) || []; const ok = ev.filter(e => e.resultado === 'ok'); if (!f) return '<b>…</b>'; if (!ok.length) return '<b class="muted">nunca enviados por aqui</b><span class="tiny muted">só o e-mail automático da Hotmart</span>'; const u = ok[0]; return `<b>✉️ ${fmtDiaHora(u.criado_em)} → ${esc(mascararEmail(u.para))}</b><span class="tiny muted">${ok.length} envio(s) · ${(u.arquivos || []).length} arquivo(s) · ${u.por === 'bot' ? 'pelo bot' : 'por você'}</span>`; })()}</div>
